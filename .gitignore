@@ -14,3 +14,7 @@ results/
 
 # Fetched evaluation data (fetch_datasets.py); never committed
 /local-data/
+
+# Local LLM endpoint credentials; never committed
+.env
+.env.local
