@@ -5,6 +5,20 @@
 This repository, the [auto-judge-starterkit](https://github.com/trec-auto-judge/auto-judge-starter-kit), serves as a forkable template for building a custom LLM judge for TREC AutoJudge. The **canonical participant documentation** lives in the org profile as the
 [TREC AutoJudge Participant HowTo](https://github.com/trec-auto-judge/.github/blob/main/profile/howto/README.md) — one page per activity. Defer to it rather than duplicate it.
 
+## Repository & Remotes
+
+This is a fork developed at `rmit-ir/trec-auto-judge-26`, tracked as remote `origin` (push/pull — where our work lands). The upstream template stays wired as remote `starterkit` (fetch-only) so we can pull in whatever the official repo updates:
+
+```bash
+git remote -v
+# origin      https://github.com/rmit-ir/trec-auto-judge-26.git (fetch/push)
+# starterkit  https://github.com/trec-auto-judge/auto-judge-starter-kit.git (fetch/push)
+
+# pull upstream template updates
+git fetch starterkit
+git merge starterkit/main   # or: git rebase starterkit/main
+```
+
 ## Getting Started
 
 Three interactive skills in `.claude/skills/` cover every HowTo activity; the HowTo pages cover the same ground for manual use:
