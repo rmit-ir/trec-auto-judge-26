@@ -36,6 +36,32 @@ def test_sparse_seed_graph_enforces_connected_minimum_for_degree_zero_and_one():
         assert reached == set(candidates)
 
 
+def test_sparse_seed_graph_is_balanced_exact_and_deterministic():
+    for count in (9, 10, 11, 16):
+        candidates = [f"run-{index}" for index in range(count)]
+        for degree in (2, 3, 4, 5):
+            edges = sparse_seed_graph(candidates, degree=degree, full_graph_max=5)
+            assert len(edges) == len(set(edges))
+            assert all(left != right for left, right in edges)
+
+            target = min((count * max(2, degree) + 1) // 2, count * (count - 1) // 2)
+            assert len(edges) == target
+
+            degree_count = {candidate: 0 for candidate in candidates}
+            for left, right in edges:
+                degree_count[left] += 1
+                degree_count[right] += 1
+            # Greedy min-degree selection is "near-regular" (per the docstring),
+            # not exactly regular -- a full circulant-graph construction would
+            # guarantee a spread of 1, but is more machinery than this cosmetic
+            # fairness property (no candidate is ever left disconnected, which
+            # is the actual correctness guarantee) is worth. 2 is the observed
+            # worst case swept across counts 6-29 and degrees 2-7.
+            assert max(degree_count.values()) - min(degree_count.values()) <= 2
+
+            assert sparse_seed_graph(candidates, degree=degree, full_graph_max=5) == edges
+
+
 def test_davidson_audit_finds_consistent_condorcet_and_kemeny_winner():
     ballots = [
         Ballot("a", "b", "A"),
@@ -63,6 +89,17 @@ def test_cycle_audit_and_boundary_scheduler():
     )
     assert len(pairs) == 2
     assert ("a", "b") not in pairs
+
+
+def test_kemeny_agrees_on_winner_with_zero_usable_ballots():
+    # BT's ascending tie-break and exact Kemeny's max(permutations(...))
+    # descending tie-break would otherwise disagree on an arbitrary winner
+    # when there is no real preference data at all (e.g. the only ballot for
+    # this pool was ABSTAIN, directly or after a position-reversal collapse).
+    audit = audit_ranking(["run-a", "run-b"], [Ballot("run-a", "run-b", "ABSTAIN")])
+    assert audit.ballots_used == 0
+    assert audit.ranking != audit.kemeny_ranking  # the tie-breaks really do differ
+    assert audit.kemeny_agrees_on_winner
 
 
 def test_seen_edges_counts_explicit_abstention_but_not_missing_transport_ballot():

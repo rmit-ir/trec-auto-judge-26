@@ -20,6 +20,7 @@ AutoJudge prototype with these components:
 | Hard ballot | `A`, `B`, `TIE`, or `ABSTAIN` JSON ballot |
 | Operational aggregation | Weighted Davidson--Bradley--Terry fit with Davidson ties |
 | Adaptive scheduling | Max-heap of unseen pairs, prioritising top-`k` boundary uncertainty |
+| Selective position reversal | Bounded A/B-swap recheck of top-`k`-boundary and tied ballots; disagreement collapses to `ABSTAIN`, not `TIE` |
 | Voting audit | Condorcet winner, directed three-cycle rate, and Kemeny--Young ranking |
 
 The configurable defaults are in
@@ -42,8 +43,9 @@ The following remain future, calibration-dependent work:
 - actual multiple-Bedrock-model voter assignment and cost-aware routing;
 - claim-level gold precision/recall, authoritative-corpus verification,
   retrieval metrics, and trajectory checks;
-- position-reversal escalation, reasoning arbiter, conformal abstention, and
-  human-review queue;
+- reasoning arbiter escalation, conformal abstention, and human-review queue
+  (selective position reversal is implemented — see below — but only that
+  one Level-3 escalation step);
 - stable scores against a frozen reference-anchor pool.
 
 `CHOICE_SCORE` is therefore a pool-relative score. It should not be compared
@@ -93,3 +95,24 @@ orchestrator should collect a targeted independent ballot or escalate to review.
 For more than `exact_kemeny_limit` candidates (8 by default), this repository
 uses a BT-seeded adjacent-swap local-search Kemeny heuristic rather than an
 exact solver, so treat that large-election audit as a diagnostic only.
+
+## Selective position reversal
+
+`position_reversal_budget` (default 2 per topic) bounds how many already-cast
+ballots are re-checked with the answer order swapped: directional ballots
+whose pair straddles the top-`k` utility boundary first, then `TIE` ballots.
+This is deliberately not every pair — reversing everything catches position
+bias but does nothing for verbosity bias, at double the cost, which is why the
+design only asks for it on the comparisons that can actually change the
+decision that matters.
+
+Reconciliation never double-counts the pair as two independent ballots. If the
+reversed vote, mapped back to the original A/B orientation, agrees with the
+first vote, the original ballot stands unchanged. A genuine disagreement
+becomes `ABSTAIN`, not `TIE`: a swapped answer changing the winner is evidence
+the decision was position-sensitive, not evidence the two answers are equally
+good, and treating it as a tie would inject a false equality signal into the
+Davidson--BT fit. A failed or unparseable reversal call after retries leaves
+the original ballot exactly as it was and is not counted as checked —
+`POSITION_REVERSAL_CHECKED = 0` disambiguates "not checked" from "checked, no
+disagreement" for `POSITION_REVERSAL_DISAGREEMENT_RATE`.

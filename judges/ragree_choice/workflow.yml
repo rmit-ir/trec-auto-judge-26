@@ -21,6 +21,7 @@ judge_settings:
   exact_kemeny_limit: 8
   llm_max_attempts: 3
   llm_retry_backoff_seconds: 0.25
+  position_reversal_budget: 2
 
 variants:
   exhaustive-small:

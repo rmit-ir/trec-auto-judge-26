@@ -30,7 +30,20 @@ from autojudge_base import (
 )
 from minima_llm import MinimaLlmConfig, MinimaLlmRequest, MinimaLlmResponse, OpenAIMinimaLlm
 
-from .sparrow import Ballot, RankingAudit, audit_ranking, davidson_win_probability, seen_edges, select_adaptive_pairs, sparse_seed_graph
+from .sparrow import (
+    Ballot,
+    RankingAudit,
+    audit_ranking,
+    davidson_win_probability,
+    seen_edges,
+    select_adaptive_pairs,
+    select_reversal_ballots,
+    sparse_seed_graph,
+)
+
+# A/B swap in the reversal prompt means the reversed reply's frame is mirrored:
+# its "A" is the original candidate_b, its "B" is the original candidate_a.
+_REVERSE_VOTE_MAP = {"A": "B", "B": "A", "TIE": "TIE", "ABSTAIN": "ABSTAIN"}
 
 
 RAGREE_CHOICE_SPEC = LeaderboardSpec(measures=(
@@ -114,6 +127,28 @@ RAGREE_CHOICE_SPEC = LeaderboardSpec(measures=(
             "otherwise. Transient LLM failure alone can never trigger this verdict."
         ),
     ),
+    MeasureSpec(
+        "POSITION_REVERSAL_CHECKED",
+        description=(
+            "Topic-level count of already-cast ballots re-checked with the answer "
+            "order swapped (0 when position_reversal_budget is 0 or no eligible pair "
+            "qualified). A failed/unparseable reversal call does not count here and "
+            "leaves the original ballot unchanged. Read alongside "
+            "POSITION_REVERSAL_DISAGREEMENT_RATE: a 0 disagreement rate is meaningful "
+            "only when this count is greater than 0."
+        ),
+    ),
+    MeasureSpec(
+        "POSITION_REVERSAL_DISAGREEMENT_RATE",
+        description=(
+            "Fraction of checked reversal ballots (see POSITION_REVERSAL_CHECKED) "
+            "whose vote changed when the answer order was swapped, i.e. the original "
+            "decision was position-sensitive rather than evidence-driven. Such pairs "
+            "are converted to ABSTAIN, not TIE -- disagreement is uncertainty about "
+            "direction, not evidence the answers are equally good. 0.0 when nothing "
+            "was checked."
+        ),
+    ),
 ))
 
 
@@ -182,6 +217,7 @@ class RAGreeChoiceJudge:
         exact_kemeny_limit: int = 8,
         llm_max_attempts: int = 3,
         llm_retry_backoff_seconds: float = 0.25,
+        position_reversal_budget: int = 2,
         filebase: str = "default",
         outdir: Path = Path("."),
         **kwargs: Any,
@@ -199,6 +235,7 @@ class RAGreeChoiceJudge:
             exact_kemeny_limit=exact_kemeny_limit,
             llm_max_attempts=llm_max_attempts,
             llm_retry_backoff_seconds=llm_retry_backoff_seconds,
+            position_reversal_budget=position_reversal_budget,
         )
         topics = {topic.request_id: topic for topic in rag_topics}
         expected_topic_ids = list(topics)
@@ -260,6 +297,42 @@ class RAGreeChoiceJudge:
         ):
             topic_ballots[topic_id].append(ballot)
 
+        # Selective position-reversal: re-check a small, bounded set of the pairs
+        # that most matter (top-k boundary, and ties) with A/B swapped, to catch
+        # decisions that were position-sensitive rather than evidence-driven.
+        reversal_checked: Dict[str, int] = {topic_id: 0 for topic_id in reports_by_topic}
+        reversal_disagreed: Dict[str, int] = {topic_id: 0 for topic_id in reports_by_topic}
+        if position_reversal_budget > 0:
+            reversal_selections: list[tuple[str, Ballot]] = []
+            for topic_id, topic_reports in reports_by_topic.items():
+                eligible = [report for report in topic_reports if eligibility[self._key(report)]]
+                by_run = {report.metadata.run_id: report for report in eligible}
+                if len(by_run) < 2:
+                    continue
+                audit = audit_ranking(list(by_run), topic_ballots[topic_id], exact_kemeny_limit)
+                for ballot in select_reversal_ballots(
+                    list(by_run), topic_ballots[topic_id], audit.utilities,
+                    top_k=top_k, budget=position_reversal_budget,
+                ):
+                    reversal_selections.append((topic_id, ballot))
+
+            reports_by_run_by_topic = {
+                topic_id: {report.metadata.run_id: report for report in topic_reports}
+                for topic_id, topic_reports in reports_by_topic.items()
+            }
+            for topic_id, original_ballot, final_ballot, disagreed in self._cast_reversal_ballots(
+                reversal_selections, reports_by_run_by_topic, topics, briefs,
+                llm_config, max_answer_chars, llm_max_attempts, llm_retry_backoff_seconds,
+            ):
+                edge = tuple(sorted((original_ballot.candidate_a, original_ballot.candidate_b)))
+                topic_ballots[topic_id] = [
+                    ballot for ballot in topic_ballots[topic_id]
+                    if tuple(sorted((ballot.candidate_a, ballot.candidate_b))) != edge
+                ] + [final_ballot]
+                reversal_checked[topic_id] += 1
+                if disagreed:
+                    reversal_disagreed[topic_id] += 1
+
         builder = LeaderboardBuilder(RAGREE_CHOICE_SPEC)
         for topic_id, topic_reports in reports_by_topic.items():
             eligible_reports = [report for report in topic_reports if eligibility[self._key(report)]]
@@ -271,6 +344,8 @@ class RAGreeChoiceJudge:
             no_acceptable_answer = self._no_acceptable_answer(
                 [briefs[self._key(report)] for report in topic_reports], eligible_ids,
             )
+            checked = reversal_checked.get(topic_id, 0)
+            reversal_disagreement_rate = (reversal_disagreed.get(topic_id, 0) / checked) if checked else 0.0
             for report in topic_reports:
                 key = self._key(report)
                 run_id = report.metadata.run_id
@@ -282,6 +357,8 @@ class RAGreeChoiceJudge:
                 else:
                     values = self._eligible_values(run_id, eligible_ids, audit, topic_ballots[topic_id], brief)
                     values["NO_ACCEPTABLE_ANSWER"] = no_acceptable_answer
+                values["POSITION_REVERSAL_CHECKED"] = float(checked)
+                values["POSITION_REVERSAL_DISAGREEMENT_RATE"] = reversal_disagreement_rate
                 builder.add(run_id=run_id, topic_id=topic_id, values=values)
 
         leaderboard = builder.build(expected_topic_ids=expected_topic_ids, on_missing="fix_aggregate")
@@ -310,7 +387,7 @@ class RAGreeChoiceJudge:
             if isinstance(value, bool) or not isinstance(value, int) or value < 1:
                 raise ValueError(f"{name} must be a positive integer")
 
-        non_negative_integers = ("initial_graph_degree", "adaptive_comparisons_per_topic")
+        non_negative_integers = ("initial_graph_degree", "adaptive_comparisons_per_topic", "position_reversal_budget")
         for name in non_negative_integers:
             value = settings[name]
             if isinstance(value, bool) or not isinstance(value, int) or value < 0:
@@ -501,26 +578,9 @@ class RAGreeChoiceJudge:
             # Pairs are created only from evidence-eligible reports, which implies
             # valid briefs. Keep the invariant explicit rather than coercing None.
             assert brief_a is not None and brief_b is not None
-            topic = topics.get(topic_id)
-            question = topic.title if topic else topic_id
-            prompt = (
-                "Use pointwise-first, pairwise-final judging. Prefer factual support, "
-                "material completeness, directness, and appropriate uncertainty over "
-                "style or verbosity. Do not infer model identity. Vote TIE when the "
-                "difference is immaterial and ABSTAIN when evidence is insufficient. "
-                "Reply with ONLY JSON: {\"vote\": \"A|B|TIE|ABSTAIN\"}.\n\n"
-                f"Question:\n{question}\n\n"
-                f"Pointwise evidence brief A: {self._brief_text(brief_a)}\n"
-                f"Answer A:\n{report_a.get_report_text()[:max_answer_chars]}\n\n"
-                f"Pointwise evidence brief B: {self._brief_text(brief_b)}\n"
-                f"Answer B:\n{report_b.get_report_text()[:max_answer_chars]}"
-            )
             requests.append(MinimaLlmRequest(
                 request_id=f"choice-ballot-{index}",
-                messages=[
-                    {"role": "system", "content": "You are an evidence-informed preferential RAG judge. Return only JSON."},
-                    {"role": "user", "content": prompt},
-                ],
+                messages=self._pairwise_messages(topics, topic_id, report_a, brief_a, report_b, brief_b, max_answer_chars),
             ))
             metadata.append((topic_id, report_a.metadata.run_id, report_b.metadata.run_id))
 
@@ -541,6 +601,91 @@ class RAGreeChoiceJudge:
                 weight=judge_weight,
             )))
         return ballots
+
+    def _cast_reversal_ballots(
+        self,
+        selections: Sequence[tuple[str, Ballot]],
+        reports_by_run_by_topic: Mapping[str, Mapping[str, Report]],
+        topics: Mapping[str, Request],
+        briefs: Mapping[tuple[str, str], Optional[EvidenceBrief]],
+        llm_config: LlmConfigProtocol,
+        max_answer_chars: int,
+        llm_max_attempts: int,
+        llm_retry_backoff_seconds: float,
+    ) -> list[tuple[str, Ballot, Ballot, bool]]:
+        """Re-ask each selected ballot's pair with A/B swapped and reconcile.
+
+        Yields (topic_id, original_ballot, final_ballot, disagreed). A failed or
+        unparseable reversal call yields nothing for that ballot -- the caller
+        leaves the original ballot untouched and it is not counted as checked.
+        """
+        requests: list[MinimaLlmRequest] = []
+        metadata: list[tuple[str, Ballot]] = []
+        for index, (topic_id, original_ballot) in enumerate(selections):
+            by_run = reports_by_run_by_topic[topic_id]
+            # Swapped: the original candidate_b is presented as "Answer A" here.
+            report_a = by_run[original_ballot.candidate_b]
+            report_b = by_run[original_ballot.candidate_a]
+            brief_a = briefs[self._key(report_a)]
+            brief_b = briefs[self._key(report_b)]
+            assert brief_a is not None and brief_b is not None
+            requests.append(MinimaLlmRequest(
+                request_id=f"choice-reversal-{index}",
+                messages=self._pairwise_messages(topics, topic_id, report_a, brief_a, report_b, brief_b, max_answer_chars),
+            ))
+            metadata.append((topic_id, original_ballot))
+
+        votes = self._run_parsed_with_retries(
+            llm_config, requests, self._parse_vote,
+            max_attempts=llm_max_attempts,
+            retry_backoff_seconds=llm_retry_backoff_seconds,
+            operation="position-reversal ballot",
+        )
+        reconciled: list[tuple[str, Ballot, Ballot, bool]] = []
+        for (topic_id, original_ballot), reversed_vote in zip(metadata, votes):
+            if reversed_vote is None:
+                continue  # unavailable after retries: leave the original ballot as-is
+            mapped_vote = _REVERSE_VOTE_MAP[reversed_vote]
+            if mapped_vote == original_ballot.vote:
+                final_ballot, disagreed = original_ballot, False
+            else:
+                final_ballot, disagreed = Ballot(
+                    candidate_a=original_ballot.candidate_a,
+                    candidate_b=original_ballot.candidate_b,
+                    vote="ABSTAIN",
+                    weight=original_ballot.weight,
+                ), True
+            reconciled.append((topic_id, original_ballot, final_ballot, disagreed))
+        return reconciled
+
+    @staticmethod
+    def _pairwise_messages(
+        topics: Mapping[str, Request],
+        topic_id: str,
+        report_a: Report,
+        brief_a: EvidenceBrief,
+        report_b: Report,
+        brief_b: EvidenceBrief,
+        max_answer_chars: int,
+    ) -> list[dict[str, str]]:
+        topic = topics.get(topic_id)
+        question = topic.title if topic else topic_id
+        prompt = (
+            "Use pointwise-first, pairwise-final judging. Prefer factual support, "
+            "material completeness, directness, and appropriate uncertainty over "
+            "style or verbosity. Do not infer model identity. Vote TIE when the "
+            "difference is immaterial and ABSTAIN when evidence is insufficient. "
+            "Reply with ONLY JSON: {\"vote\": \"A|B|TIE|ABSTAIN\"}.\n\n"
+            f"Question:\n{question}\n\n"
+            f"Pointwise evidence brief A: {RAGreeChoiceJudge._brief_text(brief_a)}\n"
+            f"Answer A:\n{report_a.get_report_text()[:max_answer_chars]}\n\n"
+            f"Pointwise evidence brief B: {RAGreeChoiceJudge._brief_text(brief_b)}\n"
+            f"Answer B:\n{report_b.get_report_text()[:max_answer_chars]}"
+        )
+        return [
+            {"role": "system", "content": "You are an evidence-informed preferential RAG judge. Return only JSON."},
+            {"role": "user", "content": prompt},
+        ]
 
     @staticmethod
     def _brief_text(brief: EvidenceBrief) -> str:

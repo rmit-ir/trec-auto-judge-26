@@ -49,15 +49,33 @@ class RankingAudit:
 
     @property
     def kemeny_agrees_on_winner(self) -> bool:
-        return not self.ranking or self.ranking[0] == self.kemeny_ranking[0]
+        """Whether the BT and Kemeny rankings pick the same winner.
+
+        With zero usable ballots (e.g. the only ballot for this pool was an
+        ABSTAIN, directly or after a position-reversal reconciliation), both
+        rankings fall back to an all-tied ordering -- but BT's tie-break sorts
+        candidate ids ascending while exact Kemeny's `max(permutations(...))`
+        tie-break picks the lexicographically *greatest* permutation. Those two
+        arbitrary, opposite tie-breaks would otherwise report a false
+        disagreement with no data behind it, so treat "nothing to disagree
+        about" as agreement rather than instability.
+        """
+        return not self.ranking or self.ballots_used == 0 or self.ranking[0] == self.kemeny_ranking[0]
 
 
 def sparse_seed_graph(candidate_ids: Sequence[str], degree: int, full_graph_max: int) -> list[tuple[str, str]]:
     """Return a deterministic, near-regular connected graph of comparison edges.
 
     Small elections use all pairs. Larger elections always start with a complete
-    cycle, then add successive circular offsets. Degrees below two are accepted
-    as a request for the minimum connected degree of two.
+    cycle (every candidate gets a base degree of two -- or one, in the
+    degenerate two-candidate cycle -- so no budget is ever too small to leave a
+    candidate unevaluated), then top up to the requested degree
+    by greedily adding the edge between whichever two not-yet-connected
+    candidates currently have the lowest degree. Greedy min-degree selection
+    (rather than exhausting one circular offset before starting the next) keeps
+    the remaining edges spread evenly instead of favouring lexicographically
+    early candidates when the budget runs out mid-pass. Degrees below two are
+    accepted as a request for the minimum connected degree of two.
     """
     candidates = tuple(sorted(dict.fromkeys(candidate_ids)))
     count = len(candidates)
@@ -68,20 +86,25 @@ def sparse_seed_graph(candidate_ids: Sequence[str], degree: int, full_graph_max:
 
     effective_degree = max(2, degree)
     target_edges = min(math.ceil(count * effective_degree / 2), count * (count - 1) // 2)
-    # The cycle is non-negotiable: stopping midway through an offset would leave
-    # candidates unevaluated when a caller asks for a very small budget.
+    # The cycle is non-negotiable: every candidate must have at least one edge
+    # regardless of how small the requested budget is.
     edges = {
         tuple(sorted((candidates[index], candidates[(index + 1) % count])))
         for index in range(count)
     }
     if len(edges) >= target_edges:
         return sorted(edges)
-    for offset in range(2, count):
-        for index, candidate_a in enumerate(candidates):
-            candidate_b = candidates[(index + offset) % count]
-            edges.add(tuple(sorted((candidate_a, candidate_b))))
-            if len(edges) >= target_edges:
-                return sorted(edges)
+
+    node_degree = {candidate: 2 for candidate in candidates}
+    remaining = sorted(
+        pair for pair in combinations(candidates, 2) if pair not in edges
+    )
+    while remaining and len(edges) < target_edges:
+        best = min(remaining, key=lambda pair: (node_degree[pair[0]] + node_degree[pair[1]], pair))
+        remaining.remove(best)
+        edges.add(best)
+        node_degree[best[0]] += 1
+        node_degree[best[1]] += 1
     return sorted(edges)
 
 
@@ -233,6 +256,42 @@ def audit_ranking(candidate_ids: Sequence[str], ballots: Iterable[Ballot], exact
         cycle_rate=cycle_rate(candidate_ids, margins),
         ballots_used=sum(ballot.vote != "ABSTAIN" for ballot in materialized),
     )
+
+
+def select_reversal_ballots(
+    candidate_ids: Sequence[str],
+    ballots: Sequence[Ballot],
+    utilities: Mapping[str, float],
+    *,
+    top_k: int,
+    budget: int,
+) -> list[Ballot]:
+    """Pick up to `budget` already-cast ballots worth re-checking with the
+    answer order swapped: directional (A/B) ballots whose pair crosses the
+    top-k utility boundary first, then TIE ballots. ABSTAIN ballots are never
+    reversal-checked -- there is no direction to validate. This deliberately
+    does not reverse every pair (see the design doc's caution that doing so
+    fixes position bias while doing nothing for verbosity bias, at double the
+    cost); it targets the pairs where a swapped answer is most likely to
+    change the decision that matters.
+    """
+    if budget <= 0:
+        return []
+    ranked = sorted(candidate_ids, key=lambda candidate: (-utilities.get(candidate, 0.0), candidate))
+    membership = set(ranked[:max(1, top_k)])
+    boundary: list[Ballot] = []
+    ties: list[Ballot] = []
+    seen: set[tuple[str, str]] = set()
+    for ballot in ballots:
+        edge = tuple(sorted((ballot.candidate_a, ballot.candidate_b)))
+        if edge in seen or ballot.vote == "ABSTAIN":
+            continue
+        seen.add(edge)
+        if ballot.vote == "TIE":
+            ties.append(ballot)
+        elif (ballot.candidate_a in membership) != (ballot.candidate_b in membership):
+            boundary.append(ballot)
+    return (boundary + ties)[:budget]
 
 
 def select_adaptive_pairs(
