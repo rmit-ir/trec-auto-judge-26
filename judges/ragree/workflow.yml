@@ -1,0 +1,34 @@
+# RAGree Evidence Judge workflow configuration
+#
+# v1 of the Evidence Judge lane only -- see docs/ragree-judge-design.md for
+# the full multi-lane proposal and what's not built yet.
+
+nugget_class: "judges.ragree.ragree_judge:RAGreeNuggetCreator"
+judge_class: "judges.ragree.ragree_judge:RAGreeEvidenceJudge"
+
+# Lifecycle flags
+create_nuggets: true
+create_qrels: false
+judge: true
+
+judge_uses_nuggets: true
+
+settings:
+  filebase: "ragree"
+
+nugget_settings:
+  questions_per_topic: 4      # query-only nugget questions generated per topic
+
+judge_settings:
+  substantive_min_words: 6    # sentences shorter than this don't count toward CITATION_COVERAGE
+  max_doc_chars: 1500         # per cited document, truncate before sending to the LLM
+  on_missing_evals: "fix_aggregate"
+
+# Named configurations that override settings:
+#   auto-judge run --workflow judges/ragree/workflow.yml --variant <name>
+variants:
+  more-nuggets:
+    nugget_settings:
+      questions_per_topic: 8
+
+uses_llm: true
