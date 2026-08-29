@@ -1,6 +1,11 @@
-# Auto-Judge Starterkit
+# RAGree
 
-A forkable template repository with example Auto-Judge implementations for building custom judges.
+RAGree predicts informed human preference while independently measuring factual
+accuracy, claim precision, answer recall, retrieval quality, citation validity,
+and agent trajectory quality.
+
+For direct Amazon Bedrock smoke tests of the development models, see
+[Bedrock model smoke test](docs/bedrock.md).
 
 <p align="center">
    <img width=120px src="https://trec-auto-judge.cs.unh.edu/media/trec-auto-judge-logo-small.png">
