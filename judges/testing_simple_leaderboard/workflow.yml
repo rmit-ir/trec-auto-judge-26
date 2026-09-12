@@ -1,0 +1,12 @@
+# TestingSimpleLeaderboard workflow configuration
+# LLM-based judge that scores overall response relevance on a 0-3 scale
+
+judge_class: "judges.testing_simple_leaderboard.relevance_judge:RelevanceJudge"
+
+# Lifecycle flags
+create_nuggets: false
+create_qrels: false
+judge: true
+
+settings:
+  filebase: "testing_simple_leaderboard"
