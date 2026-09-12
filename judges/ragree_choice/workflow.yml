@@ -1,0 +1,36 @@
+# RAGree Choice / SPARROW: evidence-gated preferential ranking.
+judge_class: "judges.ragree_choice.ragree_choice_judge:RAGreeChoiceJudge"
+
+create_nuggets: false
+create_qrels: false
+judge: true
+
+settings:
+  filebase: "ragree-choice"
+
+judge_settings:
+  factual_support_threshold: 0.65
+  citation_validity_threshold: 0.65
+  full_round_robin_max_candidates: 5
+  initial_graph_degree: 4
+  adaptive_comparisons_per_topic: 4
+  top_k: 1
+  max_answer_chars: 2000
+  max_evidence_chars: 4000
+  judge_weight: 1.0
+  exact_kemeny_limit: 8
+  llm_max_attempts: 3
+  llm_retry_backoff_seconds: 0.25
+  position_reversal_budget: 2
+
+variants:
+  exhaustive-small:
+    judge_settings:
+      full_round_robin_max_candidates: 999
+      adaptive_comparisons_per_topic: 0
+  conservative-gate:
+    judge_settings:
+      factual_support_threshold: 0.8
+      citation_validity_threshold: 0.8
+
+uses_llm: true

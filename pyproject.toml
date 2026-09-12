@@ -3,14 +3,14 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "auto-judge-starterkit"
+name = "ragree"
 version = "1.0.0"
-description = "Example AutoJudge implementations for building custom judges"
+description = "RAGree predicts informed human preference while independently measuring factual accuracy, claim precision, answer recall, retrieval quality, citation validity, and agent trajectory quality."
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.10"
 authors = [
-    {name = "TREC AutoJudge Team"}
+    {name = "RMIT-ADMS"}
 ]
 keywords = ["trec", "autojudge", "rag", "evaluation", "ir"]
 classifiers = [
@@ -36,20 +36,26 @@ test = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
 ]
+bedrock = [
+    "boto3>=1.40.0",
+]
 minima-llm = [
     "minima-llm>=0.2.5",
 ]
 evaluate = [
     "autojudge-evaluate>=1.0.0",
 ]
+cost = [
+    "tiktoken>=0.14",
+]
 all = [
-    "auto-judge-starterkit[minima-llm,evaluate,test]",
+    "ragree[bedrock,minima-llm,evaluate,cost,test]",
     "tqdm>=4.0",
 ]
 
 [project.urls]
-Homepage = "https://github.com/trec-auto-judge/auto-judge-starter-kit"
-Repository = "https://github.com/trec-auto-judge/auto-judge-starter-kit"
+Homepage = "https://github.com/rmit-ir/trec-auto-judge-26"
+Repository = "https://github.com/rmit-ir/trec-auto-judge-26"
 
 [tool.setuptools.packages.find]
 where = ["."]
