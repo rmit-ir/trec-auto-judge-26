@@ -69,8 +69,20 @@ so it's deferred until either finishes.*
 
 ### Judge multiplier (fill in once a run completes)
 
+If `CACHE_DIR` is dedicated to one run, that run's totals are the whole
+cache: `scripts.cost_guard.read_usage_totals(Path("<cache_dir>/minima_llm.db"))`.
+
+**If `CACHE_DIR` is shared/reused across runs (our actual setup — one
+`./cache` for all judge×dataset combos), that call sums every run's spend
+together, not just one.** Get one run's own totals from its own
+`cost_guard.py` invocation instead: each guard call records its own
+`baseline_rowid` at startup (see its `--log` output) and only ever
+accumulates rows written after that — so the last `calls=… in=… out=…` line
+in a given run's guard log *is* that run's isolated total, even against a
+shared cache. (Reusing `cost_guard.py`'s own `read_usage_since_rowid()`
+against the baseline it logged also works, if you want it outside the log.)
+
 ```
-calls, billed_in, billed_out = scripts.cost_guard.read_usage_totals(Path("cache/minima_llm.db"))
 input_multiplier    = billed_in / corpus_floor_input_tokens
 avg_output_per_call = billed_out / calls
 ```
@@ -83,3 +95,27 @@ Re-estimating a workflow change: recompute expected call count for the new
 config, multiply the new corpus-floor input by `input_multiplier`, multiply
 new call count by `avg_output_per_call`, feed both into
 `scripts/azure_cost.py <model> <input> <output>`.
+
+## Resuming after a failure or crash
+
+Two independent layers, with different persistence:
+
+1. **LLM-call cache (`<CACHE_DIR>/minima_llm.db`)** — every individual LLM
+   call is cached by minima-llm, keyed by the exact request. Restarting the
+   same workflow against the same `CACHE_DIR` replays every already-answered
+   call from cache instantly — no re-query, no re-billing (`cost_guard.py`'s
+   rowid-baseline tracking depends on exactly this: a cache hit never calls
+   `PromptCache.put()`, so it never advances rowid or gets billed twice).
+2. **Judge output** — only partially checkpointed. Nugget generation writes
+   its file (`<filebase>.nuggets.jsonl`) as soon as that phase finishes, but
+   the final leaderboard/judgments file is written once, at the very end of
+   the full judging loop (`autojudge_base.judge_runner.run_judge`). A crash
+   mid-judging leaves no usable output file yet, regardless of how much of
+   the cache is already populated.
+
+Practical consequence: a crash and rerun does **not** redo or re-pay for any
+call the cache already has — only genuinely new calls hit the API — but it
+does still have to re-walk the whole judge loop from the top to reconstruct
+results and reach the final write. Cheap and fast in $, not necessarily fast
+in wall-clock if the loop itself (not just the LLM calls) does non-trivial
+work per topic.
