@@ -45,8 +45,11 @@ minima-llm = [
 evaluate = [
     "autojudge-evaluate>=1.0.0",
 ]
+cost = [
+    "tiktoken>=0.14",
+]
 all = [
-    "ragree[bedrock,minima-llm,evaluate,test]",
+    "ragree[bedrock,minima-llm,evaluate,cost,test]",
     "tqdm>=4.0",
 ]
 

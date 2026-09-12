@@ -1,0 +1,2 @@
+provider,model_name,input_usd_per_million,cached_input_usd_per_million,output_usd_per_million,tier,region,tokenizer_encoding,checked_at,source
+Azure OpenAI,gpt-5.6-luna,0.20,0.02,1.20,global-standard-short-context,global,o200k_base,2026-09-12,https://azure.microsoft.com/en-us/blog/gpt-5-6-now-available-in-microsoft-foundry/
