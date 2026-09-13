@@ -115,8 +115,11 @@ def run_dir(out_dir: Path, workflow: Path, dataset_name: str, variant: str | Non
     return out_dir / dataset_name / workflow.parent.name / leaf
 
 
-def run_meta_evaluate(dataset: Dataset, dataset_out: Path) -> None:
-    """Invoke auto-judge-evaluate meta-evaluate against the dataset's truth file, if available."""
+def run_meta_evaluate(dataset: Dataset, dataset_out: Path, output: Path | None = None) -> None:
+    """Invoke auto-judge-evaluate meta-evaluate against the dataset's truth file, if available.
+    With `output`, also asks it for a machine-readable JSONL copy of the correlations there
+    (e.g. so scripts/summarize_eval_2025.py can pick it up) -- purely additive to the printed
+    table every other caller of this function already gets."""
     if not dataset.truth:
         print(f"Skipping meta-evaluation for {dataset.name}: no 'truth' in datasets.yml")
         return
@@ -143,8 +146,10 @@ def run_meta_evaluate(dataset: Dataset, dataset_out: Path) -> None:
             # warn (not error) in case a participant judge does not emit scores for
             # every topic; the evaluation server/TIRA scores those runs with default.
             "--on-missing", "warn",
-            *[str(p) for p in eval_files],
         ]
+        if output:
+            cmd += ["--output", str(output), "--out-format", "jsonl"]
+        cmd += [str(p) for p in eval_files]
         return cmd
 
     # Truth ships in two formats: the track releases use JSONL, kiddie is
@@ -213,6 +218,7 @@ def run_workflow(
     extra_args: List[str],
     variant: str | None = None,
     meta_evaluate: bool = False,
+    meta_evaluate_output: Path | None = None,
     upload_tira: bool = False,
     upload_metaeval: bool = False,
     metaeval_dest: str | None = None,
@@ -270,7 +276,7 @@ def run_workflow(
             print("  (no files produced)")
         system: str = f"{workflow.parent.name}-{variant or 'default'}"
         if meta_evaluate:
-            run_meta_evaluate(dataset, dataset_out)
+            run_meta_evaluate(dataset, dataset_out, output=meta_evaluate_output)
         if upload_tira:
             run_tira_upload(dataset, dataset_out, system)
         if upload_metaeval:

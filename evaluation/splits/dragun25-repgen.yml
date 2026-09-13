@@ -1,0 +1,67 @@
+dataset: dragun25-repgen
+role: frozen-cross-track-test
+seed: 20250912
+algorithm: random.Random(seed).shuffle(sorted(ids)) then slice
+run_holdout:
+  known:
+  - bab
+  - ced
+  - ciw
+  - dav
+  - dim
+  - dix
+  - doc
+  - fev
+  - hof
+  - jil
+  - kag
+  - lop
+  - mar
+  - mun
+  - noh
+  - rim
+  - rir
+  - san
+  - sed
+  - sez
+  - xat
+  - zar
+  held_out:
+  - bop
+  - dag
+  - das
+  - fus
+  - sos
+  - was
+  ratio: 80/20
+assessed_topics:
+- msmarco_v2.1_doc_04_420132660
+- msmarco_v2.1_doc_06_1440134319
+- msmarco_v2.1_doc_08_300872161
+- msmarco_v2.1_doc_15_116067546
+- msmarco_v2.1_doc_21_861891150
+- msmarco_v2.1_doc_22_1648697797
+- msmarco_v2.1_doc_25_481628070
+- msmarco_v2.1_doc_25_501708725
+- msmarco_v2.1_doc_25_502424913
+- msmarco_v2.1_doc_34_2529216
+- msmarco_v2.1_doc_34_7751734
+- msmarco_v2.1_doc_35_1300032609
+- msmarco_v2.1_doc_35_441326441
+- msmarco_v2.1_doc_38_227081897
+- msmarco_v2.1_doc_39_1014551192
+- msmarco_v2.1_doc_39_1165221603
+- msmarco_v2.1_doc_41_1960853470
+- msmarco_v2.1_doc_42_654618974
+- msmarco_v2.1_doc_47_1430382251
+- msmarco_v2.1_doc_48_1289995263
+- msmarco_v2.1_doc_48_273997000
+- msmarco_v2.1_doc_48_515083157
+- msmarco_v2.1_doc_48_515287844
+- msmarco_v2.1_doc_48_730773621
+- msmarco_v2.1_doc_52_1666095905
+- msmarco_v2.1_doc_54_1547893878
+- msmarco_v2.1_doc_54_304836636
+- msmarco_v2.1_doc_55_248024230
+- msmarco_v2.1_doc_57_933363597
+- msmarco_v2.1_doc_58_748655897

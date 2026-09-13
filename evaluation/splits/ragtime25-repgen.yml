@@ -1,0 +1,84 @@
+dataset: ragtime25-repgen
+role: frozen-cross-track-test
+seed: 20250912
+algorithm: random.Random(seed).shuffle(sorted(ids)) then slice
+run_holdout:
+  known:
+  - aloe
+  - anise
+  - beet
+  - berry
+  - boar
+  - camel
+  - carp
+  - chili
+  - colt
+  - crab
+  - deer
+  - dill
+  - dog
+  - elk
+  - emu
+  - ewe
+  - fig
+  - fly
+  - gull
+  - guppy
+  - hen
+  - loon
+  - mango
+  - maple
+  - melon
+  - mink
+  - mite
+  - mole
+  - moss
+  - oats
+  - okra
+  - olive
+  - onion
+  - perch
+  - plum
+  - rat
+  - rose
+  - skink
+  - squid
+  - swan
+  - tern
+  - tick
+  - toad
+  - trout
+  - ulva
+  - yam
+  - yew
+  held_out:
+  - ant
+  - cat
+  - cod
+  - eel
+  - frog
+  - gar
+  - moth
+  - nut
+  - poppy
+  - rye
+  - skunk
+  - yak
+  ratio: 80/20
+assessed_topics:
+- '1001'
+- '1003'
+- '1005'
+- '1007'
+- '1009'
+- '1011'
+- '1013'
+- '1017'
+- '1025'
+- '1027'
+- '1029'
+- '1033'
+- '1041'
+- '1053'
+- '1065'
+- '1069'

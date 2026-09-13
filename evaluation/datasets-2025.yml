@@ -1,0 +1,58 @@
+# 2025 pilot evaluation manifest -- RAGree local benchmark (docs/evaluation-2025-plan.md).
+#
+# responses/topics/prio1_runs/assessed_topics are NOT retyped here: `from_release` points at
+# the fetched tarball's own ./local-data/<track>/datasets.yml, resolved the same way
+# run_all_datasets.py's `_resolve_from_release` does (scripts/prepare_eval_2025.py reuses that
+# function directly). Only evaluation-specific metadata lives in this file.
+#
+# `truth` is the expected local destination for the official 2025 pilot human-assessment
+# bundle. As of 2026-09-12 none of the four `local-data/<track>/datasets.yml` releases carry a
+# `truth:` entry and no `eval/` directory was extracted from the fetched archives -- the bundle
+# has not been published/fetched yet. See evaluation/README.md "Truth data status" for the
+# concrete blocker. Until then `truth_available` is fixed at `false`; prepare_eval_2025.py
+# re-derives it from the filesystem and does not trust this field.
+
+datasets:
+  - name: rag25-generation
+    track: rag25
+    task: generation
+    from_release: {track: rag25, task: generation}
+    year: 2025
+    track_name: TREC 2025 RAG Track
+    truth: local-data/rag25/eval/rag.generation.official.eval.jsonl
+    truth_format: jsonl
+    truth_available: false
+    role: development
+
+  - name: rag25-auggen
+    track: rag25
+    task: auggen
+    from_release: {track: rag25, task: auggen}
+    year: 2025
+    track_name: TREC 2025 RAG Track
+    truth: local-data/rag25/eval/rag.auggen.official.eval.jsonl
+    truth_format: jsonl
+    truth_available: false
+    role: validation
+
+  - name: ragtime25-repgen
+    track: ragtime25
+    task: repgen
+    from_release: {track: ragtime25, task: repgen}
+    year: 2025
+    track_name: TREC 2025 RAGTIME Track
+    truth: local-data/ragtime25/eval/ragtime.repgen.official.eval.jsonl
+    truth_format: jsonl
+    truth_available: false
+    role: frozen-cross-track-test
+
+  - name: dragun25-repgen
+    track: dragun25
+    task: repgen
+    from_release: {track: dragun25, task: repgen}
+    year: 2025
+    track_name: TREC 2025 DRAGUN Track
+    truth: local-data/dragun25/eval/dragun.repgen.official.eval.jsonl
+    truth_format: jsonl
+    truth_available: false
+    role: frozen-cross-track-test

@@ -1,0 +1,220 @@
+{
+  "axes_per_topic_mean": 4.8,
+  "axis_by_domain": {
+    "AI & ML": {
+      "Communication Quality": 10,
+      "Explicit Criteria": 25,
+      "Implicit Criteria": 52,
+      "Instruction Following": 3,
+      "Miscellaneous": 1,
+      "References & Citation Quality": 6,
+      "Synthesis of Information": 14
+    },
+    "Business Planning & Research": {
+      "Communication Quality": 6,
+      "Explicit Criteria": 17,
+      "Implicit Criteria": 21,
+      "Instruction Following": 10,
+      "References & Citation Quality": 2,
+      "Synthesis of Information": 19
+    },
+    "Creative Writing": {
+      "Communication Quality": 2,
+      "Explicit Criteria": 12,
+      "Implicit Criteria": 17,
+      "Instruction Following": 7,
+      "References & Citation Quality": 2,
+      "Synthesis of Information": 6
+    },
+    "Current Events": {
+      "Communication Quality": 2,
+      "Explicit Criteria": 7,
+      "Implicit Criteria": 15,
+      "Synthesis of Information": 4
+    },
+    "General Consumer Research": {
+      "Communication Quality": 3,
+      "Explicit Criteria": 3,
+      "Implicit Criteria": 22,
+      "Instruction Following": 2,
+      "References & Citation Quality": 1
+    },
+    "Historical Analysis": {
+      "Communication Quality": 7,
+      "Explicit Criteria": 30,
+      "Implicit Criteria": 41,
+      "Instruction Following": 7,
+      "Synthesis of Information": 32
+    },
+    "Hypotheticals & Philosophy": {
+      "Communication Quality": 6,
+      "Explicit Criteria": 27,
+      "Implicit Criteria": 43,
+      "Instruction Following": 2,
+      "References & Citation Quality": 1,
+      "Synthesis of Information": 21
+    },
+    "Other": {
+      "Communication Quality": 5,
+      "Explicit Criteria": 19,
+      "Implicit Criteria": 27,
+      "Instruction Following": 2,
+      "References & Citation Quality": 1,
+      "Synthesis of Information": 1
+    },
+    "STEM": {
+      "Communication Quality": 8,
+      "Explicit Criteria": 13,
+      "Implicit Criteria": 19,
+      "Instruction Following": 5,
+      "References & Citation Quality": 5,
+      "Synthesis of Information": 10
+    },
+    "Technical Documentation": {
+      "Communication Quality": 10,
+      "Explicit Criteria": 58,
+      "Implicit Criteria": 58,
+      "Instruction Following": 5,
+      "Synthesis of Information": 1
+    }
+  },
+  "axis_counts": {
+    "Communication Quality": 59,
+    "Explicit Criteria": 211,
+    "Implicit Criteria": 315,
+    "Instruction Following": 43,
+    "Miscellaneous": 1,
+    "References & Citation Quality": 18,
+    "Synthesis of Information": 108
+  },
+  "axis_prior_deviation": {
+    "Communication Quality": 0.00014569536423840457,
+    "Explicit Criteria": 0.0024701986754966376,
+    "Implicit Criteria": 0.02321854304635762,
+    "Instruction Following": -0.0010463576158940419,
+    "References & Citation Quality": -0.011158940397350995,
+    "Synthesis of Information": -0.014953642384105958
+  },
+  "axis_proportions": {
+    "Communication Quality": 0.0781456953642384,
+    "Explicit Criteria": 0.27947019867549666,
+    "Implicit Criteria": 0.41721854304635764,
+    "Instruction Following": 0.05695364238410596,
+    "Miscellaneous": 0.0013245033112582781,
+    "References & Citation Quality": 0.02384105960264901,
+    "Synthesis of Information": 0.14304635761589404
+  },
+  "common_openings": {
+    "Describes the": 3,
+    "Each blog": 5,
+    "Explains how": 2,
+    "Includes Python": 2,
+    "Response highlights": 2,
+    "The analysis": 7,
+    "The report": 6,
+    "The response": 667,
+    "The response's": 14,
+    "The response\u2019s": 3
+  },
+  "complexity_counts": {
+    "conceptual_breadth": {
+      "High": 1,
+      "Moderate": 18,
+      "Simple": 11
+    },
+    "exploration": {
+      "High": 5,
+      "Low": 9,
+      "Medium": 16
+    },
+    "logical_nesting": {
+      "Deep": 11,
+      "Intermediate": 14,
+      "Shallow": 5
+    }
+  },
+  "criteria_per_topic": {
+    "max": 32.0,
+    "mean": 25.166666666666668,
+    "median": 25.0,
+    "min": 20.0
+  },
+  "criterion_length_chars": {
+    "max": 920.0,
+    "mean": 248.51258278145696,
+    "median": 213.0,
+    "min": 36.0
+  },
+  "domain_counts": {
+    "AI & ML": 5,
+    "Business Planning & Research": 3,
+    "Creative Writing": 2,
+    "Current Events": 1,
+    "General Consumer Research": 1,
+    "Historical Analysis": 4,
+    "Hypotheticals & Philosophy": 4,
+    "Other": 2,
+    "STEM": 3,
+    "Technical Documentation": 5
+  },
+  "exact_duplicate_criterion_rate": 0.0013245033112582781,
+  "example_use_rate": 0.47152317880794703,
+  "mandatory_optional_counts": {
+    "mandatory": 289,
+    "optional": 466
+  },
+  "mandatory_rate_by_axis": {
+    "Communication Quality": 0.15254237288135594,
+    "Explicit Criteria": 0.8009478672985783,
+    "Implicit Criteria": 0.20952380952380953,
+    "Instruction Following": 0.3953488372093023,
+    "Miscellaneous": 0.0,
+    "References & Citation Quality": 0.5,
+    "Synthesis of Information": 0.17592592592592593
+  },
+  "n_criteria_total": 755,
+  "n_topics": 30,
+  "negative_rate_by_complexity": {
+    "conceptual_breadth:High": 0.14285714285714285,
+    "conceptual_breadth:Moderate": 0.12035010940919037,
+    "conceptual_breadth:Simple": 0.1407942238267148,
+    "domain:AI & ML": 0.15315315315315314,
+    "domain:Business Planning & Research": 0.14666666666666667,
+    "domain:Creative Writing": 0.15217391304347827,
+    "domain:Current Events": 0.03571428571428571,
+    "domain:General Consumer Research": 0.0967741935483871,
+    "domain:Historical Analysis": 0.13675213675213677,
+    "domain:Hypotheticals & Philosophy": 0.14,
+    "domain:Other": 0.09090909090909091,
+    "domain:STEM": 0.16666666666666666,
+    "domain:Technical Documentation": 0.09848484848484848,
+    "exploration:High": 0.12121212121212122,
+    "exploration:Low": 0.12903225806451613,
+    "exploration:Medium": 0.13054187192118227,
+    "logical_nesting:Deep": 0.13011152416356878,
+    "logical_nesting:Intermediate": 0.11878453038674033,
+    "logical_nesting:Shallow": 0.1532258064516129
+  },
+  "non_canonical_axes": {
+    "Miscellaneous": 1
+  },
+  "positive_negative_counts": {
+    "negative": 97,
+    "neutral": 1,
+    "positive": 657
+  },
+  "weight_histogram": {
+    "-1.0": 3,
+    "-2.0": 16,
+    "-3.0": 34,
+    "-4.0": 19,
+    "-5.0": 25,
+    "0.0": 1,
+    "1.0": 45,
+    "2.0": 160,
+    "3.0": 207,
+    "4.0": 135,
+    "5.0": 110
+  },
+  "zero_weight_count": 1
+}
