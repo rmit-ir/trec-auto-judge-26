@@ -17,16 +17,29 @@ It does **not** replace their methodological/data-handling rules. Where they con
 Latest relevant commits:
 
 ```text
-15cbe1e Add RAG26ArenaJudge: arena-only pairwise preference judge (SPARROW-ranked)
+8cfee44 Rubric construction: Stage B/C -- ClimbMix retrieval + evidence condensation
+8001ece Rubric construction: typed models, response-independent cache, Bedrock/Luna adapters, Stage A planner
+356c5ac Rubric-construction preflight: stale README, Bedrock Flex pricing, targeted smoke tool
 1b5fb0a Add RAGDoll-compatible citation-support lane to RAG26ArenaJudge
-b27b3ac docs: add TIRA dry-run handoff for a machine with Docker/Podman
+15cbe1e Add RAG26ArenaJudge: arena-only pairwise preference judge (SPARROW-ranked)
 ```
 
 Current full test status:
 
 ```text
-178 passed, 2 xfailed
+236 passed, 2 xfailed
 ```
+
+Rubric-construction status:
+
+```text
+Stage A: topic characterization + research-intent planning       DONE / live-proven
+Stage B: dense+sparse ClimbMix retrieval + RRF                  DONE / live-proven
+Stage C: evidence condensation                                  DONE / live-proven
+Next:    axis-specific criterion generation                     IN PROGRESS
+```
+
+Current cumulative paid rubric-construction spend is approximately `$0.0024`, confirming that model quality and pipeline reliability matter much more than shaving tiny fractions of a cent from individual construction stages.
 
 Current RAG26 runtime judge already has:
 
@@ -121,26 +134,31 @@ Use Standard automatically only when Flex is unavailable/throttled beyond the bo
 
 The AWS model card currently marks the model Active and supports Bedrock Runtime / Converse and structured outputs. Re-check availability immediately before the production run.
 
-## 3.2 Cheap helper: Qwen3 32B on Bedrock Flex
+## 3.2 V1 simplification: keep Qwen3 235B for construction + internal critique
 
-Use only for lower-risk mechanical/model-assisted stages if useful:
+Do **not** introduce Qwen3 32B into the first production pipeline yet.
 
-```text
-model ID: qwen.qwen3-32b-v1:0
-region: ap-southeast-2
-service tier: flex
-input:  $0.0773 / 1M
-output: $0.3090 / 1M
-```
+The live Stage A/C probes show Qwen3 235B Flex is so inexpensive that the savings from switching mechanical stages to 32B are negligible relative to the engineering and behavioural complexity of adding another model deployment.
 
-Suitable tasks:
+For V1, use the same Qwen3 235B Flex model for:
 
-- atomicity classification;
-- near-duplicate adjudication after deterministic candidate narrowing;
+- topic characterization;
+- research-intent planning;
+- evidence condensation;
+- explicit/implicit/synthesis/negative generation;
+- atomicity/overlap critique;
 - ordinal importance classification;
-- formatting/schema repair.
+- bounded Qwen repair after the independent audit.
 
-Do not use 32B instead of 235B for the key implicit/synthesis generation stages merely to save fractions of a dollar.
+Benefits:
+
+- one Bedrock deployment/model contract to debug;
+- one response-independent cache namespace/model behaviour;
+- stronger reasoning on every semantic stage;
+- easier reproducibility;
+- essentially no meaningful budget penalty at current Flex pricing.
+
+After B0/B1/B2 development evaluation is complete, a **cost-ablation only** may test Qwen3 32B on atomicity/weighting. Adopt it only if semantic metrics and failure rates are statistically indistinguishable from 235B. Do not make that ablation part of the critical path.
 
 ## 3.3 Independent final reviewer: GPT-5.6 Luna
 
@@ -188,12 +206,10 @@ Use this conservative per-topic planning envelope:
 
 ```text
 Qwen3 235B Flex:
-  ~119k input tokens/topic
-  ~18.5k output tokens/topic
-
-Qwen3 32B Flex:
-  ~35k input tokens/topic
-  ~5k output tokens/topic
+  ~154k input tokens/topic
+  ~23.5k output tokens/topic
+  # includes generation plus atomicity/importance stages that were previously
+  # budgeted to a smaller helper model
 
 GPT-5.6 Luna:
   ~20k input tokens/topic
@@ -203,12 +219,13 @@ GPT-5.6 Luna:
 At current pricing, for 119 production topics this is approximately:
 
 ```text
-Qwen3 235B Flex: ~$2.60
-Qwen3 32B Flex:  ~$0.51
+Qwen3 235B Flex: ~$3.34
 Luna audit:      ~$0.90
 --------------------------------
-base estimate:   ~$4.01
+base estimate:   ~$4.24
 ```
+
+The observed live spend so far is even lower than this conservative envelope.
 
 Allow 50% overhead for retries/repair:
 
@@ -243,7 +260,7 @@ No large paid call sequence without `scripts/cost_guard.py` or equivalent explic
 Before building the generator:
 
 1. refresh the local Bedrock pricing snapshot;
-2. add Qwen3 235B A22B 2507 Flex and Qwen3 32B Flex to the machine-readable pricing table;
+2. add Qwen3 235B A22B 2507 Flex to the machine-readable pricing table; keep Qwen3 32B as an optional later ablation, not a V1 dependency;
 3. update `scripts/bedrock_cost.py` tests as needed;
 4. extend/create a targeted model smoke command that can test one selected model instead of spending on the entire historic model list;
 5. make one minimal Qwen3 235B Flex structured-output request;
@@ -658,7 +675,7 @@ Do not delete semantically similar candidates automatically beyond exact duplica
 
 # 14. Stage F — atomicity/deduplication critic
 
-Use Qwen3 32B Flex first; escalate ambiguous results to Qwen3 235B.
+Use Qwen3 235B Flex directly for V1. Do not add a smaller-model escalation ladder until the development benchmark proves it is safe and worthwhile.
 
 For each candidate classify:
 
@@ -705,7 +722,7 @@ A semantic-preservation check must reject an example insertion if it changes the
 
 Do not let the criterion-writing call choose its own final numeric weight.
 
-Use Qwen3 32B Flex to classify every surviving candidate into:
+Use Qwen3 235B Flex to classify every surviving candidate into:
 
 ```text
 CRITICAL_POSITIVE
@@ -992,7 +1009,6 @@ Before the 119-topic run record:
 ```text
 generator git SHA
 Qwen3 235B model ID + tier + region
-Qwen3 32B model ID + tier + region
 Luna deployment/model ID
 all prompt versions
 retrieval URLs/backend identities
@@ -1162,7 +1178,7 @@ Implement in this order:
 
 ```text
 1. update stale rag26_arena README/status
-2. refresh Bedrock pricing + add Qwen3 235B/32B Flex configs
+2. refresh Bedrock pricing + add Qwen3 235B Flex config; leave 32B as an optional later cost ablation
 3. targeted Qwen3 235B Flex smoke test
 4. typed generation/provenance models
 5. response-independent LLM cache + usage/cost accounting
@@ -1175,7 +1191,7 @@ Implement in this order:
 12. negative generator
 13. low-volume axes generator
 14. deterministic pre-normalization
-15. Qwen32 atomicity/dedupe critic
+15. Qwen235 atomicity/dedupe critic
 16. targeted examples
 17. independent importance/weight classifier
 18. deterministic final selection

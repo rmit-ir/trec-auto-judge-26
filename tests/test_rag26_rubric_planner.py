@@ -1,12 +1,14 @@
 """Offline tests for judges.rag26_arena.rubrics.planner (Stage A). No
-network: judges.rag26_arena.rubrics.planner.call_bedrock is monkeypatched."""
+network: judges.rag26_arena.rubrics.llm.call_bedrock is monkeypatched (the
+single choke point cached_bedrock_call routes every stage's live call
+through)."""
 
 import json
 from decimal import Decimal
 
 import pytest
 
-import judges.rag26_arena.rubrics.planner as planner_module
+import judges.rag26_arena.rubrics.llm as llm_module
 from judges.rag26_arena.rubrics.cache import RubricLlmCache
 from judges.rag26_arena.rubrics.llm import BedrockUnavailableError, CostTracker, LlmResult
 from judges.rag26_arena.rubrics.planner import CharacterizationError, characterize_topic, parse_characterization
@@ -95,7 +97,7 @@ def test_characterize_topic_calls_bedrock_on_cache_miss_and_caches_result(monkey
         return LlmResult(text=json.dumps(_VALID_PAYLOAD), input_tokens=500, output_tokens=200,
                          model_id=model_id, tier=tier, region=region)
 
-    monkeypatch.setattr(planner_module, "call_bedrock", fake_call_bedrock)
+    monkeypatch.setattr(llm_module, "call_bedrock", fake_call_bedrock)
     cache = RubricLlmCache(tmp_path / "cache.db")
     tracker = CostTracker(hard_cap_usd=Decimal("25"))
     topic = Topic(qid="leaf", narrative="Why do leaves change color in fall?")
@@ -131,7 +133,7 @@ def test_characterize_topic_retries_on_malformed_output_then_succeeds(monkeypatc
         LlmResult(text=json.dumps(_VALID_PAYLOAD), input_tokens=500, output_tokens=200,
                   model_id=model_id, tier="flex", region="ap-southeast-2"),
     ])
-    monkeypatch.setattr(planner_module, "call_bedrock", lambda *a, **k: next(responses))
+    monkeypatch.setattr(llm_module, "call_bedrock", lambda *a, **k: next(responses))
     cache = RubricLlmCache(tmp_path / "cache.db")
     tracker = CostTracker(hard_cap_usd=Decimal("25"))
     topic = Topic(qid="t1", narrative="A question.")
@@ -145,17 +147,21 @@ def test_characterize_topic_retries_on_malformed_output_then_succeeds(monkeypatc
 
 
 def test_characterize_topic_exhausted_retries_raises(monkeypatch, tmp_path):
-    monkeypatch.setattr(planner_module, "call_bedrock", lambda *a, **k: LlmResult(
-        text="not json", input_tokens=10, output_tokens=5, model_id="m", tier="flex", region="r",
+    model_id = "qwen.qwen3-235b-a22b-2507-v1:0"
+    monkeypatch.setattr(llm_module, "call_bedrock", lambda *a, **k: LlmResult(
+        text="not json", input_tokens=10, output_tokens=5, model_id=model_id, tier="flex", region="ap-southeast-2",
     ))
     cache = RubricLlmCache(tmp_path / "cache.db")
     tracker = CostTracker(hard_cap_usd=Decimal("25"))
     topic = Topic(qid="t1", narrative="A question.")
     with pytest.raises(CharacterizationError):
         characterize_topic(
-            topic, model_id="m", region="r", tier="flex", fallback_tier=None,
+            topic, model_id=model_id, region="ap-southeast-2", tier="flex", fallback_tier=None,
             cache=cache, cost_tracker=tracker, max_attempts=2,
         )
+    # Every rejected-but-real reply still cost real money and must be tracked.
+    assert tracker.total_usd() > Decimal("0")
+    assert len(tracker.records) == 2
     cache.close()
 
 
@@ -163,7 +169,7 @@ def test_characterize_topic_propagates_bedrock_unavailable_after_retries(monkeyp
     def always_unavailable(*a, **k):
         raise BedrockUnavailableError("down")
 
-    monkeypatch.setattr(planner_module, "call_bedrock", always_unavailable)
+    monkeypatch.setattr(llm_module, "call_bedrock", always_unavailable)
     cache = RubricLlmCache(tmp_path / "cache.db")
     tracker = CostTracker(hard_cap_usd=Decimal("25"))
     topic = Topic(qid="t1", narrative="A question.")

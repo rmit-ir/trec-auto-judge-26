@@ -70,9 +70,9 @@ class RubricCandidate:
     criterion: str
     axis: str
     polarity: Polarity
-    narrative_support: tuple[str, ...]
-    evidence_claim_ids: tuple[str, ...]
     rationale: str
+    narrative_spans: tuple[str, ...]
+    evidence_ids: tuple[str, ...]
     confidence: float
     generator_stage: str
     importance_class: Optional[ImportanceClass] = None

@@ -1,15 +1,14 @@
 """Offline tests for judges.rag26_arena.rubrics.evidence (Stages B+C). No
 network: search_index clients are DummySearchClient, and
-judges.rag26_arena.rubrics.planner.call_bedrock / evidence.call_bedrock are
-monkeypatched."""
+judges.rag26_arena.rubrics.llm.call_bedrock is monkeypatched (the single
+choke point cached_bedrock_call routes every stage's live call through)."""
 
 import json
 from decimal import Decimal
 
 import pytest
 
-import judges.rag26_arena.rubrics.evidence as evidence_module
-import judges.rag26_arena.rubrics.planner as planner_module
+import judges.rag26_arena.rubrics.llm as llm_module
 from judges.rag26_arena.hybrid_retrieval import HybridResearchRetriever, ResearchHit, BackendOccurrence
 from judges.rag26_arena.rubrics.cache import RubricLlmCache
 from judges.rag26_arena.rubrics.evidence import (
@@ -119,7 +118,7 @@ def test_condense_evidence_caches_and_replays(monkeypatch, tmp_path):
         return LlmResult(text=json.dumps(_valid_notes_payload()), input_tokens=1000, output_tokens=300,
                          model_id=model_id, tier=tier, region=region)
 
-    monkeypatch.setattr(evidence_module, "call_bedrock", fake_call_bedrock)
+    monkeypatch.setattr(llm_module, "call_bedrock", fake_call_bedrock)
     cache = RubricLlmCache(tmp_path / "cache.db")
     tracker = CostTracker(hard_cap_usd=Decimal("25"))
     topic = Topic(qid="t1", narrative="A question about X and Y.")
@@ -158,7 +157,7 @@ def test_condense_evidence_retries_on_hallucinated_docid(monkeypatch, tmp_path):
         LlmResult(text=json.dumps(_valid_notes_payload()), input_tokens=100, output_tokens=50,
                   model_id=_MODEL_ID, tier="flex", region="ap-southeast-2"),
     ])
-    monkeypatch.setattr(evidence_module, "call_bedrock", lambda *a, **k: next(responses))
+    monkeypatch.setattr(llm_module, "call_bedrock", lambda *a, **k: next(responses))
     cache = RubricLlmCache(tmp_path / "cache.db")
     tracker = CostTracker(hard_cap_usd=Decimal("25"))
     topic = Topic(qid="t1", narrative="A question.")
@@ -192,7 +191,7 @@ def test_plan_and_research_combines_stage_a_and_b(monkeypatch, tmp_path):
         return LlmResult(text=json.dumps(_CHARACTERIZATION_PAYLOAD), input_tokens=500, output_tokens=200,
                          model_id=model_id, tier=tier, region=region)
 
-    monkeypatch.setattr(planner_module, "call_bedrock", fake_call_bedrock)
+    monkeypatch.setattr(llm_module, "call_bedrock", fake_call_bedrock)
     dense = DummySearchClient(hits_by_query={
         "q1 term": [SearchHit(docid="dense-1", rank=1, score=0.9, text="dense passage")],
         "context term": [SearchHit(docid="dense-2", rank=1, score=0.8, text="context passage")],

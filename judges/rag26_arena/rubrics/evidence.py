@@ -18,7 +18,7 @@ from ..hybrid_retrieval import (
 )
 from .cache import RubricLlmCache, cache_key
 from .generation_models import EvidenceNote, TopicCharacterization
-from .llm import CostTracker, LlmResult, call_bedrock
+from .llm import CostTracker, cached_bedrock_call
 from .planner import characterize_topic
 from .topics import Topic
 
@@ -196,39 +196,9 @@ def condense_evidence(
         stage="evidence", prompt_version=EVIDENCE_PROMPT_VERSION,
         model_id=model_id, tier=tier, region=region, messages=messages,
     )
-    last_error: Optional[Exception] = None
-
-    for attempt in range(max_attempts):
-        cached = cache.get(key) if attempt == 0 else None
-        if cached is not None:
-            try:
-                notes = parse_evidence_notes(cached.text, valid_docids=valid_docids, min_notes=min_notes, max_notes=max_notes)
-            except EvidenceCondensationError as error:
-                last_error = error
-            else:
-                cost_tracker.record_bedrock(
-                    LlmResult(text=cached.text, input_tokens=cached.input_tokens,
-                              output_tokens=cached.output_tokens, model_id=model_id, tier=tier, region=region),
-                    stage="evidence", cache_hit=True, qid=topic.qid,
-                )
-                return notes
-
-        try:
-            call = call_bedrock(model_id, messages, region=region, tier=tier, fallback_tier=fallback_tier)
-        except Exception as error:
-            last_error = error
-            continue
-
-        try:
-            notes = parse_evidence_notes(call.text, valid_docids=valid_docids, min_notes=min_notes, max_notes=max_notes)
-        except EvidenceCondensationError as error:
-            last_error = error
-            continue
-
-        cache.put(key, text=call.text, input_tokens=call.input_tokens, output_tokens=call.output_tokens)
-        cost_tracker.record_bedrock(call, stage="evidence", cache_hit=False, qid=topic.qid)
-        return notes
-
-    raise EvidenceCondensationError(
-        f"condense_evidence failed after {max_attempts} attempt(s) for qid={topic.qid}: {last_error}"
+    return cached_bedrock_call(
+        key, messages, model_id=model_id, region=region, tier=tier, fallback_tier=fallback_tier,
+        cache=cache, cost_tracker=cost_tracker, stage="evidence", qid=topic.qid,
+        parse=lambda text: parse_evidence_notes(text, valid_docids=valid_docids, min_notes=min_notes, max_notes=max_notes),
+        error_type=EvidenceCondensationError, max_attempts=max_attempts,
     )

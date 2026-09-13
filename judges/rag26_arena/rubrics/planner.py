@@ -12,7 +12,7 @@ from typing import Optional
 from ..hybrid_retrieval import ResearchIntent
 from .cache import RubricLlmCache, cache_key
 from .generation_models import TopicCharacterization
-from .llm import CostTracker, LlmResult, call_bedrock
+from .llm import CostTracker, cached_bedrock_call
 from .prompts import CHARACTERIZE_PROMPT_VERSION, characterize_and_plan_messages
 from .topics import Topic
 
@@ -133,41 +133,9 @@ def characterize_topic(
         stage="characterize", prompt_version=CHARACTERIZE_PROMPT_VERSION,
         model_id=model_id, tier=tier, region=region, messages=messages,
     )
-    last_error: Optional[Exception] = None
-
-    for attempt in range(max_attempts):
-        cached = cache.get(key) if attempt == 0 else None
-        if cached is not None:
-            try:
-                result = parse_characterization(topic.qid, cached.text)
-            except CharacterizationError as error:
-                last_error = error  # stale/corrupt cache entry: fall through to a live call
-            else:
-                cost_tracker.record_bedrock(
-                    LlmResult(
-                        text=cached.text, input_tokens=cached.input_tokens,
-                        output_tokens=cached.output_tokens, model_id=model_id, tier=tier, region=region,
-                    ),
-                    stage="characterize", cache_hit=True, qid=topic.qid,
-                )
-                return result
-
-        try:
-            call = call_bedrock(model_id, messages, region=region, tier=tier, fallback_tier=fallback_tier)
-        except Exception as error:  # BedrockUnavailableError or an unexpected transport error
-            last_error = error
-            continue
-
-        try:
-            result = parse_characterization(topic.qid, call.text)
-        except CharacterizationError as error:
-            last_error = error
-            continue
-
-        cache.put(key, text=call.text, input_tokens=call.input_tokens, output_tokens=call.output_tokens)
-        cost_tracker.record_bedrock(call, stage="characterize", cache_hit=False, qid=topic.qid)
-        return result
-
-    raise CharacterizationError(
-        f"characterize_topic failed after {max_attempts} attempt(s) for qid={topic.qid}: {last_error}"
+    return cached_bedrock_call(
+        key, messages, model_id=model_id, region=region, tier=tier, fallback_tier=fallback_tier,
+        cache=cache, cost_tracker=cost_tracker, stage="characterize", qid=topic.qid,
+        parse=lambda text: parse_characterization(topic.qid, text),
+        error_type=CharacterizationError, max_attempts=max_attempts,
     )

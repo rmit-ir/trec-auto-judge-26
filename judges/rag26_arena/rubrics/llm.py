@@ -23,14 +23,17 @@ import time
 from dataclasses import dataclass, field
 from decimal import Decimal
 from pathlib import Path
-from typing import Any, Optional, Sequence
+from typing import Any, Callable, Optional, Sequence, TypeVar
 
 import boto3
 from botocore.exceptions import BotoCoreError, ClientError
 
 from minima_llm import MinimaLlmConfig, MinimaLlmRequest, MinimaLlmResponse, OpenAIMinimaLlm
 
+from .cache import RubricLlmCache
 from .generation_models import UsageRecord
+
+_T = TypeVar("_T")
 
 _SCRIPTS_DIR = Path(__file__).resolve().parents[3] / "scripts"
 if str(_SCRIPTS_DIR) not in sys.path:
@@ -142,6 +145,69 @@ def call_luna(messages: Sequence[dict[str, str]], *, request_id: str = "rubric-l
         output_tokens=result.output_tokens,
         model_id=config.model, tier="default", region="",
     )
+
+
+def cached_bedrock_call(
+    key: str,
+    messages: Sequence[dict[str, str]],
+    *,
+    model_id: str,
+    region: str,
+    tier: str,
+    fallback_tier: Optional[str],
+    cache: RubricLlmCache,
+    cost_tracker: CostTracker,
+    stage: str,
+    qid: Optional[str],
+    parse: Callable[[str], _T],
+    error_type: type[Exception] = RuntimeError,
+    max_attempts: int = 3,
+) -> _T:
+    """Shared cache-lookup / Bedrock-call / parse-with-retry loop used by every
+    generation stage (planner.py's characterize_topic, evidence.py's
+    condense_evidence, generate.py's axis generators). ``parse`` raises on any
+    structural problem with the reply text; that is treated exactly like a
+    call failure -- bounded retry, never a partial accept, and a stale/corrupt
+    cache entry (should not happen since only validated text is ever cached,
+    but costs nothing to handle) falls through to a live call rather than
+    raising immediately."""
+    last_error: Optional[BaseException] = None
+    for attempt in range(max_attempts):
+        cached = cache.get(key) if attempt == 0 else None
+        if cached is not None:
+            try:
+                result = parse(cached.text)
+            except Exception as error:
+                last_error = error
+            else:
+                cost_tracker.record_bedrock(
+                    LlmResult(text=cached.text, input_tokens=cached.input_tokens,
+                              output_tokens=cached.output_tokens, model_id=model_id, tier=tier, region=region),
+                    stage=stage, cache_hit=True, qid=qid,
+                )
+                return result
+
+        try:
+            call = call_bedrock(model_id, messages, region=region, tier=tier, fallback_tier=fallback_tier)
+        except Exception as error:
+            last_error = error
+            continue
+
+        # A real, billed call succeeded at the transport level -- record its cost
+        # now, before parsing. AWS billed for these tokens whether or not the
+        # reply passes our own structural validation next.
+        cost_tracker.record_bedrock(call, stage=stage, cache_hit=False, qid=qid)
+
+        try:
+            result = parse(call.text)
+        except Exception as error:
+            last_error = error
+            continue
+
+        cache.put(key, text=call.text, input_tokens=call.input_tokens, output_tokens=call.output_tokens)
+        return result
+
+    raise error_type(f"{stage} failed after {max_attempts} attempt(s) for qid={qid}: {last_error}")
 
 
 class BudgetExceededError(RuntimeError):
