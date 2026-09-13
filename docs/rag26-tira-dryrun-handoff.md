@@ -149,3 +149,22 @@ When you're done (pass or fail), report:
 Then stop. Do not proceed to Phase 3 hardening extras, Phase 4 (intent
 planner), or any other later-phase work from `docs/rag26-tira-submission-plan.md`
 -- that continues on the original machine/session.
+
+## Result (2026-09-13, SHA `b27b3ac`)
+
+- Docker Desktop 4.88.1, engine 29.7.2 (darwin/arm64).
+- `arena-only` dry run: PASS. `arena-support` dry run: PASS. Both hit all six
+  `tira-cli` checks -- dataset local, git clean, image built, `$CACHE_DIR`
+  used, valid kiddie output, and cache-only re-execution reproduced with
+  `OPENAI_BASE_URL=EMPTY`/`OPENAI_API_KEY=EMPTY` (no network).
+- No code change needed in `judges/rag26_arena/`.
+- Nothing committed by this task besides this doc update; tree stayed clean
+  at `b27b3ac` throughout.
+- Unrelated snag: `tira-cli verify-installation --task trec-auto-judge --team
+  <TEAM>` 500-errored server-side for every team-name spelling tried
+  (`RMIT-ADMS`, `rmit-adms`, `tira_vm_rmit-adms`) -- login and Docker checks
+  passed fine standalone. Did not block the dry run (which needs no team
+  scoping) but flag it to TIRA support before the real submission.
+
+Phase 2 exit gate is green. Continue on the original machine/session for
+Phase 3+.

@@ -381,6 +381,17 @@ container build green
 TIRA dry-run green
 ```
 
+**Status: PASSED (2026-09-13, SHA `b27b3ac`, Docker Desktop 4.88.1/engine 29.7.2).**
+Both `arena-only` and `arena-support` dry runs built the image, produced valid kiddie
+output, and reproduced byte-identical results from `$CACHE_DIR` with the endpoint
+disabled — no code changes required. See
+`docs/rag26-tira-dryrun-handoff.md` for the full transcript notes. One unrelated
+blocker: `tira-cli verify-installation --task trec-auto-judge --team <TEAM>` 500s
+server-side regardless of team-name spelling tried; login and Docker checks pass
+standalone. Not a gate blocker (the dry-run itself needs no team scoping) but
+worth raising with TIRA support before the real (non-dry-run) submission, since
+that path likely does need it.
+
 Do not make rubric generation the critical path before this gate is passed.
 
 ---
