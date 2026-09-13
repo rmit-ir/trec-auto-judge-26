@@ -41,7 +41,7 @@ def test_model(price: ModelPrice) -> bool:
     usage = response.get("usage", {})
     input_tokens = usage.get("inputTokens", 0)
     output_tokens = usage.get("outputTokens", 0)
-    cost = estimate_cost(price.model_id, input_tokens, output_tokens)
+    cost = estimate_cost(price.model_id, input_tokens, output_tokens, tier=price.tier)
     served_tier = response.get("serviceTier", {}).get("type", price.tier)
     print(
         f"PASS {price.name} ({price.region}, {served_tier}): "

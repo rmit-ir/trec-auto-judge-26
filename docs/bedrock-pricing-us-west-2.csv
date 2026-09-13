@@ -6,3 +6,6 @@ Qwen,Qwen3 Coder 480B A35B,qwen.qwen3-coder-480b-a35b-v1:0,0.22,1.80,default,us-
 NVIDIA,Nemotron 3 Super 120B A12B,nvidia.nemotron-super-3-120b,0.15,0.65,default,us-west-2,2026-08-29,https://aws.amazon.com/bedrock/pricing/
 Moonshot AI,Kimi K2.5,moonshotai.kimi-k2.5,0.60,3.00,default,us-west-2,2026-08-29,https://aws.amazon.com/bedrock/pricing/
 Mistral AI,Mistral Large 3,mistral.mistral-large-3-675b-instruct,0.50,1.50,default,us-west-2,2026-08-29,https://aws.amazon.com/bedrock/pricing/
+Qwen,Qwen3 235B A22B 2507,qwen.qwen3-235b-a22b-2507-v1:0,0.1133,0.4532,flex,ap-southeast-2,2026-09-13,https://aws.amazon.com/bedrock/pricing/
+Qwen,Qwen3 235B A22B 2507,qwen.qwen3-235b-a22b-2507-v1:0,0.2266,0.9064,default,ap-southeast-2,2026-09-13,https://aws.amazon.com/bedrock/pricing/
+Qwen,Qwen3 32B,qwen.qwen3-32b-v1:0,0.0773,0.3090,flex,ap-southeast-2,2026-09-13,https://aws.amazon.com/bedrock/pricing/

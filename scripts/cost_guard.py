@@ -28,8 +28,11 @@ import azure_cost  # noqa: E402
 import bedrock_cost  # noqa: E402
 
 PROVIDERS = {
-    "azure": (azure_cost.load_model_prices, azure_cost.estimate_cost),
-    "bedrock": (bedrock_cost.load_model_prices, bedrock_cost.estimate_cost),
+    # (load_prices, estimate, supports_tier) -- Bedrock models can be invoked at
+    # more than one service tier (Flex vs Standard) at different prices for the
+    # same model ID; Azure deployments have no such distinction.
+    "azure": (azure_cost.load_model_prices, azure_cost.estimate_cost, False),
+    "bedrock": (bedrock_cost.load_model_prices, bedrock_cost.estimate_cost, True),
 }
 
 
@@ -124,16 +127,22 @@ def main() -> int:
     parser.add_argument("--cache-dir", required=True, type=Path)
     parser.add_argument("--model", required=True)
     parser.add_argument("--provider", choices=PROVIDERS, default="azure")
+    parser.add_argument("--tier", default="default", help="Bedrock service tier (ignored for --provider azure)")
     parser.add_argument("--pid", required=True, type=int, help="Process group to kill if budget is exceeded")
     parser.add_argument("--budget-usd", required=True, type=Decimal)
     parser.add_argument("--poll-seconds", type=float, default=30.0)
     parser.add_argument("--log", type=Path, default=None, help="Status log path (default: stdout)")
     args = parser.parse_args()
 
-    load_prices, estimate = PROVIDERS[args.provider]
-    if args.model not in load_prices():
-        print(f"error: unknown model {args.model!r} for provider {args.provider!r}", file=sys.stderr)
+    load_prices, estimate_raw, supports_tier = PROVIDERS[args.provider]
+    price_key = bedrock_cost._price_key(args.model, args.tier) if supports_tier else args.model
+    if price_key not in load_prices():
+        print(f"error: unknown model {args.model!r} (tier {args.tier!r}) for provider {args.provider!r}", file=sys.stderr)
         return 2
+    estimate = (
+        (lambda model, i, o: estimate_raw(model, i, o, tier=args.tier))
+        if supports_tier else estimate_raw
+    )
     db_path = args.cache_dir / "minima_llm.db"
     log = args.log.open("a") if args.log else sys.stdout
 
