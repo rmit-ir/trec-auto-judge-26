@@ -46,10 +46,15 @@ def parent_docid(chunk_id: str) -> str:
 @dataclass(frozen=True)
 class ResearchIntent:
     """One planned search intent for a topic (Section 'Per-topic retrieval pipeline' steps 1-3).
-    `kind` decides routing: semantic -> dense only, lexical -> sparse only, hybrid -> both."""
+    `kind` decides routing: semantic -> dense only, lexical -> sparse only, hybrid -> both.
+
+    `purpose` (optional, defaults to "" for existing callers) is the rubric-construction
+    planner's one-line reason this intent exists (execution-plan Section 7's `ResearchIntent.
+    purpose`) -- never used for routing, purely provenance."""
 
     text: str
     kind: IntentKind = "hybrid"
+    purpose: str = ""
 
 
 class IntentPlanner(Protocol):
