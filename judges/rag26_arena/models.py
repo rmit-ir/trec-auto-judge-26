@@ -13,6 +13,9 @@ from __future__ import annotations
 
 RAW_VOTES = frozenset({"A", "B", "TIE", "BOTH_BAD", "ABSTAIN"})
 
+# Citation-support verdicts (plan Section 9.2); see support.py for the metrics.
+SUPPORT_LEVELS = frozenset({"FULL", "PARTIAL", "NONE"})
+
 BALLOT_VOTE: dict[str, str] = {
     "A": "A",
     "B": "B",

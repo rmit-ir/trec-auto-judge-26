@@ -20,11 +20,21 @@ judge_settings:
   judge_weight: 1.0
   llm_max_attempts: 3
   llm_retry_backoff_seconds: 0.25
+  citation_support_enabled: false
+  support_batch_size: 10
+  support_max_doc_chars: 1500
 
 variants:
   # Baseline: identical to the default settings above, named for
   # docs/rag26-tira-submission-plan.md's `--variant arena-only` commands.
   arena-only: {}
+  # Arena ranking plus the independent citation-support lane (plan Phase 3).
+  # A stepping stone toward the `rubric-support-arena` variant named in
+  # docs/trec-rag-2026-judge-implementation-plan.md Section 14.3, which
+  # additionally needs the not-yet-built rubric lane.
+  arena-support:
+    judge_settings:
+      citation_support_enabled: true
   exhaustive-small:
     judge_settings:
       full_round_robin_max_candidates: 999

@@ -9,6 +9,11 @@ pointwise evidence gate here by design (plan Section 8.3 / Section 27): the
 public 2026 evaluator keeps preference, rubric, and citation-support signals
 separate, so this judge produces only the preference signal.
 
+Citation support (``citation_support_enabled``, plan Phase 3 / Section 9) is
+a second, independent lane: it scores each response's cited evidence via
+``support.py`` and never feeds into Arena ballots or the ranking fit. It is
+off by default (``arena-only``); the ``arena-support`` variant turns it on.
+
 Reuses ``judges.ragree_choice.sparrow`` unchanged for the seed graph, adaptive
 acquisition, Davidson-Bradley-Terry fit, and Condorcet/Kemeny/cycle audits,
 and a few small private helpers from ``judges.ragree_choice.ragree_choice_judge``
@@ -21,6 +26,7 @@ not refactor into judges/common/ immediately").
 from __future__ import annotations
 
 import asyncio
+import json
 import math
 import time
 from pathlib import Path
@@ -51,8 +57,25 @@ from judges.ragree_choice.sparrow import (
     sparse_seed_graph,
 )
 
-from .models import BALLOT_VOTE, RAW_VOTES
-from .prompts import arena_messages
+from . import support
+from .models import BALLOT_VOTE, RAW_VOTES, SUPPORT_LEVELS
+from .prompts import arena_messages, support_messages
+
+
+def _json_array(text: str) -> Optional[list]:
+    """Same brace-scanning strategy as judges.ragree_choice_judge._json_object,
+    but for a top-level JSON array (the citation-support batch reply shape)."""
+    decoder = json.JSONDecoder()
+    index = text.find("[")
+    while index >= 0:
+        try:
+            value, _end = decoder.raw_decode(text, index)
+            if isinstance(value, list):
+                return value
+        except json.JSONDecodeError:
+            pass
+        index = text.find("[", index + 1)
+    return None
 
 RAG26_ARENA_SPEC = LeaderboardSpec(measures=(
     MeasureSpec(
@@ -134,6 +157,66 @@ RAG26_ARENA_SPEC = LeaderboardSpec(measures=(
             "signal. 0.0 when no vote was cast."
         ),
     ),
+    MeasureSpec(
+        "RAG26_CIT_PREC_FIRST",
+        description=(
+            "Weighted precision (FULL=1.0, PARTIAL=0.5, NONE=0.0) of this "
+            "response's first/strongest cited document per sentence, averaged "
+            "over sentences whose first citation was successfully judged. "
+            "Only computed when citation_support_enabled is true; otherwise "
+            "0.0 -- always check RAG26_SUPPORT_EVALUATED before interpreting."
+        ),
+    ),
+    MeasureSpec(
+        "RAG26_CIT_REC_FIRST",
+        description=(
+            "Same weighted first-citation support as RAG26_CIT_PREC_FIRST, "
+            "but averaged over ALL sentences in the response, so an uncited "
+            "sentence (or one whose citation could not be judged) contributes "
+            "0.0. 0.0 for an empty response or when citation support is off."
+        ),
+    ),
+    MeasureSpec(
+        "RAG26_CIT_PREC_ALL",
+        description=(
+            "Like RAG26_CIT_PREC_FIRST but averaging the weighted support "
+            "across every judged citation on a sentence (not just the "
+            "first/strongest) before averaging over sentences."
+        ),
+    ),
+    MeasureSpec(
+        "RAG26_CIT_REC_ALL",
+        description=(
+            "Like RAG26_CIT_REC_FIRST but using each sentence's all-citation "
+            "mean support instead of only its first citation."
+        ),
+    ),
+    MeasureSpec(
+        "RAG26_CIT_HARD_PREC",
+        description=(
+            "Like RAG26_CIT_PREC_FIRST with hard support (FULL=1.0, "
+            "PARTIAL=0.0, NONE=0.0) instead of weighted support."
+        ),
+    ),
+    MeasureSpec(
+        "RAG26_CIT_HARD_REC",
+        description=(
+            "Like RAG26_CIT_REC_FIRST with hard support (FULL=1.0, "
+            "PARTIAL=0.0, NONE=0.0) instead of weighted support."
+        ),
+    ),
+    MeasureSpec(
+        "RAG26_SUPPORT_EVALUATED",
+        description=(
+            "Fraction of this response's (sentence, citation) pairs that "
+            "received a successful support judgment, out of every citation "
+            "slot found (regardless of whether the cited document's text "
+            "could be resolved). 1.0 for a response with no citations at all "
+            "(nothing needed evaluating). When citation_support_enabled is "
+            "false this is unconditionally 0.0, so the other RAG26_CIT_* "
+            "placeholders are never mistaken for real scores."
+        ),
+    ),
 ))
 
 
@@ -158,6 +241,9 @@ class RAG26ArenaJudge:
         llm_max_attempts: int = 3,
         llm_retry_backoff_seconds: float = 0.25,
         position_reversal_budget: int = 2,
+        citation_support_enabled: bool = False,
+        support_batch_size: int = 10,
+        support_max_doc_chars: int = 1500,
         filebase: str = "default",
         outdir: Path = Path("."),
         **kwargs: Any,
@@ -173,6 +259,8 @@ class RAG26ArenaJudge:
             llm_max_attempts=llm_max_attempts,
             llm_retry_backoff_seconds=llm_retry_backoff_seconds,
             position_reversal_budget=position_reversal_budget,
+            support_batch_size=support_batch_size,
+            support_max_doc_chars=support_max_doc_chars,
         )
         topics = {topic.request_id: topic for topic in rag_topics}
         expected_topic_ids = list(topics)
@@ -182,6 +270,14 @@ class RAG26ArenaJudge:
             reports_by_topic.setdefault(report.metadata.topic_id, []).append(report)
         for topic_reports in reports_by_topic.values():
             topic_reports.sort(key=lambda report: report.metadata.run_id)
+
+        support_metrics: Dict[tuple[str, str], support.SupportMetrics] = {}
+        if citation_support_enabled:
+            support_metrics = self._score_citation_support(
+                reports, llm_config, support_batch_size=support_batch_size,
+                support_max_doc_chars=support_max_doc_chars,
+                llm_max_attempts=llm_max_attempts, llm_retry_backoff_seconds=llm_retry_backoff_seconds,
+            )
 
         topic_ballots: Dict[str, list[Ballot]] = {topic_id: [] for topic_id in reports_by_topic}
         both_bad_count: Dict[str, int] = {}
@@ -287,6 +383,14 @@ class RAG26ArenaJudge:
                 values["POSITION_REVERSAL_CHECKED"] = float(checked)
                 values["POSITION_REVERSAL_DISAGREEMENT_RATE"] = reversal_rate
                 values["BOTH_BAD_RATE"] = both_bad_rate
+                metrics = support_metrics.get(self._key(report), support.UNEVALUATED_SUPPORT_METRICS)
+                values["RAG26_CIT_PREC_FIRST"] = metrics.prec_first
+                values["RAG26_CIT_REC_FIRST"] = metrics.rec_first
+                values["RAG26_CIT_PREC_ALL"] = metrics.prec_all
+                values["RAG26_CIT_REC_ALL"] = metrics.rec_all
+                values["RAG26_CIT_HARD_PREC"] = metrics.hard_prec
+                values["RAG26_CIT_HARD_REC"] = metrics.hard_rec
+                values["RAG26_SUPPORT_EVALUATED"] = metrics.evaluated
                 builder.add(run_id=report.metadata.run_id, topic_id=topic_id, values=values)
 
         leaderboard = builder.build(expected_topic_ids=expected_topic_ids, on_missing="fix_aggregate")
@@ -303,6 +407,7 @@ class RAG26ArenaJudge:
         positive_integers = (
             "full_round_robin_max_candidates", "top_k", "arena_max_answer_chars",
             "exact_kemeny_limit", "llm_max_attempts",
+            "support_batch_size", "support_max_doc_chars",
         )
         for name in positive_integers:
             value = settings[name]
@@ -410,6 +515,77 @@ class RAG26ArenaJudge:
             for (topic_id, original_ballot), raw_vote in zip(metadata, raw_votes)
             if raw_vote is not None
         ]
+
+    def _score_citation_support(
+        self,
+        reports: Sequence[Report],
+        llm_config: LlmConfigProtocol,
+        *,
+        support_batch_size: int,
+        support_max_doc_chars: int,
+        llm_max_attempts: int,
+        llm_retry_backoff_seconds: float,
+    ) -> Dict[tuple[str, str], "support.SupportMetrics"]:
+        """Independent citation-support lane (plan Section 9): scored per
+        response, never feeds into Arena ballots or the ranking fit."""
+        extracted = {self._key(report): support.extract_citation_pairs(report) for report in reports}
+
+        requests: list[MinimaLlmRequest] = []
+        chunk_meta: list[tuple[tuple[str, str], list[support.CitationPair]]] = []
+        for key, extracted_report in extracted.items():
+            for chunk in support.chunk_pairs(extracted_report.pairs, support_batch_size):
+                pair_texts = [
+                    (extracted_report.sentence_texts[pair.sentence_index], pair.doc_text)
+                    for pair in chunk
+                ]
+                requests.append(MinimaLlmRequest(
+                    request_id=f"support-{len(chunk_meta)}",
+                    messages=support_messages(pair_texts, max_doc_chars=support_max_doc_chars),
+                ))
+                chunk_meta.append((key, chunk))
+
+        verdicts_by_key: Dict[tuple[str, str], Dict[tuple[int, int], str]] = {key: {} for key in extracted}
+        if requests:
+            chunk_results = self._run_parsed_with_retries(
+                llm_config, requests, self._parse_support_chunk,
+                max_attempts=llm_max_attempts, retry_backoff_seconds=llm_retry_backoff_seconds,
+                operation="citation support",
+            )
+            for (key, chunk), chunk_verdicts in zip(chunk_meta, chunk_results):
+                if not chunk_verdicts:
+                    continue
+                for local_index, pair in enumerate(chunk):
+                    verdict = chunk_verdicts.get(local_index)
+                    if verdict is not None:
+                        verdicts_by_key[key][(pair.sentence_index, pair.citation_rank)] = verdict
+
+        return {
+            key: support.compute_support_metrics(extracted_report, verdicts_by_key[key])
+            for key, extracted_report in extracted.items()
+        }
+
+    @staticmethod
+    def _parse_support_chunk(result: Any) -> Optional[Dict[int, str]]:
+        """Accepts whatever valid (index, support) entries are present rather
+        than requiring every index in the chunk to parse: a partially-good
+        response still yields real judgments for some pairs, and the missing
+        ones are simply unjudged (see support.py's unavailable-vs-NONE
+        distinction) rather than discarding the whole chunk. Returns None
+        (triggering a retry) only when nothing usable was found at all."""
+        if not isinstance(result, MinimaLlmResponse):
+            return None
+        parsed = _json_array(result.text)
+        if parsed is None:
+            return None
+        verdicts: Dict[int, str] = {}
+        for item in parsed:
+            if not isinstance(item, dict):
+                continue
+            index = item.get("index")
+            support_level = str(item.get("support", "")).strip().upper()
+            if isinstance(index, int) and not isinstance(index, bool) and support_level in SUPPORT_LEVELS:
+                verdicts[index] = support_level
+        return verdicts or None
 
     @staticmethod
     def _parse_vote(result: Any) -> Optional[str]:

@@ -10,6 +10,8 @@ only the request text and the two answers are shown.
 
 from __future__ import annotations
 
+from typing import Sequence
+
 from autojudge_base import Request
 
 _SYSTEM = "You are a careful RAG-answer preference judge. Return only the requested JSON."
@@ -39,5 +41,32 @@ def arena_messages(topic: Request, answer_a: str, answer_b: str, *, max_answer_c
     )
     return [
         {"role": "system", "content": _SYSTEM},
+        {"role": "user", "content": prompt},
+    ]
+
+
+_SUPPORT_SYSTEM = "You are a careful citation-support judge. Return only the requested JSON."
+
+
+def support_messages(pairs: Sequence[tuple[str, str]], *, max_doc_chars: int) -> list[dict[str, str]]:
+    """``pairs``: ordered (sentence_text, doc_text) tuples, one per numbered
+    item, batched into a single call (plan Section 9: "avoid one LLM call per
+    citation"). Each pair is judged independently -- whether the cited
+    document supports that specific sentence, not whether it is topically
+    relevant (Section 9.2)."""
+    items = "\n\n".join(
+        f"[{index}]\nSentence: {sentence}\nCited document: {doc_text[:max_doc_chars]}"
+        for index, (sentence, doc_text) in enumerate(pairs)
+    )
+    prompt = (
+        "For each numbered item below, judge whether the cited document "
+        "supports the specific sentence -- not merely whether it is "
+        "topically relevant. Reply with ONLY a JSON array, exactly one "
+        'object per item in index order: [{"index": 0, "support": '
+        '"FULL|PARTIAL|NONE"}, ...].\n\n'
+        f"{items}"
+    )
+    return [
+        {"role": "system", "content": _SUPPORT_SYSTEM},
         {"role": "user", "content": prompt},
     ]

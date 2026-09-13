@@ -79,6 +79,7 @@ def test_config_validation_rejects_unsafe_values():
         adaptive_comparisons_per_topic=4, top_k=1, arena_max_answer_chars=2000,
         judge_weight=1.0, exact_kemeny_limit=8, llm_max_attempts=3,
         llm_retry_backoff_seconds=0.25, position_reversal_budget=2,
+        support_batch_size=10, support_max_doc_chars=1500,
     )
     judge._validate_config(**good)  # sanity: the defaults themselves are valid
 
@@ -90,6 +91,8 @@ def test_config_validation_rejects_unsafe_values():
         ("position_reversal_budget", -1),
         ("judge_weight", 0.0),
         ("llm_retry_backoff_seconds", -0.1),
+        ("support_batch_size", 0),
+        ("support_max_doc_chars", -1),
     ):
         settings = {**good, bad_field: bad_value}
         try:
