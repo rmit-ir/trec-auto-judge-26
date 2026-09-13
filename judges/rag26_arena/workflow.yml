@@ -1,0 +1,34 @@
+# RAG26 Arena: RAGDoll/TREC RAG 2026-style pairwise preference judge (SPARROW-ranked).
+judge_class: "judges.rag26_arena.judge:RAG26ArenaJudge"
+
+create_nuggets: false
+create_qrels: false
+judge: true
+uses_llm: true
+
+settings:
+  filebase: "rag26-arena"
+
+judge_settings:
+  full_round_robin_max_candidates: 5
+  initial_graph_degree: 4
+  adaptive_comparisons_per_topic: 4
+  top_k: 1
+  position_reversal_budget: 2
+  exact_kemeny_limit: 8
+  arena_max_answer_chars: 2000
+  judge_weight: 1.0
+  llm_max_attempts: 3
+  llm_retry_backoff_seconds: 0.25
+
+variants:
+  # Baseline: identical to the default settings above, named for
+  # docs/rag26-tira-submission-plan.md's `--variant arena-only` commands.
+  arena-only: {}
+  exhaustive-small:
+    judge_settings:
+      full_round_robin_max_candidates: 999
+      adaptive_comparisons_per_topic: 0
+  no-reversal:
+    judge_settings:
+      position_reversal_budget: 0
