@@ -63,11 +63,12 @@ floor alone is **~$10.65** input-only — the real per-call cost (multiple
 calls per sentence/topic, output tokens, prompt scaffolding) will be several
 times this; see the multiplier below once a full run has completed.
 
-*rag26-generation is ~3GB; running the tokenizer pass concurrently with a
-live paid judge run on a memory-constrained machine risked another OOM kill,
-so it's deferred until either finishes.*
+*rag26-generation is ~3GB; this machine's free memory has stayed low (down to
+~80MB free at one point) independent of any judge run of ours, so the
+tokenizer pass is still deferred — run it on sunfyre (much more headroom)
+next time instead of retrying here.*
 
-### Judge multiplier (fill in once a run completes)
+### Judge multiplier
 
 If `CACHE_DIR` is dedicated to one run, that run's totals are the whole
 cache: `scripts.cost_guard.read_usage_totals(Path("<cache_dir>/minima_llm.db"))`.
@@ -89,7 +90,13 @@ avg_output_per_call = billed_out / calls
 
 | Dataset | Judge | Variant | Calls | Billed in | Billed out | input_multiplier | avg_output_per_call | Date |
 |---|---|---|---|---|---|---|---|---|
-| rag26-generation | ragree | default | (in progress) | (in progress) | (in progress) | — | — | 2026-09-12 |
+| rag26-generation | ragree | default | 209,646 | 128,904,481 | 23,772,804 | *pending — needs the corpus floor above* | 113 | 2026-09-12/13 |
+
+Total cost for that run: **$54.31** (`azure_cost.py gpt-5.6-luna 128904481 23772804`),
+across two phases/machines — $18.95 before a mid-run crash (network drop,
+mac), $35.36 resuming from the shared cache on sunfyre to completion. Neither
+guard double-counted the other's spend (each tracks only rows since its own
+`baseline_rowid`); see "Resuming after a failure" below.
 
 Re-estimating a workflow change: recompute expected call count for the new
 config, multiply the new corpus-floor input by `input_multiplier`, multiply
@@ -119,3 +126,21 @@ does still have to re-walk the whole judge loop from the top to reconstruct
 results and reach the final write. Cheap and fast in $, not necessarily fast
 in wall-clock if the loop itself (not just the LLM calls) does non-trivial
 work per topic.
+
+## TREC 2026 AutoJudge test submission status
+
+Deadline: 2026-09-30. Two datasets (`rag26-generation`, `ragtime26-repgen`) ×
+two judges (`ragree`, `ragree_choice`) need a data submission each, covering
+every run in the dataset (no partial submissions); code submission is a
+separate, one-time-per-judge deliverable.
+
+| Dataset | Judge | Data submission | Code submission |
+|---|---|---|---|
+| rag26-generation | ragree | ✅ uploaded as `ragree-default`, 2026-09-13 | not yet |
+| ragtime26-repgen | ragree | not yet run | not yet |
+| rag26-generation | ragree_choice | not yet run | not yet |
+| ragtime26-repgen | ragree_choice | not yet run | not yet |
+
+Code submission needs local verification against *both* datasets first (the
+`/autojudge-submit` skill covers the full checklist) — not done yet for
+`ragree`, so it isn't shipped even though one dataset's data submission is.
