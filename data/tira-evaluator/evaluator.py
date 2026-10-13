@@ -36,13 +36,19 @@ def extract_llm(input_dir):
 @click.command()
 @click.option("--truth-format", type=str, default="ir_measures")
 @click.option("--eval-format", type=str, default="ir_measures")
+@click.option("--allow-list", "allow_list", multiple=True, help="Keep only entries whose TruthMeasure is one of these values (repeatable). Records the max kendall/tauap_b per value.")
 @click.argument("truth_leaderboard", required=True)
 @click.argument("input_directory", required=True)
 @click.argument("output_directory", required=True)
-def main(truth_format, eval_format, truth_leaderboard, input_directory, output_directory):    
+def main(truth_format, eval_format, allow_list, truth_leaderboard, input_directory, output_directory):    
     leaderboard_to_eval = find_leaderboard(input_directory)
     if leaderboard_to_eval is None:
         print(f"No leaderboard found in {input_directory}")
+
+        if extract_llm(input_directory):
+            with open(f"{output_directory}/evaluation.prototext", "w") as f:
+                f.write(to_prototext([{"Model": extract_llm(input_directory)}]))
+
         return
 
     cmd = f"auto-judge-evaluate meta-evaluate --truth-leaderboard {truth_leaderboard} --truth-format {truth_format} --eval-format {eval_format} -i {leaderboard_to_eval} --on-missing warn --output {output_directory}/correlations.jsonl"
@@ -52,11 +58,17 @@ def main(truth_format, eval_format, truth_leaderboard, input_directory, output_d
     
     scores = {"kendall": [], "tauap_b": []}
     measures = set()
+    per_truth = {t: {"kendall": [], "tauap_b": []} for t in allow_list}
 
     with open(f"{output_directory}/correlations.jsonl", "r") as f:
         for l in f:
             l = json.loads(l)
             print(l)
+            if allow_list:
+                if l.get("TruthMeasure") not in per_truth:
+                    continue
+                for s in per_truth[l["TruthMeasure"]]:
+                    per_truth[l["TruthMeasure"]][s].append(l[s] if l[s] is not None else 0)
             measures.add(l["EvalMeasure"])
             for s in scores:
                 scores[s].append(l[s] if l[s] is not None else 0)
@@ -66,9 +78,15 @@ def main(truth_format, eval_format, truth_leaderboard, input_directory, output_d
     if extract_llm(input_directory):
         ret["Model"] = extract_llm(input_directory)
 
-    for s in sorted(scores.keys()):
-        ret[f"Max ({s})"] = max(scores[s])
-        ret[f"Min ({s})"] = min(scores[s])
+    if allow_list:
+        for t in allow_list:
+            for s in sorted(per_truth[t].keys()):
+                if per_truth[t][s]:
+                    ret[f"Max ({s}) {t}"] = max(per_truth[t][s])
+    else:
+        for s in sorted(scores.keys()):
+            ret[f"Max ({s})"] = max(scores[s])
+            ret[f"Min ({s})"] = min(scores[s])
 
     print(ret)
 
