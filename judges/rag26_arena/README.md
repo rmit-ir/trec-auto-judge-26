@@ -160,5 +160,10 @@ Runtime (no ClimbMix/Bedrock dependency):
   `tests/test_rag26_rubric_finalize.py`). Cache keys and prompts are unchanged.
 - Rerun of `arena-support` on `rag26-generation` (83 runs x 119 topics, 16 measures, no
   NaN) completed; support lane populated. Cost of the rerun about $23 (first run about $30).
+- `CONDORCET_WINNER` is all zeros on the full run, by design: it needs a candidate with a
+  strictly positive weighted margin against every other run (`sparrow.condorcet_winner`).
+  Arena ballots are sparse (`BALLOT_COVERAGE` about 0.05, i.e. a few opponents per run out of
+  82), so unplayed pairs have margin 0 and no run can qualify. It is only informative on small
+  or dense pools (see `tests/test_rag26_arena_judge.py`). Use `RAG26_ARENA_SCORE` for ranking.
 - Remaining: `tira-cli upload` of the data submission, and the real `tira-cli code-submission`
   (no `--dataset`) from a Docker host.
