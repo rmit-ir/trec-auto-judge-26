@@ -182,5 +182,10 @@ Runtime (no ClimbMix/Bedrock dependency):
 - `rubric-support-arena` full run on `rag26-generation` started 2026-10-14 (citation-support lane
   replays from the shared prompt cache; Arena ballots are re-paid because the prompt now carries
   the rubric block). Second upload (separate `--system`) follows its completeness check.
+- Backup-model retry of the content-filtered requests was tried (GPT-6 Luna, ASE endpoint): it
+  recovered 0 of ~66 citation-support requests -- the same prompts are rejected by that
+  deployment's filter too -- so it was not kept. Those requests stay "unavailable" (not negative).
+- Rerunning a variant is not bit-identical (adaptive Arena rounds retry failed ballots with
+  retry temperature), so a regenerated output can differ slightly from the one uploaded earlier.
 - Remaining: the real `tira-cli code-submission` (no `--dataset`) from a Docker host, and the
   `verify-installation` 500 with TIRA support.
