@@ -195,7 +195,13 @@ Runtime (no ClimbMix/Bedrock dependency):
 - Rerunning a variant is not bit-identical (adaptive Arena rounds retry failed ballots with
   retry temperature), so a regenerated output can differ slightly from the one uploaded earlier.
 - Variant `rubric-v2-support-arena` (workflow.yml) runs the V2 rubric artifact with the
-  citation-support lane; uploaded as its own TIRA system `rag26_arena-rubric-v2-support-arena`
-  after a completeness check (V1 stays as `rag26_arena-rubric-support-arena`).
+  citation-support lane. Full run on `rag26-generation` finished 2026-10-14 (83 runs x 119
+  topics x 16 measures, no NaN, support lane populated, 63 content-filtered support requests
+  unjudged, cost about $11) and was uploaded as its own TIRA system
+  `rag26_arena-rubric-v2-support-arena`.
+- TIRA data submissions (dataset `rag26-20260827_1-test`), each a separate system:
+  `rag26_arena-arena-support`, `rag26_arena-rubric-support-arena` (V1 rubrics),
+  `rag26_arena-rubric-v2-support-arena` (V2 rubrics). Total LLM spend for the submission runs
+  is roughly $90, under the $150 cap.
 - Remaining: the real `tira-cli code-submission` (no `--dataset`) from a Docker host, and the
   `verify-installation` 500 with TIRA support.
