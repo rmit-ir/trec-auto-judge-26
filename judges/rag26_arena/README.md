@@ -194,5 +194,8 @@ Runtime (no ClimbMix/Bedrock dependency):
   deployment's filter too -- so it was not kept. Those requests stay "unavailable" (not negative).
 - Rerunning a variant is not bit-identical (adaptive Arena rounds retry failed ballots with
   retry temperature), so a regenerated output can differ slightly from the one uploaded earlier.
+- Variant `rubric-v2-support-arena` (workflow.yml) runs the V2 rubric artifact with the
+  citation-support lane; uploaded as its own TIRA system `rag26_arena-rubric-v2-support-arena`
+  after a completeness check (V1 stays as `rag26_arena-rubric-support-arena`).
 - Remaining: the real `tira-cli code-submission` (no `--dataset`) from a Docker host, and the
   `verify-installation` 500 with TIRA support.

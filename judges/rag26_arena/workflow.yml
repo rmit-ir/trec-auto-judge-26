@@ -46,6 +46,12 @@ variants:
     judge_settings:
       rubric_arena_enabled: true
       citation_support_enabled: true
+  # V2 frozen rubrics (reduced evidence-driven over-specification).
+  rubric-v2-support-arena:
+    judge_settings:
+      rubric_arena_enabled: true
+      rubric_path: "rubrics/frozen/rag26-rubrics-v2.jsonl"
+      citation_support_enabled: true
   exhaustive-small:
     judge_settings:
       full_round_robin_max_candidates: 999
