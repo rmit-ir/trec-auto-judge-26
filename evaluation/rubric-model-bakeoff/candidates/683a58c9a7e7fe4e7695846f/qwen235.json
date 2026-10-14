@@ -1,0 +1,144 @@
+{
+  "rubrics": [
+    {
+      "criterion": "The response contrasts Euclidean geometry in high school math competitions (AMC, AIME, Olympiads) with that in standard American high school curricula.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response is written for an audience familiar with standard high school geometry but without competitive math experience.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response includes at least one clear example of a problem-solving technique common in math competitions but not typically taught in standard high school classes.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response includes at least one clear example of a theorem used in math competitions but not typically covered in standard high school geometry courses.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response distinguishes the depth, rigor, or proof expectations in competition geometry versus standard curriculum.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains how competition problems often require multi-step insight or non-routine application, unlike typical textbook exercises.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response identifies specific theorems (e.g., Ceva’s Theorem, Menelaus’s Theorem, Power of a Point, Angle Bisector Theorem extensions) used in competitions but omitted from standard curricula.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response illustrates how auxiliary constructions (e.g., adding circles, parallel lines, or incenters) are frequently required in competition problems but rarely emphasized in standard classes.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response highlights the role of synthetic geometry reasoning in competitions, as opposed to the more formulaic or computational approach in standard classes.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response compares the problem structures: competition problems often lack explicit solution pathways, unlike scaffolded textbook problems.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response addresses the expectation of elegant or insight-based solutions in competitions versus procedural mastery in standard classes.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response notes the limited time pressure and strategic thinking in competitions (e.g., AMC multiple choice with tricks), contrasting with homework-style pacing in school.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response references actual named competitions (AMC, AIME, Olympiads) as specified in the prompt.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response avoids assuming prior knowledge of competition math beyond standard high school geometry.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response uses accessible language and avoids unexplained jargon from advanced geometry or olympiad training.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response clearly explains any technical term (e.g., cyclic quadrilateral, homothety) before or when used.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response includes a concrete competition-style problem example with solution steps demonstrating non-standard techniques.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response contrasts the pedagogical goals: conceptual depth and creativity in competitions vs. foundational fluency in standard classes.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response acknowledges that some advanced topics (e.g., coordinate bashing, trigonometric Ceva) are used in competitions but absent from standard curricula.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response does not misrepresent standard high school geometry as entirely lacking proofs or rigor.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not claim that competition geometry replaces or is formally part of the standard curriculum.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response avoids asserting that standard geometry teaching is ineffective or universally shallow.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not fabricate or misattribute theorems (e.g., attributing Ceva’s Theorem to a different mathematician).",
+      "axis": "References & Citation Quality",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not present competition techniques as trivial or obvious to standard curriculum students, preserving appropriate challenge level.",
+      "axis": "Communication Quality",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response maintains a blog-style tone appropriate for informal but informative exposition.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response integrates examples naturally within the narrative rather than presenting them as isolated technical appendices.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response does not omit the fact that some competition techniques can be derived from standard knowledge, even if not taught directly.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response distinguishes between curriculum content and classroom practice, avoiding conflation of the two.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    }
+  ]
+}

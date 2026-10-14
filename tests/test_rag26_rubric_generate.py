@@ -84,10 +84,14 @@ def test_parse_explicit_rejects_negative_polarity():
         parse_explicit_candidates("leaf", json.dumps(payload), narrative_haystacks=_HAYSTACKS, min_count=5, max_count=7)
 
 
-def test_parse_explicit_rejects_invented_narrative_span():
+def test_parse_explicit_drops_invented_narrative_span_but_keeps_candidate():
     payload = [_valid_item(narrative_spans=["this text does not appear anywhere"]) for _ in range(5)]
-    with pytest.raises(CandidateGenerationError, match="not found verbatim"):
-        parse_explicit_candidates("leaf", json.dumps(payload), narrative_haystacks=_HAYSTACKS, min_count=5, max_count=7)
+    candidates = parse_explicit_candidates(
+        "leaf", json.dumps(payload), narrative_haystacks=_HAYSTACKS,
+        min_count=5, max_count=7,
+    )
+    assert len(candidates) == 5
+    assert all(c.narrative_spans == () for c in candidates)
 
 
 def test_parse_explicit_accepts_a_named_constraint_as_a_narrative_span():

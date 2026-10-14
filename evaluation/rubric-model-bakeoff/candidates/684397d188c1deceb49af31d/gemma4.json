@@ -1,0 +1,114 @@
+{
+  "rubrics": [
+    {
+      "criterion": "The response uses specific textual evidence from Plautus's *Pseudolus* to support its analytical claims.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response analyzes the characterization and actions of the slave protagonist.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response analyzes the interactions between slaves and other characters (masters, peers, etc.).",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response situates the analysis within the legal framework (e.g., property laws, status) of the Roman Republic.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response situates the analysis within the social framework (e.g., hierarchy, class structure) of the Roman Republic.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains how the play's portrayal reflects the actual realities of Roman slave society.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains how the play's portrayal subverts the ideologies or realities of Roman slave society.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explicitly addresses the theme of slave agency.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explicitly addresses the role of deception in the context of slavery.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explicitly analyzes the dynamics of the master-slave relationship.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response distinguishes between comedic tropes (like the *servus callidus*) and documented historical realities.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response accounts for the specific political and social climate of the Roman Republic era.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response considers the nuances of Roman ideology regarding authority and social order.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response recognizes the limitations of using a comedic text as a primary historical source.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response connects specific comedic devices or character behaviors to broader historical/legal concepts.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response reconciles the tension between the slave's perceived agency in the play and their actual legal constraints in Rome.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response synthesizes how the use of deception serves to both entertain and subvert established social hierarchies.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response uses precise terminology appropriate for the study of Classics and Roman history (e.g., specific terms for status or legal roles).",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response maintains a clear, analytical structure that links literary evidence to historical argumentation.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response avoids a purely descriptive plot summary, maintaining an argumentative and analytical focus.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response does not present comedic exaggerations or theatrical tropes as literal, factual historical records.",
+      "axis": "Instruction Following",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not apply modern concepts of universal human rights or liberty anachronistically to the Roman Republic.",
+      "axis": "Instruction Following",
+      "polarity": "negative"
+    }
+  ]
+}

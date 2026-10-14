@@ -1,0 +1,109 @@
+{
+  "rubrics": [
+    {
+      "criterion": "The response contrasts Euclidean geometry used in mathematics competitions (AMC, AIME, or Olympiads) with the geometry taught in standard American high school curricula.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response includes specific examples of problem-solving techniques used in mathematics competitions.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response includes specific theorems used in mathematics competitions that are not typically taught in standard high school math classes.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response mentions specific math competition entities, such as the AMC, AIME, or Olympiads.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The mathematical theorems and techniques described are factually, logically, and mathematically accurate.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The problem-solving examples provided are mathematically correct in their execution and application.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The mathematical complexity of the content is appropriate for a reader with standard high school geometry knowledge but no competitive math background.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response correctly identifies the typical scope and content of the standard American high school geometry curriculum.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains the qualitative difference in approach (e.g., algorithmic vs. insight-driven) between standard curriculum problems and competition problems.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response connects the use of specific competition-level theorems to the unique types of challenges posed by competition problems.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response synthesizes how advanced theorems change the efficiency or feasibility of a solution compared to standard geometric methods.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response provides a coherent comparison rather than presenting two disconnected lists of facts.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response adopts a blog post format and tone that is engaging and structured for the target reader.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The mathematical explanations are presented with topical clarity, making the techniques usable for the specified audience.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response uses precise and appropriate mathematical notation consistent with the level of the discussion.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response adheres to the topical constraint of focusing on Euclidean geometry.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response respects the audience constraint by avoiding overly dense or formal proof-based jargon without adequate scaffolding.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response includes both the required 'problem-solving techniques' and 'theorems' as requested.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response contains mathematical errors, such as incorrect theorem statements or logically flawed derivations.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response materially misleads the reader by claiming a standard high school theorem is a unique competitive mathematics theorem.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response fails to provide a contrast between the two domains, violating the core instruction of the prompt.",
+      "axis": "Instruction Following",
+      "polarity": "negative"
+    }
+  ]
+}

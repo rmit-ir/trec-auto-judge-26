@@ -1,0 +1,104 @@
+{
+  "rubrics": [
+    {
+      "criterion": "The response explicitly contrasts Euclidean geometry in high school math competitions (AMC, AIME, Olympiads) with the standard American high school curriculum.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response is written for an audience with knowledge of standard high school geometry but no competitive math experience.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response includes clear examples of problem-solving techniques and theorems commonly used in competitions but not in standard high school classes.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains the specific differences in approach or depth between the competition style and the standard curriculum.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response avoids assuming the reader knows advanced competition terminology without brief, accessible explanation.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response does not include advanced topics from other branches of mathematics (e.g., complex numbers, vectors, or calculus) unless they are standard tools in the specific geometry competitions mentioned.",
+      "axis": "Instruction Following",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not present competition geometry as the only valid or superior form of geometry.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not conflate the difficulty of the competition problems with the difficulty of the underlying geometry concepts.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not use overly technical jargon or dense notation that would alienate a reader with only standard high school geometry knowledge.",
+      "axis": "Communication Quality",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not omit the context of the specific competitions (AMC, AIME, Olympiads) when discussing the style of problems.",
+      "axis": "Explicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not claim that a theorem is 'commonly used' in competitions if it is actually a niche or obscure result.",
+      "axis": "References & Citation Quality",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not present a false dichotomy where standard curriculum geometry is purely rote memorization and competition geometry is purely creative.",
+      "axis": "Synthesis of Information",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not use examples that rely on theorems or techniques that are actually taught in standard high school geometry (e.g., basic triangle congruence or Pythagorean theorem) to illustrate the 'non-standard' nature of competition geometry.",
+      "axis": "Explicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not confuse the American high school curriculum with the International Baccalaureate (IB) or other specific national curricula.",
+      "axis": "Instruction Following",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not use a tone that discourages the reader from attempting competitive math.",
+      "axis": "Communication Quality",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not present a single, monolithic 'standard American high school curriculum' without acknowledging that curricula vary by state or school.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not fail to distinguish between the AMC (multiple choice) and AIME/Olympiads (proof-based) formats in its description of problem-solving techniques.",
+      "axis": "Explicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not use examples that are mathematically incorrect or rely on invalid geometric constructions.",
+      "axis": "References & Citation Quality",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not ignore the role of algebraic manipulation in competition geometry problems.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not present the 'standard' curriculum as having no problem-solving component.",
+      "axis": "Synthesis of Information",
+      "polarity": "negative"
+    }
+  ]
+}

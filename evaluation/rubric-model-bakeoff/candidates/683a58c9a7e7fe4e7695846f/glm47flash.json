@@ -1,0 +1,79 @@
+{
+  "rubrics": [
+    {
+      "criterion": "The response explicitly contrasts Euclidean geometry used in high school math competitions (AMC, AIME, Olympiads) with the geometry taught in standard American high school curriculums.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response is written for an audience with knowledge of standard high school geometry but no experience in competitive math.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response includes clear examples of problem-solving techniques and theorems commonly used in competitions but not typically taught in standard high school classes.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response avoids using jargon or notation that is standard in competitive math (e.g., complex numbers, barycentric coordinates, inversion) without first explaining it in the context of the standard curriculum.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response accurately describes the differences in problem difficulty, proof style, and theorems used between the two contexts.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response provides a concrete example of a competition problem and walks through the solution using a technique not found in standard curricula (e.g., mass points, power of a point, or angle chasing with cyclic quadrilaterals).",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains *why* a specific theorem or technique is considered 'competition-level' rather than 'standard curriculum-level'.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response maintains a blog post format suitable for the specified audience.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response does not present a false dichotomy where standard curriculum geometry is incapable of solving the provided examples.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response does not claim that standard high school geometry is 'wrong' or 'inferior' in a way that misrepresents the pedagogical intent of the curriculum.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response does not include fabricated theorems or problem-solving techniques that do not actually exist in competitive mathematics.",
+      "axis": "References & Citation Quality",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not confuse Euclidean geometry with non-Euclidean geometries (e.g., spherical or hyperbolic geometry).",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not use the names of specific competitions (AMC, AIME, Olympiads) as the primary subject of the post rather than as the context for the geometry.",
+      "axis": "Instruction Following",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not present a solution to a problem that relies on a theorem or technique that is actually taught in standard high school curricula.",
+      "axis": "Explicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response does not claim that a technique is 'not taught' when it is actually a standard part of the curriculum (e.g., the Pythagorean theorem, basic triangle congruence).",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    }
+  ]
+}

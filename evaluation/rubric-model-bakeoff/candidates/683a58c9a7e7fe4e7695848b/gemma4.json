@@ -1,0 +1,129 @@
+{
+  "rubrics": [
+    {
+      "criterion": "The response provides a clear explanation of the professor's objective, specifically the bridge between clinical text extraction and epidemiological comparison.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response provides concrete examples of Electronic Health Record (EHR) data components, such as clinical notes, laboratory results, or demographic fields.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response identifies specific NLP techniques applicable to clinical text, such as Named Entity Recognition (NER), Relation Extraction, or Part-of-Speech tagging.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response identifies specific Asian subgroups that correspond to the classification standards used in CDC WONDER data.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains the methodology for calculating or determining prevalence rates for autoimmune diseases using the extracted demographic data.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response lists relevant technical and domain-specific skills (e.g., Python, medical terminology, statistics).",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response provides a complete research plan that follows the professor's instructions sequentially.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response distinguishes between structured EHR data and the unstructured clinical text that necessitates NLP techniques.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response accounts for the 'mapping' or 'alignment' challenge of linking NLP-extracted entities to standard CDC WONDER categories.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response acknowledges the importance of medical coding standards like ICD-10, SNOMED CT, or LOINC in the context of EHR data.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response addresses the statistical requirement of having a valid denominator (population count) to accurately represent prevalence rates.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response considers the nuances of 'Asian' as a category, noting the importance of capturing specific ethnic subgroups.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response acknowledges the constraints of working with de-identified data and the necessity of maintaining privacy/compliance.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response synthesizes the relationship between NLP-based entity extraction and the subsequent demographic classification process.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response connects the identified skills directly to the tasks described in the research plan.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response relates the extracted Asian subgroups to the specific epidemiological goal of determining autoimmune disease prevalence.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response organizes the research plan into a coherent, logical workflow (e.g., Data Preprocessing $\\rightarrow$ NLP $\\rightarrow$ Mapping $\\rightarrow$ Statistical Analysis).",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response accurately references the standards or subgroup structures used by CDC WONDER.",
+      "axis": "References & Citation Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response uses appropriate professional and academic terminology related to NLP and epidemiology.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response is structured in a way that is highly usable for a student (e.g., clear headings, logical progression).",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response answers every specific question asked in the user's prompt.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response suggests methods for re-identifying patients or violating the de-identification premise of the project.",
+      "axis": "Instruction Following",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response suggests NLP techniques that are functionally irrelevant to the task, such as sentiment analysis, for extracting demographics.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response materially omits the critical step of mapping/aligning extracted text to the CDC WONDER classification schema.",
+      "axis": "Synthesis of Information",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response provides factually incorrect mathematical or statistical guidance for calculating prevalence rates.",
+      "axis": "Explicit Criteria",
+      "polarity": "negative"
+    }
+  ]
+}

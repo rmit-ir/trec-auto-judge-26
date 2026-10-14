@@ -1,6 +1,6 @@
 # RAG26 Arena / ResearchRubrics
 
-Status as of 2026-10-13: **runnable judge; rubric pipeline built, frozen artifact pending**.
+Status as of 2026-10-14: **runnable judge; rubric pipeline built, frozen 119-topic artifact committed**.
 `RAG26ArenaJudge` (Arena/SPARROW pairwise preference + independent citation-support lane)
 is implemented, tested, and TIRA-submission-shaped. Rubric generation (this file's other
 half) is under active construction per `docs/rag26-rubric-construction-execution-plan.md`
@@ -138,15 +138,27 @@ Runtime (no ClimbMix/Bedrock dependency):
   answers, scores or support labels in the prompt.
 - A qid with no frozen rubric gets the exact plain `arena-only` prompt (byte-identical, so
   existing prompt caches stay valid). An enabled variant whose artifact file is missing raises.
-- The frozen artifact is not committed yet; until it is, the two rubric variants cannot run.
+- The frozen artifact `rubrics/frozen/rag26-rubrics.jsonl` is committed (see below).
+
+## Frozen rubric artifact (2026-10-14)
+
+- Built with GPT-6 Luna (high reasoning) on the Azure ASE endpoint (`OPEAI_ASE_URL`,
+  `AZURE_ASE_KEY`; `--model-id gpt-6-luna --region azure-ase`), 8 parallel topic workers,
+  work dir `rubric-work-luna-v2/` (git-ignored, resumable). Needs `RAG26_DENSE_SEARCH_URL` /
+  `RAG26_SPARSE_SEARCH_URL` set for the ClimbMix services or every topic fails fast.
+- Result: 119/119 topics, no `validate_topic` issues, 22-31 criteria/topic, about 6.8
+  mandatory and 5.6 negative criteria per topic. Construction cost is a few dollars at most.
+- Two fixes made the last topics pass: `narrative_spans` the model paraphrased are dropped
+  instead of rejecting the criterion, and the explicit-candidate parse floor is 3 (the prompt
+  still asks for the breadth-based range) because topics with few literal asks cannot reach 6.
+- The model bake-off and Luna 5.6-vs-6 comparisons are in `evaluation/` (response-independent).
 
 ## Deliberately not built yet
 
 - Pointwise rubric scorer (plan Phase 9). Not needed for `rubric-arena`.
 - Stage G examples, Stage J Luna audit, dev-set B0/B1/B2 fidelity comparison.
-- The frozen 119-topic artifact `judges/rag26_arena/rubrics/frozen/rag26-rubrics.jsonl`.
 
-## Submission status (2026-10-13)
+## Submission status (2026-10-14)
 
 - `arena-support` TIRA dry-run passed on a Docker host (`docs/rag26-tira-dryrun-handoff.md`).
 - Model: `gpt-5.6-luna` is the primary and only model for the submission. `gpt-6-luna`
@@ -165,5 +177,10 @@ Runtime (no ClimbMix/Bedrock dependency):
   Arena ballots are sparse (`BALLOT_COVERAGE` about 0.05, i.e. a few opponents per run out of
   82), so unplayed pairs have margin 0 and no run can qualify. It is only informative on small
   or dense pools (see `tests/test_rag26_arena_judge.py`). Use `RAG26_ARENA_SCORE` for ranking.
-- Remaining: `tira-cli upload` of the data submission, and the real `tira-cli code-submission`
-  (no `--dataset`) from a Docker host.
+- `arena-support` data submission uploaded to TIRA as `rag26_arena-arena-support`
+  (dataset `rag26-20260827_1-test`).
+- `rubric-support-arena` full run on `rag26-generation` started 2026-10-14 (citation-support lane
+  replays from the shared prompt cache; Arena ballots are re-paid because the prompt now carries
+  the rubric block). Second upload (separate `--system`) follows its completeness check.
+- Remaining: the real `tira-cli code-submission` (no `--dataset`) from a Docker host, and the
+  `verify-installation` 500 with TIRA support.

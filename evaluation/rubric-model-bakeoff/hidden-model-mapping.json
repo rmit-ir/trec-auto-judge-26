@@ -1,0 +1,20 @@
+{
+  "683a58c9a7e7fe4e7695846f": {
+    "A": "gemma4",
+    "B": "luna",
+    "C": "glm47flash",
+    "D": "qwen235"
+  },
+  "683a58c9a7e7fe4e7695848b": {
+    "A": "gemma4",
+    "B": "qwen235",
+    "C": "glm47flash",
+    "D": "luna"
+  },
+  "684397d188c1deceb49af31d": {
+    "A": "glm47flash",
+    "B": "qwen235",
+    "C": "luna",
+    "D": "gemma4"
+  }
+}

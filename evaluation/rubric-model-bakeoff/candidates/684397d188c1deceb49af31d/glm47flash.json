@@ -1,0 +1,124 @@
+{
+  "rubrics": [
+    {
+      "criterion": "The response explicitly identifies Plautus' *Pseudolus* as the primary source material for the analysis.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explicitly identifies the Roman Republic as the historical context for the legal and social framework.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explicitly identifies the slave protagonist (Pseudolus) as the central figure for analysis.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explicitly identifies the themes of slave agency, deception, and the master-slave relationship as required topics.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explicitly identifies the dual analytical task of exploring how the comedy reflects and subverts Roman slave society.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response situates the play's portrayal of the slave protagonist within the wider, historically grounded legal framework of the Roman Republic.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response situates the play's portrayal of the slave protagonist within the wider, historically grounded social framework of the Roman Republic.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explores how Plautus' comedic representations of slave agency reflect the realities of Roman slave society.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explores how Plautus' comedic representations of slave agency subvert the realities of Roman slave society.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explores how Plautus' comedic representations of deception reflect the realities of Roman slave society.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explores how Plautus' comedic representations of deception subvert the realities of Roman slave society.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explores how Plautus' comedic representations of the master-slave relationship reflect the realities of Roman slave society.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explores how Plautus' comedic representations of the master-slave relationship subvert the realities of Roman slave society.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response analyzes the underlying ideologies of Roman slave society.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response provides a historically grounded analysis of Roman slavery, avoiding anachronistic modern frameworks.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response distinguishes between the fictional, exaggerated nature of Plautine comedy and the actual legal status of Roman slaves.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response acknowledges the limitations of using a comedy for historical analysis, such as the potential for stereotyping or exaggeration.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response connects specific plot points or characters in *Pseudolus* to broader themes of Roman law and social structure.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response reconciles the apparent contradiction between the agency of the slave character and the legal reality of Roman slavery.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response weighs the comedic elements against the serious historical context to explain the play's function in Roman society.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response cites specific examples from the text of *Pseudolus* to support its arguments about slave agency and the master-slave relationship.",
+      "axis": "References & Citation Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response avoids fabricating specific details, quotes, or plot points from *Pseudolus* that do not exist.",
+      "axis": "References & Citation Quality",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response avoids presenting the fictional world of the play as a literal, unvarnished historical record of Roman slavery.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response avoids using the analysis to make anachronistic moral judgments about Roman slavery that are not supported by the text or historical context.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    }
+  ]
+}

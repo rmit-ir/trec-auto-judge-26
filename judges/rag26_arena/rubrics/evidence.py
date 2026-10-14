@@ -22,7 +22,7 @@ from .llm import CostTracker, cached_bedrock_call
 from .planner import characterize_topic
 from .topics import Topic
 
-EVIDENCE_PROMPT_VERSION = "v1"
+EVIDENCE_PROMPT_VERSION = "v2"
 
 _EVIDENCE_SYSTEM = "You are a careful evidence analyst. Return only the requested JSON."
 _VALID_EVIDENCE_TYPES = {"fact", "number", "argument", "counterargument", "context"}
@@ -61,6 +61,8 @@ def evidence_condensation_messages(
     characterization: TopicCharacterization,
     hits: Sequence[ResearchHit],
     *,
+    min_notes: int,
+    max_notes: int,
     max_chars_per_doc: int = 1200,
 ) -> list[dict[str, str]]:
     """Stage C prompt (execution-plan Section 11). Only hits with resolved
@@ -78,7 +80,10 @@ def evidence_condensation_messages(
         "dates, and named entities exactly as given. If evidence conflicts "
         "across passages, write a disagreement note rather than asserting one "
         "side as settled. Distinguish core decision-relevant evidence from "
-        "background -- do not turn every passage into a note.\n\n"
+        "background -- do not turn every passage into a note. "
+        f"Produce between {min_notes} and {max_notes} notes inclusive; if the "
+        "evidence is sparse, split genuinely distinct supported claims rather "
+        "than padding with unsupported or duplicate notes.\n\n"
         f"Request:\n{narrative}\n\n"
         f"Domain: {characterization.domain}\n"
         f"Explicit subquestions: {list(characterization.explicit_subquestions)}\n"
@@ -189,7 +194,9 @@ def condense_evidence(
     """Stage C end-to-end for one topic (execution-plan Section 11). Never
     calls candidate-response data -- `pack` was built purely from Stage A/B."""
     messages = evidence_condensation_messages(
-        topic.narrative, characterization, pack.hits, max_chars_per_doc=max_chars_per_doc,
+        topic.narrative, characterization, pack.hits,
+        min_notes=min_notes, max_notes=max_notes,
+        max_chars_per_doc=max_chars_per_doc,
     )
     valid_docids = {hit.chunk_id for hit in pack.hits if hit.text}
     key = cache_key(

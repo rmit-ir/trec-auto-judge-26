@@ -1,0 +1,149 @@
+{
+  "rubrics": [
+    {
+      "criterion": "The response analyzes the portrayal of the slave protagonist Pseudolus in the play *Pseudolus*.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response uses *Pseudolus* as a primary source for understanding representations of slavery.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response situates the depiction of slavery in *Pseudolus* within the historical legal framework of the Roman Republic.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response situates the depiction of slavery in *Pseudolus* within the historical social framework of the Roman Republic.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explores how the play represents slave agency.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explores how the play represents slave deception.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response analyzes the master-slave relationship as depicted in *Pseudolus*.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response evaluates how comedic representations in *Pseudolus* reflect real aspects of Roman slave society.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response evaluates how comedic representations in *Pseudolus* subvert real aspects of Roman slave society.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response addresses the ideological underpinnings of Roman slavery as they relate to the play’s portrayal.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response acknowledges the limitations of using a comedic text as a historical source for slavery.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response distinguishes between literary exaggeration and plausible social realities in the portrayal of slave behavior.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response considers the audience expectations of Roman comedy and their influence on the depiction of slaves.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response accounts for the generic conventions of Plautine comedy (e.g., stock characters, role inversions) in interpreting Pseudolus’ agency.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response incorporates historically accurate details about the legal status of slaves in the Roman Republic (e.g., lack of legal personhood, vulnerability to punishment).",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response references social practices such as manumission, household roles, or urban vs. rural slavery to contextualize the play.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains how the temporary inversion of power in comedy relates to the stability of the actual social hierarchy.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response contrasts the fictional empowerment of Pseudolus with the systemic disempowerment of real Roman slaves.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response connects the humor derived from deception to broader tensions in master-slave dynamics.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response integrates evidence from the play (e.g., specific scenes, dialogues, character actions) with historical context.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response draws a reasoned conclusion about the relationship between Plautus’ comedy and the ideology of Roman slavery.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response cites scholarly sources or historical evidence to support claims about Roman slavery when making contextual assertions.",
+      "axis": "References & Citation Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response distinguishes between claims based on the play and claims based on external historical evidence.",
+      "axis": "References & Citation Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response avoids attributing historical representativeness to comedic elements without qualification.",
+      "axis": "References & Citation Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response communicates complex ideas about social hierarchy and literary representation with clarity appropriate to an academic analysis.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response maintains a coherent structure that aligns with the analytical task (e.g., integrates literary and historical discussion).",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response uses precise terminology related to Roman slavery (e.g., *servus*, *dominus*, *manumissio*) appropriately.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response adheres to the required scope by focusing on *Pseudolus* and not generalizing to other plays without justification.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response does not present the comedic portrayal as a literal reflection of historical reality without critical qualification.",
+      "axis": "Instruction Following",
+      "polarity": "negative"
+    }
+  ]
+}

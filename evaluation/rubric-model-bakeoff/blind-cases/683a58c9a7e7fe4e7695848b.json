@@ -1,0 +1,641 @@
+{
+  "qid": "683a58c9a7e7fe4e7695848b",
+  "prompt": "I'm currently working on a project. The professor wasn't clear, she just said that I will use NLP techniques on some data, de-identified Electronic Health Records, to extract Asian subgroups, and try to abstract the same subgroups as are in CDC WONDER data. Then, I'll apply this to look at prevalence rates of autoimmune diseases. I have no clue what she means. Can you first help explain what she might mean? I don't know examples of what Electronic Health Records look like. What NLP techniques might I be using on data like this? What subgroups in CDC WONDER data would I be abstracting? How could I apply this to look at prevalence rates of autoimmune diseases? What skills should I brush up on? Please help me create a plan for my research going forward, according to what the professor said.",
+  "reference": {
+    "qid": "683a58c9a7e7fe4e7695848b",
+    "domain": "AI & ML",
+    "conceptual_breadth": "Moderate",
+    "logical_nesting": "Deep",
+    "exploration": "High",
+    "rubrics": [
+      {
+        "criterion": "The response is missing one of the six requested points: (1) what the professor likely means, (2) examples of de-identified EHR data, (3) NLP techniques that could be used, (4) Asian subgroups contained in CDC WONDER, (5) how to use the extracted information to study autoimmune-disease prevalence, and (6) skills to brush up on.",
+        "weight": -2.0,
+        "axis": "Instruction Following"
+      },
+      {
+        "criterion": "The response gives at least three concrete examples of de-identified Electronic Health Record content (e.g., a diagnosis code block, a free-text note snippet without PHI, tabular data contextualizing text and numerical data, image data corresponding to a diagnostic report, and video data corresponding to radiology image reports).",
+        "weight": 5.0,
+        "axis": "Explicit Criteria"
+      },
+      {
+        "criterion": "The response names at least three distinct NLP techniques from the following list: Named Entity Recognition, rule-based pattern matching/regular expressions, dictionary or ontology lookup, supervised classification, topic modeling, clustering, word embeddings, and transformer fine-tuning.",
+        "weight": 5.0,
+        "axis": "Explicit Criteria"
+      },
+      {
+        "criterion": "The response correctly identifies (by name) either 6, 15, or 31 race categories from CDC WONDER data (i.e., 6-category list: American Indian or Alaska Native, Asian, Black or African American, Native Hawaiian or Other Pacific Islander, White, and More than one race) The 15-category list separates more Asian and Pacific Islander groups (e.g., Chinese, Filipino, Japanese), while the 31-category list includes combinations of multiple races (e.g., Black, AIAN, and White).",
+        "weight": 5.0,
+        "axis": "Explicit Criteria"
+      },
+      {
+        "criterion": "The response states or implies that the goal is to map Electronic Health Record-derived subgroups to the same CDC WONDER categories before calculating prevalence.",
+        "weight": 1.0,
+        "axis": "Synthesis of Information"
+      },
+      {
+        "criterion": "The response describes how exactly to derive subgroups from Electronic Health Records (e.g., programmatic text extractions or more rigorous NLP and machine learning techniques that can extract subgroups by interfacing with sources, such as looking into self-reported information provided through questionnaires, cross-referencing data across multiple visits, combing data from external sources such as geospatial data, and looking into census data). ",
+        "weight": 5.0,
+        "axis": "Synthesis of Information"
+      },
+      {
+        "criterion": "The response describes at least two different methods for calculating prevalence (e.g., extrapolations from individual autoimmune disease occurrences, machine-learning techniques via training fine-tuned models, logistic regression models, and meta-analyses that include results from existing papers). ",
+        "weight": 5.0,
+        "axis": "Explicit Criteria"
+      },
+      {
+        "criterion": "The response lists at least five relevant skills or tools to learn (e.g., data science skills in order to parse and visualize Electronic Health Record data, statistical analysis skills in order to perform and interpret regression analyses, coding skills in order to write up statistical or machine learning models, data deidentification techniques, and domain knowledge for autoimmune disease factors).",
+        "weight": 5.0,
+        "axis": "Explicit Criteria"
+      },
+      {
+        "criterion": "The response correctly explains the exact mechanism by which de-identification removes direct patient identifiers to comply with privacy regulations, which can be one of the two techniques from the HIPAA Privacy Rule De-identification Methods of 1) Expert Determination, which involves an expert assessing the risk of identification by running appropriate statistical and scientific methods to mitigate risk of identification, and 2) Safe Harbor, which involves the direct removal of 18 types of identifiers, such as specific dates, the last four digits of a Social Security numbers, patient initials, etc, and can be performed via NLP techniques.",
+        "weight": 3.0,
+        "axis": "Implicit Criteria"
+      },
+      {
+        "criterion": "The response has at least one example that walks through every processing step that maps unstructured data to a diagnosis, in particular mentioning 1) NLP techniques to extract Asian subgroups present in the de-identified Electronic Health Records data, 2) NLP techniques to map the extracted racial subgroups to formal CDC WONDER racial subgroups, 3) apply a prevalence analysis (e.g., statistical or machine learning based) to look for the frequency of autoimmune diseases in the specified populations, as they apply to the specific example.",
+        "weight": 2.0,
+        "axis": "Synthesis of Information"
+      },
+      {
+        "criterion": "The response defines or briefly explains, and expands, technical terms the first time they are used (e.g., defines NLP as Natural Language Processing, defines CDC WONDER (Wide-ranging ONline Data for Epidemiologic Research), which is an online database for public health records).",
+        "weight": 5.0,
+        "axis": "Communication Quality"
+      },
+      {
+        "criterion": "The response mentions that while Electronic Health Records often contain structured forms of (e.g., with name, date, age, etc. columns fairly easy to extract), there may be additional forms of unstructured data within the records that the user may need to target their NLP techniques towards (e.g., doctors' notes from patient visits, multimedia files from reports).",
+        "weight": 3.0,
+        "axis": "Synthesis of Information"
+      },
+      {
+        "criterion": "The response fails to address that any analysis must comply with HIPAA to prohibit any disclosure of protected health information in order to ensure patient privacy.",
+        "weight": -5.0,
+        "axis": "Implicit Criteria"
+      },
+      {
+        "criterion": "The response names at least one open-source NLP library (e.g., spaCy, scikit-learn, transformers, and nltk).",
+        "weight": 2.0,
+        "axis": "Implicit Criteria"
+      },
+      {
+        "criterion": "The response use language that references to the words used by the professor and is directed to the user who is confused and need clarity (e.g. (1) What the professor means by \"I will use NLP techniques on some data\" is that you are tasked to apply natural language processing methods such as, etc..., (2) By \"de-identified Electronic Health Records\", you are asked to de-identify the Electronics Health Records which is the record of the patients' medical history stored electronically at the healthcare providers, etc., and (3) Next, you will be applying this \"to look at prevalence rates of autoimmune diseases\").",
+        "weight": 1.0,
+        "axis": "Instruction Following"
+      },
+      {
+        "criterion": "The response incorrectly orders the tasks to be performed (i.e., The proper ordering should be (1) what the professor likely means, (2) examples of de-identified EHR data, (3) NLP techniques that could be used, (4) Asian subgroups contained in CDC WONDER, (5) how to use the extracted information to study autoimmune-disease prevalence, and (6) skills to brush up on).",
+        "weight": -3.0,
+        "axis": "Communication Quality"
+      },
+      {
+        "criterion": "The response considers at least five relevant research and sources of references (e.g., (1) National Library of Medicine, (2) CDC Wonder, and (3) publications from well-known universities like Stanford, Oxford, or Global Autoimmune Institute).",
+        "weight": 5.0,
+        "axis": "References & Citation Quality"
+      },
+      {
+        "criterion": "The response considers the limitations of the approaches used to identify autoimmune diseases from the data. (e.g., (1) Using ICD-10 code, but some rare autoimmune diseases like antisynthetase syndrome and IgG4-related disease, (2) many diagnoses can change and gets refined after subsequent patient visits,  (3) diagnosis can be caused by both autoimmune process or non-autoimmune process such as type 1 diabetes mellitus in a patient who has undergone a total pancreatectomy, and (4) source of data provided by specialized or general medical practitioners can also introduce biases).",
+        "weight": 3.0,
+        "axis": "Implicit Criteria"
+      },
+      {
+        "criterion": "The response makes no reference to previous studies/data about the prevalence rate of autoimmune diseases in Asian subgroups (e.g., (1) the paper titled \"High Disease Severity Among Asians in a US Multiethnic Cohort of Individuals with Systemic Lupus Erythematosus\", (2) Hispanics and Asians were diagnosed with lupus and had more aggressive disease more frequently than whites, and (3) Sjögren's Syndrome (SS), an autoimmune disorder affecting the salivary and tear glands, is more prevalent among individuals of Asian descent).",
+        "weight": -5.0,
+        "axis": "Synthesis of Information"
+      },
+      {
+        "criterion": "The response identifies at least 8 different autoimmune diseases examples with special attention to those prevalent in Asian subgroups for context (e.g., (1) autoimmune thyroiditis (AT), (2) Graves' disease (GD), (3) type 1 diabetes mellitus (T1D), (4) multiple sclerosis (MS), (5) Crohn's disease (CD), and (6) ulcerative colitis (UC)).",
+        "weight": 2.0,
+        "axis": "Synthesis of Information"
+      }
+    ]
+  },
+  "candidates": {
+    "A": {
+      "rubrics": [
+        {
+          "criterion": "The response provides a clear explanation of the professor's objective, specifically the bridge between clinical text extraction and epidemiological comparison.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response provides concrete examples of Electronic Health Record (EHR) data components, such as clinical notes, laboratory results, or demographic fields.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response identifies specific NLP techniques applicable to clinical text, such as Named Entity Recognition (NER), Relation Extraction, or Part-of-Speech tagging.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response identifies specific Asian subgroups that correspond to the classification standards used in CDC WONDER data.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains the methodology for calculating or determining prevalence rates for autoimmune diseases using the extracted demographic data.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response lists relevant technical and domain-specific skills (e.g., Python, medical terminology, statistics).",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response provides a complete research plan that follows the professor's instructions sequentially.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response distinguishes between structured EHR data and the unstructured clinical text that necessitates NLP techniques.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response accounts for the 'mapping' or 'alignment' challenge of linking NLP-extracted entities to standard CDC WONDER categories.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response acknowledges the importance of medical coding standards like ICD-10, SNOMED CT, or LOINC in the context of EHR data.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response addresses the statistical requirement of having a valid denominator (population count) to accurately represent prevalence rates.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response considers the nuances of 'Asian' as a category, noting the importance of capturing specific ethnic subgroups.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response acknowledges the constraints of working with de-identified data and the necessity of maintaining privacy/compliance.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response synthesizes the relationship between NLP-based entity extraction and the subsequent demographic classification process.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response connects the identified skills directly to the tasks described in the research plan.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response relates the extracted Asian subgroups to the specific epidemiological goal of determining autoimmune disease prevalence.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response organizes the research plan into a coherent, logical workflow (e.g., Data Preprocessing $\\rightarrow$ NLP $\\rightarrow$ Mapping $\\rightarrow$ Statistical Analysis).",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response accurately references the standards or subgroup structures used by CDC WONDER.",
+          "axis": "References & Citation Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response uses appropriate professional and academic terminology related to NLP and epidemiology.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response is structured in a way that is highly usable for a student (e.g., clear headings, logical progression).",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response answers every specific question asked in the user's prompt.",
+          "axis": "Instruction Following",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response suggests methods for re-identifying patients or violating the de-identification premise of the project.",
+          "axis": "Instruction Following",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response suggests NLP techniques that are functionally irrelevant to the task, such as sentiment analysis, for extracting demographics.",
+          "axis": "Implicit Criteria",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response materially omits the critical step of mapping/aligning extracted text to the CDC WONDER classification schema.",
+          "axis": "Synthesis of Information",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response provides factually incorrect mathematical or statistical guidance for calculating prevalence rates.",
+          "axis": "Explicit Criteria",
+          "polarity": "negative"
+        }
+      ]
+    },
+    "B": {
+      "rubrics": [
+        {
+          "criterion": "The response explains how NLP techniques can be applied to de-identified Electronic Health Records (EHRs) to identify Asian subgroups based on textual data (e.g., race/ethnicity mentions, language, names, or clinical notes).",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response identifies specific NLP methods relevant to EHR analysis, such as named entity recognition (NER), natural language processing for clinical text, entity linking, or classification models.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response describes examples of what de-identified EHR data might contain (e.g., clinical notes, discharge summaries, coded fields) and how Asian subgroups could be represented in unstructured text.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response identifies the relevant Asian subgroups in CDC WONDER data (e.g., Chinese, Asian Indian, Filipino, Vietnamese, Korean, Japanese, Other Asian) and explains that these are standardized categories used in public health reporting.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains how extracted Asian subgroups from EHRs can be mapped or aligned to CDC WONDER categories for comparative analysis.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response outlines a methodological approach to estimate prevalence rates of autoimmune diseases (e.g., lupus, rheumatoid arthritis) within identified Asian subgroups using EHR data.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response recommends specific skills to review, such as clinical NLP, handling of protected health information (PHI), text preprocessing, machine learning for classification, or working with medical ontologies (e.g., SNOMED, ICD codes).",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response provides a clear, step-by-step research plan that includes data preprocessing, NLP application, subgroup extraction, mapping to CDC categories, disease prevalence calculation, and validation considerations.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response acknowledges limitations in EHR data, such as inconsistent documentation of race/ethnicity, sparse representation of Asian subgroups, or challenges in distinguishing subgroups from names or text.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response addresses potential biases in both EHR data and CDC WONDER data when estimating disease prevalence across subgroups.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response discusses the importance of de-identification and ethical use of EHR data, including compliance with HIPAA or institutional review board (IRB) requirements.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains why CDC WONDER is a relevant benchmark (e.g., nationally representative data, standardized race/ethnicity reporting) and how EHR-based estimates might differ.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response distinguishes between structured and unstructured EHR data and explains why NLP is necessary for extracting subgroup information from the latter.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response compares the granularity and reliability of Asian subgroup data in EHRs versus CDC WONDER.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response integrates considerations of health disparities research, particularly regarding underrepresentation of Asian subgroups in health data.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response suggests validation strategies, such as comparing NLP-extracted subgroups with any available structured race/ethnicity fields or using external benchmarks.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response recommends tools or libraries commonly used in clinical NLP (e.g., cTAKES, CLAMP, spaCy with clinical models, MetaMap).",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response includes considerations for handling ambiguous or overlapping subgroup labels (e.g., 'Asian' without specification, mixed heritage mentions).",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains how autoimmune disease cases would be identified in EHRs (e.g., ICD codes, medication records, clinical notes) and potential challenges in case definition.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response cites or references CDC WONDER as a source for national prevalence data and describes its data structure or accessibility (e.g., query system, mortality/morbidity statistics).",
+          "axis": "References & Citation Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response uses clear, accessible language appropriate for a student unfamiliar with EHRs or NLP, avoiding unnecessary jargon without explanation.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response organizes information in a logical flow that mirrors the user’s questions, ensuring each part of the query is addressed in sequence.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response does not assume the availability of structured race/ethnicity data in EHRs, emphasizing the need for NLP due to reliance on unstructured text.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response avoids asserting that NLP can perfectly extract Asian subgroups, instead discussing probabilistic or approximate matching and uncertainty in results.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response does not conflate Asian subgroups with broader racial categories (e.g., 'Asian' as monolithic) and emphasizes the importance of disaggregation.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response does not fabricate specific EHR data formats or CDC WONDER subgroup definitions not generally known or publicly available.",
+          "axis": "References & Citation Quality",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response does not recommend techniques that require identifiable patient information, violating the de-identified data constraint.",
+          "axis": "Instruction Following",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response does not omit the necessity of mapping EHR-derived subgroups to standardized CDC categories for meaningful comparison.",
+          "axis": "Synthesis of Information",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response does not present prevalence estimation as a simple count without addressing population denominators or data completeness issues.",
+          "axis": "Implicit Criteria",
+          "polarity": "negative"
+        }
+      ]
+    },
+    "C": {
+      "rubrics": [
+        {
+          "criterion": "The response defines the core objective of the project: using NLP to extract Asian subgroups from de-identified Electronic Health Records (EHR) and abstracting these subgroups to match those found in CDC WONDER data.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains the concept of de-identified Electronic Health Records, including what they are and why they are used in research.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response provides concrete examples of what EHR data looks like, such as clinical notes, lab results, or structured fields, to address the user's lack of familiarity.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response identifies and explains specific NLP techniques suitable for EHR data, such as Named Entity Recognition (NER) for ethnicity, de-identification tools, or topic modeling.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response identifies and lists the specific subgroups of Asian populations available in CDC WONDER data (e.g., Chinese, Filipino, Vietnamese, Asian Indian, Japanese, Korean, Other Asian) to guide the abstraction task.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response outlines a clear, step-by-step plan for the research project, including data acquisition, preprocessing, NLP application, subgroup extraction, and prevalence rate calculation.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains how to apply the extracted subgroups to calculate prevalence rates of autoimmune diseases, such as by counting cases within a specific subgroup and dividing by the total population of that subgroup.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response lists specific technical and methodological skills the user should acquire, such as Python/R programming, NLP libraries (spaCy, NLTK), epidemiology concepts, and database querying.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response addresses the uncertainty of the professor's vague instructions by clarifying the logical flow: using NLP to map EHR ethnicity codes to CDC WONDER categories.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response acknowledges the challenge of mapping EHR ethnicity codes to CDC WONDER subgroups, noting that EHR data may lack granular detail or use different coding systems (e.g., ICD-10 vs. CDC codes).",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response suggests potential confounders or missing considerations, such as the accuracy of self-reported ethnicity in EHRs, the potential for misclassification, or the need for validation against a gold standard.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response distinguishes between the EHR data (source) and CDC WONDER data (target taxonomy), clarifying that the goal is to create a mapping or abstraction layer rather than simply copying data.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response reconciles the different data sources by explaining how to align the extracted subgroups from EHRs with the specific categories defined in CDC WONDER.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response contextualizes the prevalence rate calculation by explaining that it requires a denominator (population count) for each subgroup, which may need to be estimated or sourced from census data.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response provides references to authoritative sources for CDC WONDER data structure, EHR de-identification standards (e.g., HIPAA), and common NLP tools for medical text.",
+          "axis": "References & Citation Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response cites specific autoimmune diseases (e.g., Rheumatoid Arthritis, Lupus) to make the prevalence analysis concrete, rather than speaking generally about 'autoimmune diseases.'",
+          "axis": "References & Citation Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response uses clear, non-technical language to explain complex concepts like NLP and de-identification, ensuring the user can understand the plan.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response organizes the plan logically, perhaps using a numbered list or a flowchart, to make the research roadmap easy to follow.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response strictly adheres to the user's request to explain the professor's vague instructions and create a plan, without introducing irrelevant topics like clinical trials or drug development.",
+          "axis": "Instruction Following",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response avoids making definitive claims about the prevalence of autoimmune diseases in Asian subgroups without citing data, instead framing them as potential findings to be derived from the analysis.",
+          "axis": "Instruction Following",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response does not fabricate specific examples of EHR data or CDC WONDER subgroups that do not exist.",
+          "axis": "Instruction Following",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response does not claim that the NLP techniques will perfectly extract ethnicity from EHRs, ignoring the known limitations of automated extraction in clinical notes.",
+          "axis": "Implicit Criteria",
+          "polarity": "negative"
+        }
+      ]
+    },
+    "D": {
+      "rubrics": [
+        {
+          "criterion": "The response explains in plain language that the likely project is to use NLP on de-identified EHR data to identify or classify Asian subgroups, harmonize them to categories used by a selected CDC WONDER dataset, and study autoimmune-disease prevalence.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response makes clear that this is a plausible interpretation of the professor’s brief description, not a confirmed specification, and identifies important details that need clarification.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response gives concrete examples of structured EHR data relevant to the project, such as demographics, diagnosis codes, medications, laboratory results, or encounter dates.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response gives a concrete example of unstructured EHR text, such as a clinical note that mentions a patient’s self-reported ethnicity or ancestry, and labels any example as illustrative rather than an actual patient record.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response distinguishes subgroup information recorded in structured demographic fields from information that might appear in free-text notes, and notes that the two sources may disagree or be incomplete.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response describes relevant NLP methods, such as rule- or lexicon-based extraction, named-entity recognition, text classification, or supervised machine learning, and connects at least one method to extracting subgroup mentions from notes.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains that “abstracting” subgroups likely means identifying, coding, and mapping EHR subgroup information into a defined set of categories, rather than assuming the EHR and CDC WONDER already use identical labels.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response names plausible detailed Asian subgroup categories to investigate, such as Asian Indian, Chinese, Filipino, Japanese, Korean, Vietnamese, or Other Asian, while presenting them as examples rather than a guaranteed complete list.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response says subgroup categories depend on the particular CDC WONDER database, release, and available fields, and distinguishes Asian categories from Native Hawaiian or Other Pacific Islander categories where relevant.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response recommends preserving unknown, missing, mixed, or unclassifiable subgroup records instead of forcing every record into a specific Asian subgroup.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains that autoimmune-disease cases need an explicit operational definition, such as a specified diagnosis-code set or validated case algorithm, and that definitions may differ by disease.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response outlines how to estimate prevalence by defining the population and time period, identifying cases, counting cases as the numerator, and dividing by an appropriate subgroup-specific denominator.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response distinguishes prevalence from incidence and mortality, so the user does not treat disease deaths or new diagnoses as interchangeable with the number of people living with a disease.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains that CDC WONDER’s available measures depend on the selected dataset and that a WONDER source may provide population estimates or mortality data rather than autoimmune-disease prevalence.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains that EHR-based numerators and denominators must refer to compatible populations, subgroup definitions, geographic areas, and time periods before rates are compared or combined with WONDER data.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response identifies relevant factors for interpreting or adjusting subgroup prevalence comparisons, such as age and sex, and avoids implying that crude rates alone establish subgroup differences.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response notes that EHR populations may not represent the broader population because of healthcare access, utilization, referral patterns, or missing and inconsistently recorded demographic data.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response recommends validating NLP-extracted subgroup labels against an appropriate reference, such as manual review of a sample, and assessing relevant error rates or performance by subgroup.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response warns against assigning Asian subgroup identity from names, appearance, language, or other indirect proxies when the record does not explicitly support that classification.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response addresses privacy and research governance, including following the project’s approved data-access, institutional review, and secure-handling requirements for de-identified health data.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response identifies relevant skills to brush up on, covering both technical skills (such as Python or R, SQL, NLP, and clinical coding systems) and epidemiologic or statistical skills relevant to prevalence estimation.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response provides a sequenced research plan with practical stages, such as confirming the question and data sources, inspecting data, defining subgroup and disease labels, developing and validating extraction, estimating rates, and interpreting results.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response gives the user specific questions to take to the professor, including which EHR and WONDER datasets to use, which subgroup categories and diseases to target, what prevalence period and denominator to use, and what comparison or deliverable is expected.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response grounds dataset-specific claims in reliable sources or directs the user to authoritative documentation, especially CDC WONDER documentation and relevant documentation or validation literature for clinical coding and NLP methods.",
+          "axis": "References & Citation Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response defines technical terms such as NLP, de-identification, subgroup harmonization, and prevalence in accessible language suited to a user who says they have no clue what the project means.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response asserts that CDC WONDER universally contains the same detailed Asian subgroup fields or directly reports EHR-based autoimmune-disease prevalence, without qualifying the claim by dataset and measure.",
+          "axis": "Implicit Criteria",
+          "polarity": "negative"
+        }
+      ]
+    }
+  }
+}

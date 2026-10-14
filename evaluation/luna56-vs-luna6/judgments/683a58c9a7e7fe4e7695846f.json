@@ -1,0 +1,29 @@
+{
+  "scores": {
+    "A": {
+      "reference_coverage": 26,
+      "precision": 15,
+      "atomicity_judgeability": 11,
+      "implicit_synthesis": 14,
+      "axis_failure_modes": 7,
+      "total": 73,
+      "notes": "Strong coverage of mathematical correctness, worked reasoning, curriculum contrasts, and technique recognition. However, it substitutes reconstructible configurations for required diagrams and misses acronym expansion, headings, early theorem introduction, and competition-problem citations. Mandatory example families and overlapping positive/negative criteria reduce precision and judgeability."
+    },
+    "B": {
+      "reference_coverage": 25,
+      "precision": 18,
+      "atomicity_judgeability": 13,
+      "implicit_synthesis": 13,
+      "axis_failure_modes": 8,
+      "total": 77,
+      "notes": "Covers the central contrast, accessible theorem and technique demonstrations, intermediate reasoning, and substantive mathematical errors with relatively focused criteria. It omits diagrams and placement, explicit acronym expansion, headings, early theorem introduction, and problem-source attribution; contest-format coverage is conditional rather than required."
+    }
+  },
+  "ranking": [
+    "B",
+    "A"
+  ],
+  "winner": "B",
+  "confidence": 0.8,
+  "decision_notes": "B wins through better precision and more independently judgeable criteria, without imposing A's particular example families or broader method survey. A offers slightly stronger reference coverage and synthesis, but both omit several important reference obligations, especially actual diagrams."
+}

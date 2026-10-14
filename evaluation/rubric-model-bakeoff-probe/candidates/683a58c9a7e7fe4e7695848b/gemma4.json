@@ -1,0 +1,114 @@
+{
+  "rubrics": [
+    {
+      "criterion": "The response provides a clear explanation of the professor's research objective (extracting Asian subgroups from EHRs via NLP to compare with CDC WONDER for autoimmune disease prevalence).",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response provides concrete examples of what Electronic Health Record (EHR) data looks like (e.g., clinical notes, lab results, demographic fields, medication lists).",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response identifies specific NLP techniques applicable to clinical text (e.g., Named Entity Recognition (NER), Relation Extraction, or clinical-specific models like ClinicalBERT).",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response identifies specific Asian subgroups found in CDC WONDER data (e.g., Chinese, Filipino, Japanese, Vietnamese, etc.).",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains how to calculate prevalence rates using the extracted data (e.g., relating the count of autoimmune cases to the total subgroup population).",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response lists relevant skills to brush up on, including technical (Python, NLP libraries) and domain-specific (epidemiology, medical terminology) skills.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response provides a structured, multi-step research plan that addresses all parts of the professor's instructions.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response addresses the challenge of mapping unstructured EHR mentions of ethnicity/race to the standardized categories used by the CDC.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response recognizes the necessity of medical ontologies/standardized terminologies (e.g., ICD-10, SNOMED CT) for defining autoimmune diseases.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response acknowledges potential data limitations or biases in EHRs, such as missingness or under-representation of certain subgroups.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response mentions the importance of validating NLP extraction results against a gold standard or manual annotations.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response addresses the importance of determining an accurate denominator (the population at risk) for prevalence estimation.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response connects specific NLP techniques (like NER) directly to the specific task of extracting demographic and disease entities.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response synthesizes the connection between the extracted EHR data and the comparative analysis with CDC WONDER's aggregate data.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response integrates the identified skills into the progression of the suggested research plan.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response reconciles the difference between granular, individual-level EHR data and the aggregate, population-level CDC WONDER data.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response uses appropriate technical and medical terminology that is clear and usable for a student in this field.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The research plan is structured logically, moving from data understanding to extraction, comparison, and final analysis.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response addresses all seven distinct requests/questions presented in the prompt.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response inaccurately describes CDC WONDER as a source of individual/patient-level records rather than aggregate data.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response makes unfounded claims regarding the absolute accuracy or certainty of NLP-based subgroup extraction.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response suggests methods that disregard the de-identification/privacy constraints inherent in EHR data usage.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    }
+  ]
+}

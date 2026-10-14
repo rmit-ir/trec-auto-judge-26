@@ -1,0 +1,63 @@
+{
+  "quality_order": [
+    "luna",
+    "gemma4",
+    "qwen235",
+    "glm47flash"
+  ],
+  "blind_quality_winner": "luna",
+  "competitive_within_3_points": [
+    "luna"
+  ],
+  "cost_effective_winner": "luna",
+  "models": {
+    "luna": {
+      "display_name": "GPT-6 Luna",
+      "mean_judge_score": 81.0,
+      "median_judge_score": 81.0,
+      "mean_rank": 1,
+      "wins": 1,
+      "topics": 1,
+      "mean_criteria": 23,
+      "generation_actual_usd": "0.00269346",
+      "generation_normalized_usd": "0.0024486"
+    },
+    "qwen235": {
+      "display_name": "Qwen3 235B A22B 2507",
+      "mean_judge_score": 65.0,
+      "median_judge_score": 65.0,
+      "mean_rank": 3,
+      "wins": 0,
+      "topics": 1,
+      "mean_criteria": 28,
+      "generation_actual_usd": "0.0013888314",
+      "generation_normalized_usd": "0.0006944157"
+    },
+    "gemma4": {
+      "display_name": "Gemma 4 26B-A4B",
+      "mean_judge_score": 71.0,
+      "median_judge_score": 71.0,
+      "mean_rank": 2,
+      "wins": 0,
+      "topics": 1,
+      "mean_criteria": 21,
+      "generation_actual_usd": "0.00242698",
+      "generation_normalized_usd": "0.00121349"
+    },
+    "glm47flash": {
+      "display_name": "GLM-4.7 Flash",
+      "mean_judge_score": 54.0,
+      "median_judge_score": 54.0,
+      "mean_rank": 4,
+      "wins": 0,
+      "topics": 1,
+      "mean_criteria": 20,
+      "generation_actual_usd": "0.0004669299",
+      "generation_normalized_usd": "0.00023346495"
+    }
+  },
+  "judge_actual_usd": "0.0472648",
+  "total_actual_usd": "0.4542410013",
+  "hard_cap_usd": "20.00",
+  "selection_rule": "Rank by blind GPT-6.1 Sol mean quality; models within 3 points of the top are treated as competitive, then choose the lowest normalized production generation cost."
+}

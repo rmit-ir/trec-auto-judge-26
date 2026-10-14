@@ -2,16 +2,20 @@
 and minima_llm's OpenAIMinimaLlm are monkeypatched/faked."""
 
 from decimal import Decimal
+from io import BytesIO
+from urllib.error import HTTPError
 
 import pytest
 
 import judges.rag26_arena.rubrics.llm as llm_module
 from judges.rag26_arena.rubrics.generation_models import UsageRecord
 from judges.rag26_arena.rubrics.llm import (
+    AzureContentFilterError,
     BedrockUnavailableError,
     CostTracker,
     LlmResult,
     call_bedrock,
+    call_construction_model,
     print_budget_banner,
 )
 
@@ -106,6 +110,65 @@ def test_call_bedrock_empty_content_is_a_failure(monkeypatch):
                      tier="flex", max_attempts=2)
 
 
+def test_call_construction_model_dispatches_gpt6_luna_to_azure_ase(monkeypatch):
+    expected = LlmResult(
+        text='{"ok": true}', input_tokens=123, output_tokens=45,
+        model_id="gpt-6-luna", tier="default", region="azure-ase",
+    )
+    seen = {}
+
+    def fake_azure(model_id, messages, *, tier):
+        seen.update(model_id=model_id, messages=messages, tier=tier)
+        return expected
+
+    monkeypatch.setattr(llm_module, "call_azure_ase_luna", fake_azure)
+    result = call_construction_model(
+        "gpt-6-luna", [{"role": "user", "content": "hi"}],
+        region="azure-ase", tier="default", fallback_tier=None,
+    )
+    assert result == expected
+    assert seen["model_id"] == "gpt-6-luna"
+    assert seen["tier"] == "default"
+
+
+def test_azure_content_filter_is_typed_nonretryable_failure(monkeypatch):
+    monkeypatch.setenv("OPEAI_ASE_URL", "https://example.invalid/openai/v1")
+    monkeypatch.setenv("AZURE_ASE_KEY", "test-key")
+    body = BytesIO(b'{"error":{"code":"content_filter","message":"blocked"}}')
+
+    def blocked(*_args, **_kwargs):
+        raise HTTPError(
+            "https://example.invalid", 400, "Bad Request", {}, body
+        )
+
+    monkeypatch.setattr(llm_module.urllib.request, "urlopen", blocked)
+    with pytest.raises(AzureContentFilterError, match="content filter blocked"):
+        llm_module.call_azure_ase_luna(
+            "gpt-6-luna", [{"role": "user", "content": "fixture"}]
+        )
+
+
+def test_cached_call_does_not_retry_content_filter(monkeypatch, tmp_path):
+    calls = []
+
+    def blocked(*_args, **_kwargs):
+        calls.append(1)
+        raise AzureContentFilterError("blocked")
+
+    monkeypatch.setattr(llm_module, "call_construction_model", blocked)
+    cache = llm_module.RubricLlmCache(tmp_path / "cache.db")
+    tracker = CostTracker(hard_cap_usd=Decimal("25"))
+    with pytest.raises(AzureContentFilterError):
+        llm_module.cached_bedrock_call(
+            "k", [{"role": "user", "content": "fixture"}],
+            model_id="gpt-6-luna", region="azure-ase", tier="default",
+            fallback_tier=None, cache=cache, cost_tracker=tracker,
+            stage="test", qid="t1", parse=lambda x: x, max_attempts=3,
+        )
+    assert calls == [1]
+    cache.close()
+
+
 def test_cost_tracker_records_zero_cost_on_cache_hit():
     tracker = CostTracker(hard_cap_usd=Decimal("25"))
     result = LlmResult(text="x", input_tokens=1_000_000, output_tokens=1_000_000,
@@ -121,6 +184,16 @@ def test_cost_tracker_estimates_real_spend_on_a_miss():
                         model_id="qwen.qwen3-235b-a22b-2507-v1:0", tier="flex", region="ap-southeast-2")
     record = tracker.record_bedrock(result, stage="characterize", cache_hit=False, qid="t1")
     assert record.estimated_usd == Decimal("0.1133") + Decimal("0.4532")
+
+
+def test_cost_tracker_estimates_gpt6_luna_azure_spend():
+    tracker = CostTracker(hard_cap_usd=Decimal("25"))
+    result = LlmResult(
+        text="x", input_tokens=1_000_000, output_tokens=1_000_000,
+        model_id="gpt-6-luna", tier="default", region="azure-ase",
+    )
+    record = tracker.record_bedrock(result, stage="characterize", cache_hit=False, qid="t1")
+    assert record.estimated_usd == Decimal("0.10") + Decimal("0.50")
 
 
 def test_cost_tracker_by_stage_and_budget_check():

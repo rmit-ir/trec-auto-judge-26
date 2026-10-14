@@ -38,6 +38,7 @@ test = [
 ]
 bedrock = [
     "boto3>=1.40.0",
+    "aws-bedrock-token-generator>=1.1.0",
 ]
 minima-llm = [
     "minima-llm>=0.2.5",

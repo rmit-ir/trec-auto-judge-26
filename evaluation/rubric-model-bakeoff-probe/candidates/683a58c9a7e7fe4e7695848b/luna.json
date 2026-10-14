@@ -1,0 +1,144 @@
+{
+  "rubrics": [
+    {
+      "criterion": "The response explains in plain language the likely project: use de-identified EHR data to identify or harmonize Asian subgroup information, then study autoimmune-disease prevalence by subgroup.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response makes clear that this is a plausible interpretation of the professor’s description, not a confirmed protocol, and identifies important details that remain unknown.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response gives a realistic, clearly synthetic example of an EHR record or clinical note and points out where subgroup and autoimmune-disease information might appear.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response distinguishes structured EHR fields, such as demographics and diagnosis codes, from unstructured text, such as clinician notes.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response names NLP methods plausibly suited to the task, such as dictionary or rule-based matching, named-entity recognition, or supervised text classification, and briefly explains their relevance.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response distinguishes extracting subgroup identity from text from identifying autoimmune disease mentions or cases, rather than implying one NLP method automatically solves both tasks.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response outlines practical preparation steps relevant to EHR NLP, such as text cleaning, terminology or spelling normalization, handling negation and uncertainty, and creating labeled examples.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains that race and ethnicity options vary across CDC WONDER databases and versions, and that the available categories may be broader than detailed Asian national-origin subgroups.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "If the response gives examples such as Chinese, Filipino, Asian Indian, Vietnamese, Korean, or Japanese, it distinguishes possible EHR/self-reported subgroups from categories confirmed to exist in the specific CDC WONDER dataset.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response recommends identifying the exact CDC WONDER database, time period, and race/ethnicity fields before deciding which subgroups can be abstracted or compared.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains how EHR subgroup labels would need to be mapped to the selected CDC WONDER categories, including how to handle missing, ambiguous, multiple, or nonmatching identities.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains that autoimmune-disease cases need an operational case definition, such as specified diagnosis codes, validated note-based criteria, or a combination.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response describes prevalence as a defined count of people with the disease divided by an appropriate population denominator, rather than as a count of mentions or records.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response notes that the project must specify the population and time window, such as point or period prevalence, and distinguishes prevalence from incidence.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response identifies conditions needed for meaningful comparison with CDC WONDER estimates, such as compatible subgroup definitions, geography, time period, age structure, disease definition, and denominators.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response cautions that EHR-based prevalence may reflect who receives care, gets diagnosed, and has usable records, and therefore may not represent population prevalence without suitable design and adjustment.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response recommends validating subgroup extraction and disease identification against an appropriate reference, such as manually reviewed records, and suggests reporting suitable performance measures or error analysis.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response lists relevant skills to brush up on, prioritizing skills tied to this project, such as Python or R, data handling, NLP, clinical coding or terminology, epidemiology, and prevalence/statistical methods.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response proposes a sequenced research plan that moves from clarifying the question and data sources through data inspection, subgroup and disease definitions, extraction, validation, prevalence estimation, and interpretation.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response includes concrete questions for the professor that resolve consequential ambiguities, such as the exact EHR source, CDC WONDER database, subgroup categories, autoimmune diseases, population denominator, and expected project scope.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response addresses privacy and data-governance constraints relevant to de-identified health records, including appropriate institutional or IRB guidance where applicable.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response warns against treating names or other indirect clues as reliable evidence of a person’s Asian subgroup, and favors documented identity data or a validated, appropriately governed method.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response supports claims about CDC WONDER categories and relevant prevalence methods with credible, topic-appropriate sources, preferably official CDC WONDER documentation for dataset-specific fields.",
+      "axis": "References & Citation Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response defines technical terms or explains them in context so that a reader unfamiliar with EHRs and NLP can use the explanation to begin planning the project.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response addresses all requested parts: likely project meaning, EHR examples, NLP techniques, CDC WONDER subgroups, prevalence application, skills, and a forward research plan.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response confidently presents a fixed list of detailed Asian subgroups as available in every CDC WONDER dataset, or otherwise misstates the selected dataset’s categories without qualification.",
+      "axis": "References & Citation Quality",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response presents an EHR-derived rate as directly equivalent to population prevalence or directly comparable with CDC WONDER without addressing the denominator and key differences in definitions or populations.",
+      "axis": "Synthesis of Information",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response recommends assigning Asian subgroup identity from names or similar indirect clues as if this were a reliable substitute for documented identity, without validation or appropriate governance.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "scores": {
+    "A": {
+      "reference_coverage": 24,
+      "precision": 19,
+      "atomicity_judgeability": 10,
+      "implicit_synthesis": 11,
+      "axis_failure_modes": 7,
+      "total": 71,
+      "notes": "Covers the core contrast, competition theorems and techniques, Euclidean focus, accessibility, and mathematical correctness. Requirements are well scoped, but several repeat accuracy, audience, or example obligations. Worked solutions are not explicitly required, and diagrams, competition formats, acronym expansion, and problem attribution are largely missing."
+    },
+    "B": {
+      "reference_coverage": 29,
+      "precision": 18,
+      "atomicity_judgeability": 12,
+      "implicit_synthesis": 14,
+      "axis_failure_modes": 8,
+      "total": 81,
+      "notes": "Strongest treatment of worked examples: requires stepwise reasoning, theorem conditions, strategy demonstrations, and recognition cues. Accurately distinguishes competition formats and connects contest methods to school foundations. Some example criteria overlap, and requiring all named competition categories slightly expands scope. Missing diagram requirements and explicit first-use acronym expansion; citation coverage is only partial."
+    },
+    "C": {
+      "reference_coverage": 21,
+      "precision": 10,
+      "atomicity_judgeability": 9,
+      "implicit_synthesis": 9,
+      "axis_failure_modes": 5,
+      "total": 54,
+      "notes": "Covers the central comparison and appropriately rejects ordinary classroom examples masquerading as advanced competition material. However, it incorrectly groups AIME with proof-based Olympiads. It lacks explicit worked-solution requirements and introduces peripheral obligations concerning IB, algebra, and tone. Numerous negatively phrased criteria overlap or have unclear polarity."
+    },
+    "D": {
+      "reference_coverage": 25,
+      "precision": 14,
+      "atomicity_judgeability": 9,
+      "implicit_synthesis": 11,
+      "axis_failure_modes": 6,
+      "total": 65,
+      "notes": "Covers nonstandard theorems and techniques, explained examples, foundational connections, terminology, and competition problem types. Mathematical correctness is less comprehensively specified than in A or B. Repeated mindset and pedagogy criteria reduce atomicity, while curricular omission explanations, college readiness, and broader utility add unnecessary scope. Diagram and problem-source requirements are absent."
+    }
+  },
+  "ranking": [
+    "B",
+    "A",
+    "D",
+    "C"
+  ],
+  "winner": "B",
+  "confidence": 0.91,
+  "decision_notes": "B wins through actionable worked-example criteria, theorem applicability checks, and substantive synthesis. A outranks D through tighter scope and stronger correctness safeguards. C's inaccurate AIME-format requirement is a substantial defect. All four omit the reference's important diagram-and-proximity expectations."
+}

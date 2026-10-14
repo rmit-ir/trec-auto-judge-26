@@ -1,0 +1,49 @@
+{
+  "scores": {
+    "A": {
+      "reference_coverage": 23,
+      "precision": 17,
+      "atomicity_judgeability": 10,
+      "implicit_synthesis": 12,
+      "axis_failure_modes": 7,
+      "total": 69,
+      "notes": "Covers the central comparison, contest tools, accessible explanations, step-by-step examples, and mathematical correctness. Omits diagrams, acronym expansion, contest formats, and problem-source checks. Several synthesis criteria substantially overlap."
+    },
+    "B": {
+      "reference_coverage": 26,
+      "precision": 18,
+      "atomicity_judgeability": 12,
+      "implicit_synthesis": 14,
+      "axis_failure_modes": 8,
+      "total": 78,
+      "notes": "Strongest treatment of theorem conditions, worked reasoning, strategic tool selection, curricular variation, and contest-format distinctions. Mostly observable criteria with useful factual-error safeguards. Still misses diagrams and their placement, explicit acronym expansion, early theorem placement, and problem citations."
+    },
+    "C": {
+      "reference_coverage": 20,
+      "precision": 14,
+      "atomicity_judgeability": 11,
+      "implicit_synthesis": 9,
+      "axis_failure_modes": 5,
+      "total": 59,
+      "notes": "Captures the core contrast, audience, unfamiliar tools, and a worked problem. The blanket prohibition on solutions relying on school-taught tools is overbroad and conflicts with building contest reasoning from familiar foundations. Missing broad correctness safeguards and several reference obligations; negatively labelled criteria also use ambiguous negated phrasing."
+    },
+    "D": {
+      "reference_coverage": 22,
+      "precision": 14,
+      "atomicity_judgeability": 9,
+      "implicit_synthesis": 12,
+      "axis_failure_modes": 6,
+      "total": 63,
+      "notes": "Provides substantial comparison, terminology guidance, non-routine techniques, and solution steps. Repeated comparison and audience criteria reduce atomicity. Mandatory auxiliary-construction and advanced-topic coverage adds unnecessary scope, while claims about curricular absence and time pressure need calibration. Mathematical and competition-fact error checks are incomplete."
+    }
+  },
+  "ranking": [
+    "B",
+    "A",
+    "D",
+    "C"
+  ],
+  "winner": "B",
+  "confidence": 0.87,
+  "decision_notes": "B best combines reference coverage with precise, teachable, and judgeable expectations. A exceeds D through stronger correctness safeguards and less prescriptive scope. C's overbroad restriction on familiar tools is a substantial weakness. All four omit important diagram, presentation, and problem-source obligations."
+}

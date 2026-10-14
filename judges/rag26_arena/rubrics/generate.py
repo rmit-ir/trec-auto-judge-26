@@ -135,9 +135,15 @@ def _validate_candidate_item(
     if isinstance(confidence, bool) or not isinstance(confidence, (int, float)) or not (0.0 <= confidence <= 1.0):
         raise CandidateGenerationError("confidence must be a number in [0, 1]")
     if narrative_haystacks is not None:
-        unmatched = [s for s in narrative_spans if not any(s in haystack for haystack in narrative_haystacks)]
-        if unmatched:
-            raise CandidateGenerationError(f"narrative_spans not found verbatim in the request: {unmatched}")
+        # narrative_spans are optional provenance metadata, not rubric
+        # semantics. Strong models occasionally paraphrase a requested span
+        # despite being told to copy it verbatim; keep only spans that are
+        # actually grounded rather than rejecting an otherwise valid
+        # criterion and retrying the identical prompt.
+        narrative_spans = [
+            s for s in narrative_spans
+            if any(s in haystack for haystack in narrative_haystacks)
+        ]
 
     axis: Optional[str] = None
     if allowed_axes is not None:
@@ -294,8 +300,11 @@ def generate_axis_candidates(
     explicit = call(
         "explicit", EXPLICIT_PROMPT_VERSION,
         explicit_candidates_messages(topic.narrative, characterization, min_count=min_c, max_count=max_c),
+        # Prompt keeps the breadth target; the parse floor is lower because a
+        # topic with few literal asks legitimately yields fewer explicit
+        # criteria, and retrying the identical prompt cannot change that.
         lambda text: parse_explicit_candidates(topic.qid, text, narrative_haystacks=narrative_haystacks,
-                                               min_count=min_c, max_count=max_c),
+                                               min_count=min(min_c, 3), max_count=max_c),
     )
 
     min_c, max_c = _count_range("implicit", breadth)

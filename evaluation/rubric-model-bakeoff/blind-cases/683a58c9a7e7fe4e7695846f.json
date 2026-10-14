@@ -1,0 +1,596 @@
+{
+  "qid": "683a58c9a7e7fe4e7695846f",
+  "prompt": "Write a blog post contrasting Euclidean geometry used in high school math competitions such as the AMC, AIME, or Olympiads to geometry taught in the standard American high school math curriculums. This post is written for people with knowledge of geometry from standard high school classes, but with no math experience in competitive math. Your post must include clear examples of problem solving techniques and theorems that are commonly used in high school math competitions, but not typically taught in a high school math class.",
+  "reference": {
+    "qid": "683a58c9a7e7fe4e7695846f",
+    "domain": "STEM",
+    "conceptual_breadth": "Moderate",
+    "logical_nesting": "Intermediate",
+    "exploration": "Medium",
+    "rubrics": [
+      {
+        "criterion": "The response ensures all acronyms are expanded on it during their first appearance and provides clear definitions for all specialized terms and mathematical symbols upon first use, accompanied by explanatory prose or examples (e.g., (1) SSS, meaning, Side-Side-Side, criteria to establish that two triangles are congruent, (2) American Invitational Mathematics Examination (AIME), (3) American Mathematics Competitions (AMC), (4) United States of America Mathematical Olympiad (USAMO)).",
+        "weight": 4.0,
+        "axis": "Communication Quality"
+      },
+      {
+        "criterion": "The response includes a geometric diagram for each theorem and sample problem introduced (e.g., (1) Draw an example of a cyclic quadrilateral and the relevant angles that sums to 180, (2) Draw and example cyclic quadrilateral with the diagonals to show the Ptolemy's Theorem, (3) Draw an example of a triangle of the cevians to illustrate the Ceva's Theorem, (4) Draw three circles to illustrate the Collinearity of External Tangent Intersections).",
+        "weight": 4.0,
+        "axis": "Implicit Criteria"
+      },
+      {
+        "criterion": "The response includes a geometric diagram far from the text where it is discussed (i.e., the text describes an image that is missing or is on pages away).",
+        "weight": -3.0,
+        "axis": "Communication Quality"
+      },
+      {
+        "criterion": "The response keeps the primary focus of the blog post on Euclidean geometry (e.g. (1) Ceva's Theorem, (2) Menelaus' Theorem, (3) Power of a Point Theorem, (4) Stewart's Theorem, (5) Ptolemy's Theorem, (6) Spiral Similarity, (7) Miquel Point) and does not include problems from other topics such as functions and combinatorics.",
+        "weight": 5.0,
+        "axis": "Instruction Following"
+      },
+      {
+        "criterion": "The response's blog post contains at least 2 sub-headings to separate discussion of different topics (e.g., Subheadings titled: (1) Advanced Theorems, (2) Advanced Problem-Solving Techniques, (3) Example Problems and Solutions, (4) Where to go from here?).",
+        "weight": 2.0,
+        "axis": "Communication Quality"
+      },
+      {
+        "criterion": "The response's blog post mentions at least one high school math competition (e.g., (1) AMC, (2) AIME, (3) USA(J)MO, or (4) IMO).",
+        "weight": 3.0,
+        "axis": "Instruction Following"
+      },
+      {
+        "criterion": "The response's blog post elaborates on a theorem in the common core high school geometry standards, beyond a quick definition to contrast it with competition-level requirements (e.g., Pythagoras' Theorem states that the square of the length of the hypotenuse of a right triangle is equal to the sum of the squares of the two other sides. This can be used to find the missing lengths of the right triangle as long as two other lengths are known, and continues to provide a diagram and example usage).",
+        "weight": 2.0,
+        "axis": "Implicit Criteria"
+      },
+      {
+        "criterion": "The response identifies at least one theorem in competition-style Euclidean geometry problems (e.g., (1) Ceva's Theorem, (2) Menelaus' Theorem, (3) Power of a Point Theorem, (4) Stewart's Theorem, (5) Ptolemy's Theorem, (6) Spiral Similarity, (7) Miquel Point).",
+        "weight": 5.0,
+        "axis": "Explicit Criteria"
+      },
+      {
+        "criterion": "The response identifies at least one problem-solving technique in Euclidean geometry (e.g., (1) Correctly identifying what theorems to use, (2) Correctly applying the theorem, (3) Adding auxiliary lines, (4) Homothety, (5) Symmetries, rotations, and reflections, (6) Inversion).",
+        "weight": 5.0,
+        "axis": "Explicit Criteria"
+      },
+      {
+        "criterion": "The response introduces a problem-solving technique that is included in the common core high school geometry standards (e.g., (1) Pythagoras' Theorem, (2) Midpoint Theorem, (3) Congruent Triangle Theorems, (4) Angle Bisector Theorem) and provides a sample problem that can be solved using the technique.",
+        "weight": -4.0,
+        "axis": "Implicit Criteria"
+      },
+      {
+        "criterion": "The response includes a sample problem to demonstrate problem-solving techniques (e.g., (1) AMC 12 2018 #8, (2) 2020 AIME II Problem 15, (3) 2020 AMC 12A Problem 18, (4) 2021 USAJMO Problem 3, or (5) explicitly stating a simple instance of a problem where the techniques can be applied).",
+        "weight": 3.0,
+        "axis": "Implicit Criteria"
+      },
+      {
+        "criterion": "The response describes the test format of at least one high school math competition (e.g., (1) The AIME is a 15-question, 3-hour exam, (2) Each answer is an integer from 000 to 999, inclusive, (3) The AMC 10 is a 25-question, 75-minute multiple-choice test. (4) Calculators are not permitted).",
+        "weight": 2.0,
+        "axis": "Implicit Criteria"
+      },
+      {
+        "criterion": "The response incorrectly defines a theorem, incorrectly presents the solution to a sample problem, or incorrectly provides information about a high school math competition.",
+        "weight": -5.0,
+        "axis": "Implicit Criteria"
+      },
+      {
+        "criterion": "The response identifies a theorem or problem-solving technique that is discussed within the first 200 words of the post (e.g., Ptolemy's theorem establishes the relationship between the length of the sides (abcd) and the diagonals (pq) of a cyclic quadrilateral where ac + bd = pq).",
+        "weight": 2.0,
+        "axis": "Communication Quality"
+      },
+      {
+        "criterion": "The response's blog post presents a common core style math problem as an olympiad style math problem (e.g., (1) Pythagoras' Theorem, (2) Midpoint Theorem, (3) Congruent Triangle Theorems, (4) Angle Bisector Theorem).",
+        "weight": -3.0,
+        "axis": "Implicit Criteria"
+      },
+      {
+        "criterion": "The response identifies a distinction between competition-style math problems and standard curriculum math problems (e.g., (1) Competition-style math problems cover more breadth and depth using more advanced theorems and problem-solving skills, (2) Competition-style math problems require more \"tricks\", (3) Competition-style math problems require more steps of problem-solving involving unique combinations of applications of math theorems, (4) Competition-style math problems are highly specialized to specific topics such as geometry, combinatorics, and number theory, and less on analysis and algebra.",
+        "weight": 4.0,
+        "axis": "Synthesis of Information"
+      },
+      {
+        "criterion": "The response includes a step-by-step solution to a sample problem introduced (e.g., $CAROLINE$ is essentially a plus sign with side length 1 with a few diagonals, which motivates us to coordinate bash. We let $N = (1, 0)$ and $E = (0, 1)$. To find $CORNELIA$'s self-intersections, we take\n\\[CO = y = 2, AI = y = -3x + 6, RN = y = 3x - 3\\]\nAnd plug them in to get $C_1 = \\left(\\frac{4}{3}, 2 \\right)$ where $C_1$ is the intersection of $CO$ and $AI$, and $C_2 = \\left(\\frac{5}{3}, 2 \\right)$ is the intersection of $RN$ and $CO$.\nWe also track the intersection of $AI$ and $RN$ to get $\\left(\\frac{3}{2}, \\frac{3}{2} \\right)$.\nBy vertical symmetry, the other 2 points of intersection should have the same x-coordinates. We can then proceed with Solution 1 to calculate the area of the triangle (compare the $y$-coordinates of $A,R,I,N$ and $CO$ and $EL$).).",
+        "weight": 4.0,
+        "axis": "Synthesis of Information"
+      },
+      {
+        "criterion": "The response contains messy, unnecessary formulas, code, or tables. (e.g., (1) Unrendered latex, (2) messy formulas with improperly formatted structure or messy comments, (3) broken tables that are unrendered, (4) missing figures or formulas or sections that are referenced in the text).",
+        "weight": -4.0,
+        "axis": "Communication Quality"
+      },
+      {
+        "criterion": "The response cites the source of a sample problem incorrectly (i.e., quotes or explains a particular problem, such as AMC 12 2018 #4, but is actually about a different problem or a variant of the problem that is different).",
+        "weight": -3.0,
+        "axis": "References & Citation Quality"
+      },
+      {
+        "criterion": "The response uses and cites the source of competition problems (e.g., (1) AMC 12 2018 #8, (2) 2020 AIME II Problem 15, (3) 2020 AMC 12A Problem 18, (4) 2021 USAJMO Problem 3).",
+        "weight": 2.0,
+        "axis": "References & Citation Quality"
+      }
+    ]
+  },
+  "candidates": {
+    "A": {
+      "rubrics": [
+        {
+          "criterion": "The response contrasts Euclidean geometry used in competitions (AMC, AIME, Olympiads) with standard American high school geometry curricula.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explicitly mentions specific competition levels such as AMC, AIME, or Olympiads.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response includes specific mathematical theorems commonly used in competitions but not typically in standard high school classes.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response includes specific problem-solving techniques used in competitive math but not typically in standard classes.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response provides clear examples to illustrate the mentioned theorems and techniques.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response distinguishes between the procedural/computational nature of standard curricula and the insight/logic-driven nature of competitive math.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response uses accurate and appropriate mathematical terminology.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response addresses the specific learning goal of each domain (e.g., calculating values vs. proving complex geometric properties).",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response contains mathematically incorrect theorems, properties, or calculation errors.",
+          "axis": "Implicit Criteria",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response fabricates mathematical theorems, properties, or techniques.",
+          "axis": "Implicit Criteria",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response misrepresents the scope of standard American high school geometry by claiming it includes competitive-level content.",
+          "axis": "Implicit Criteria",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response uses advanced mathematical prerequisites (e.g., Calculus) to solve geometry problems without explaining the connection or addressing the target audience's constraints.",
+          "axis": "Instruction Following",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response compares the scope and depth of topics covered in standard vs. competitive geometry.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response reconciles the relationship between foundational high school geometry and advanced competitive applications.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response synthesizes the difference in reasoning styles (e.g., using auxiliary constructions to bridge gaps in standard methods).",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response connects the specific theorems mentioned to the broader context of competitive problem-solving.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains how a competitive technique specifically overcomes a limitation of standard high school methods.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response follows a blog post format (e.g., engaging introduction, structured body, conclusion).",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response uses an appropriate tone for a blog post intended for a mathematically literate but non-competitive audience.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response provides clear, step-by-step mathematical explanations within its examples.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response uses precise language to describe geometric configurations and spatial relationships.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response maintains a logical flow between the comparison of curricula and the demonstration of examples.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response calibrates technical difficulty to ensure it is accessible to those with only standard high school geometry knowledge.",
+          "axis": "Instruction Following",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response avoids unnecessary jargon that would alienate an audience without competitive math experience.",
+          "axis": "Instruction Following",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response provides a meaningful distinction between 'what' is taught in standard curriculum vs 'how' math is approached in competitions.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        }
+      ]
+    },
+    "B": {
+      "rubrics": [
+        {
+          "criterion": "The response is presented as a self-contained blog post rather than only as an outline, glossary, or list of facts.",
+          "axis": "Instruction Following",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response is calibrated for readers who know standard high school geometry but have no competitive-math experience, explaining unfamiliar contest terms and assumptions as they arise.",
+          "axis": "Instruction Following",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response identifies its subject as Euclidean geometry in competitions and accurately names the AMC, AIME, and Olympiads as examples of the requested contest setting.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response describes relevant material typically encountered in standard American high school geometry, such as congruence, similarity, angle relationships, or familiar circle results.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response describes recognizable features of competition geometry, such as non-routine configurations, strategic theorem use, or the need to find a solution path rather than simply apply a recently taught procedure.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response directly contrasts the two settings along meaningful dimensions, rather than presenting unrelated descriptions of school and contest geometry.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains how contest methods build on, recombine, or extend familiar high school geometry, instead of implying the two settings use entirely unrelated mathematics.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response distinguishes relevant differences among AMC, AIME, and Olympiad problems or formats where it discusses them, such as answer-focused contests versus proof-oriented Olympiads.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains at least one way contest solutions can differ from routine classroom solutions, such as selecting a useful theorem, adding an auxiliary construction, or combining several geometric observations.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response makes a calibrated distinction between tools commonly emphasized in standard courses and tools less typically taught there, rather than treating every familiar theorem as contest-exclusive.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response gives at least two concrete illustrations collectively covering a theorem and a problem-solving technique, rather than relying on a list of names.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response states at least one named geometry theorem or result relevant to contests accurately, including enough of its conditions and conclusion for the reader to understand it.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response demonstrates how a stated theorem or result applies in a specific geometric configuration.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains at least one problem-solving technique used in contest geometry, such as angle chasing, an auxiliary construction, homothety, or inversion, rather than merely naming it.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response shows the reader how the described technique advances a concrete example toward a solution.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "At least one example features a genuinely less routinely taught contest tool or result, such as the radical-axis theorem, Miquel's theorem, homothety, or inversion, and places it appropriately in the contest context.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The example solutions show enough intermediate reasoning for a reader to follow how the geometric facts lead to the conclusion.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains when or why a reader might recognize an opportunity to use the illustrated theorem or technique.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response connects unfamiliar contest tools or examples to concepts a standard-geometry student is likely to know.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The examples use Euclidean geometry appropriate to the requested topic and do not depend on unexplained competitive-math prerequisites.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response briefly explains specialized terminology, notation, or diagram relationships needed to understand its examples.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response acknowledges that standard American course content can vary by school, course level, or teacher when characterizing what is typically taught.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response ends with a useful takeaway that clarifies the practical difference between learning standard-course geometry and approaching competition geometry.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response makes materially misleading categorical claims that a tool is absent from every standard American high school course or that AMC, AIME, and Olympiad geometry all have the same format or demands.",
+          "axis": "Implicit Criteria",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response materially misstates a theorem's conditions or conclusion, gives an invalid worked derivation, or makes a consequential factual error about the named competitions.",
+          "axis": "Implicit Criteria",
+          "polarity": "negative"
+        }
+      ]
+    },
+    "C": {
+      "rubrics": [
+        {
+          "criterion": "The response explicitly contrasts Euclidean geometry used in high school math competitions (AMC, AIME, Olympiads) with the geometry taught in standard American high school curriculums.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response is written for an audience with knowledge of standard high school geometry but no experience in competitive math.",
+          "axis": "Instruction Following",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response includes clear examples of problem-solving techniques and theorems commonly used in competitions but not typically taught in standard high school classes.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response avoids using jargon or notation that is standard in competitive math (e.g., complex numbers, barycentric coordinates, inversion) without first explaining it in the context of the standard curriculum.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response accurately describes the differences in problem difficulty, proof style, and theorems used between the two contexts.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response provides a concrete example of a competition problem and walks through the solution using a technique not found in standard curricula (e.g., mass points, power of a point, or angle chasing with cyclic quadrilaterals).",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains *why* a specific theorem or technique is considered 'competition-level' rather than 'standard curriculum-level'.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response maintains a blog post format suitable for the specified audience.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response does not present a false dichotomy where standard curriculum geometry is incapable of solving the provided examples.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response does not claim that standard high school geometry is 'wrong' or 'inferior' in a way that misrepresents the pedagogical intent of the curriculum.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response does not include fabricated theorems or problem-solving techniques that do not actually exist in competitive mathematics.",
+          "axis": "References & Citation Quality",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response does not confuse Euclidean geometry with non-Euclidean geometries (e.g., spherical or hyperbolic geometry).",
+          "axis": "Implicit Criteria",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response does not use the names of specific competitions (AMC, AIME, Olympiads) as the primary subject of the post rather than as the context for the geometry.",
+          "axis": "Instruction Following",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response does not present a solution to a problem that relies on a theorem or technique that is actually taught in standard high school curricula.",
+          "axis": "Explicit Criteria",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response does not claim that a technique is 'not taught' when it is actually a standard part of the curriculum (e.g., the Pythagorean theorem, basic triangle congruence).",
+          "axis": "Implicit Criteria",
+          "polarity": "negative"
+        }
+      ]
+    },
+    "D": {
+      "rubrics": [
+        {
+          "criterion": "The response contrasts Euclidean geometry in high school math competitions (AMC, AIME, Olympiads) with that in standard American high school curricula.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response is written for an audience familiar with standard high school geometry but without competitive math experience.",
+          "axis": "Instruction Following",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response includes at least one clear example of a problem-solving technique common in math competitions but not typically taught in standard high school classes.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response includes at least one clear example of a theorem used in math competitions but not typically covered in standard high school geometry courses.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response distinguishes the depth, rigor, or proof expectations in competition geometry versus standard curriculum.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response explains how competition problems often require multi-step insight or non-routine application, unlike typical textbook exercises.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response identifies specific theorems (e.g., Ceva’s Theorem, Menelaus’s Theorem, Power of a Point, Angle Bisector Theorem extensions) used in competitions but omitted from standard curricula.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response illustrates how auxiliary constructions (e.g., adding circles, parallel lines, or incenters) are frequently required in competition problems but rarely emphasized in standard classes.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response highlights the role of synthetic geometry reasoning in competitions, as opposed to the more formulaic or computational approach in standard classes.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response compares the problem structures: competition problems often lack explicit solution pathways, unlike scaffolded textbook problems.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response addresses the expectation of elegant or insight-based solutions in competitions versus procedural mastery in standard classes.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response notes the limited time pressure and strategic thinking in competitions (e.g., AMC multiple choice with tricks), contrasting with homework-style pacing in school.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response references actual named competitions (AMC, AIME, Olympiads) as specified in the prompt.",
+          "axis": "Instruction Following",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response avoids assuming prior knowledge of competition math beyond standard high school geometry.",
+          "axis": "Instruction Following",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response uses accessible language and avoids unexplained jargon from advanced geometry or olympiad training.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response clearly explains any technical term (e.g., cyclic quadrilateral, homothety) before or when used.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response includes a concrete competition-style problem example with solution steps demonstrating non-standard techniques.",
+          "axis": "Explicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response contrasts the pedagogical goals: conceptual depth and creativity in competitions vs. foundational fluency in standard classes.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response acknowledges that some advanced topics (e.g., coordinate bashing, trigonometric Ceva) are used in competitions but absent from standard curricula.",
+          "axis": "Implicit Criteria",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response does not misrepresent standard high school geometry as entirely lacking proofs or rigor.",
+          "axis": "Implicit Criteria",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response does not claim that competition geometry replaces or is formally part of the standard curriculum.",
+          "axis": "Implicit Criteria",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response avoids asserting that standard geometry teaching is ineffective or universally shallow.",
+          "axis": "Implicit Criteria",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response does not fabricate or misattribute theorems (e.g., attributing Ceva’s Theorem to a different mathematician).",
+          "axis": "References & Citation Quality",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response does not present competition techniques as trivial or obvious to standard curriculum students, preserving appropriate challenge level.",
+          "axis": "Communication Quality",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response maintains a blog-style tone appropriate for informal but informative exposition.",
+          "axis": "Instruction Following",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response integrates examples naturally within the narrative rather than presenting them as isolated technical appendices.",
+          "axis": "Communication Quality",
+          "polarity": "positive"
+        },
+        {
+          "criterion": "The response does not omit the fact that some competition techniques can be derived from standard knowledge, even if not taught directly.",
+          "axis": "Implicit Criteria",
+          "polarity": "negative"
+        },
+        {
+          "criterion": "The response distinguishes between curriculum content and classroom practice, avoiding conflation of the two.",
+          "axis": "Synthesis of Information",
+          "polarity": "positive"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "rubrics": [
+    {
+      "criterion": "The response contrasts Euclidean geometry used in competitions (AMC, AIME, Olympiads) with standard American high school geometry curricula.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explicitly mentions specific competition levels such as AMC, AIME, or Olympiads.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response includes specific mathematical theorems commonly used in competitions but not typically in standard high school classes.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response includes specific problem-solving techniques used in competitive math but not typically in standard classes.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response provides clear examples to illustrate the mentioned theorems and techniques.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response distinguishes between the procedural/computational nature of standard curricula and the insight/logic-driven nature of competitive math.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response uses accurate and appropriate mathematical terminology.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response addresses the specific learning goal of each domain (e.g., calculating values vs. proving complex geometric properties).",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response contains mathematically incorrect theorems, properties, or calculation errors.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response fabricates mathematical theorems, properties, or techniques.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response misrepresents the scope of standard American high school geometry by claiming it includes competitive-level content.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response uses advanced mathematical prerequisites (e.g., Calculus) to solve geometry problems without explaining the connection or addressing the target audience's constraints.",
+      "axis": "Instruction Following",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response compares the scope and depth of topics covered in standard vs. competitive geometry.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response reconciles the relationship between foundational high school geometry and advanced competitive applications.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response synthesizes the difference in reasoning styles (e.g., using auxiliary constructions to bridge gaps in standard methods).",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response connects the specific theorems mentioned to the broader context of competitive problem-solving.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains how a competitive technique specifically overcomes a limitation of standard high school methods.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response follows a blog post format (e.g., engaging introduction, structured body, conclusion).",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response uses an appropriate tone for a blog post intended for a mathematically literate but non-competitive audience.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response provides clear, step-by-step mathematical explanations within its examples.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response uses precise language to describe geometric configurations and spatial relationships.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response maintains a logical flow between the comparison of curricula and the demonstration of examples.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response calibrates technical difficulty to ensure it is accessible to those with only standard high school geometry knowledge.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response avoids unnecessary jargon that would alienate an audience without competitive math experience.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response provides a meaningful distinction between 'what' is taught in standard curriculum vs 'how' math is approached in competitions.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    }
+  ]
+}

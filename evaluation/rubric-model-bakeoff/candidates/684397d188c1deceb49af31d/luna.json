@@ -1,0 +1,134 @@
+{
+  "rubrics": [
+    {
+      "criterion": "The response advances a clear argument about how the play’s representation of slavery relates to the historically grounded realities and ideologies of Roman slave society.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response accurately identifies Pseudolus as Simo’s enslaved household member and situates his actions within the play’s plot.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response uses specific episodes, dialogue, or other details from Pseudolus as evidence, rather than relying on general claims or plot summary alone.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response analyzes Pseudolus’s interactions with Simo as a central instance of the master-slave relationship in the play.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response considers at least one significant relationship beyond Simo, such as Pseudolus’s alliance with the free Calidorus or his dealings with Ballio or Harpax, and explains how status shapes that interaction.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains the enslaved person’s legal status in the Republic, including the central fact of ownership and the limits on independent legal or civic standing.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response describes masters’ legal and social power while avoiding the unsupported claim that this power was wholly unlimited or uniform in every circumstance.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response situates slavery in relevant social and economic structures, such as household hierarchy, coercion, and the treatment of enslaved people as property.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response grounds its historical context in the Roman Republic and qualifies any use of later Roman institutions or laws rather than projecting them backward without explanation.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response recognizes that the play’s Greek dramatic setting and New Comedy conventions mediate what it can show about Roman society.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response treats the play as a crafted comic representation, not as a transparent or comprehensive record of everyday Roman slave practice.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains how Pseudolus exercises agency through particular tactics while remaining constrained by his enslaved status.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response analyzes deception as a meaningful feature of the play, explaining how Pseudolus’s schemes work and what they reveal about power or dependence.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response distinguishes tactical influence or temporary control from legal freedom or durable independence.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains how the play’s comic portrayal reflects realities of slave society, such as coercive hierarchy, dependence, or the commodification of enslaved people.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains how the play’s comic portrayal subverts slave-society expectations, for example by making an enslaved character outwit or temporarily control free masters.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response synthesizes the reflective and subversive aspects of the comedy instead of treating the play as either straightforward endorsement or straightforward rejection of slavery.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response connects comic reversals of authority to the play’s treatment of master-slave ideology, such as assumptions about mastery, obedience, or enslaved people’s cunning.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains the limits of comic inversion, making clear whether Pseudolus’s victory changes the underlying institution or remains a temporary dramatic reversal.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response avoids generalizing Pseudolus’s exceptional ingenuity into a claim about the ordinary agency or experience of all enslaved people.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response distinguishes what the play itself depicts from what historical or legal evidence supports about Republican practice.",
+      "axis": "References & Citation Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response locates textual evidence with usable references, such as act, scene, line, or edition-page details when available, and represents quotations or paraphrases accurately.",
+      "axis": "References & Citation Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response supports historical and legal claims with relevant, credible scholarship or primary evidence and does not present contested reconstruction as certain fact.",
+      "axis": "References & Citation Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response organizes its textual examples and historical context so that the connection between the play and the Roman framework is clear.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response falsely claims that Pseudolus is formally manumitted or becomes legally free in the play.",
+      "axis": "Explicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response presents a comic event in the play as proof that the same conduct or power was ordinary, legally guaranteed, or representative throughout Roman slave society.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    }
+  ]
+}

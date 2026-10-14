@@ -18,6 +18,7 @@ import argparse
 import dataclasses
 import json
 import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from decimal import Decimal
 from pathlib import Path
 
@@ -33,8 +34,8 @@ from .schema import RubricTopic
 from .topics import load_topics
 from .validate import validate_topic
 
-MODEL_ID = "openai.gpt-6-luna"
-REGION = "us-east-1"
+MODEL_ID = "gpt-6-luna"
+REGION = "azure-ase"
 
 
 def build_topic(topic, retriever, *, cache, tracker, model_id, region, tier, fallback_tier) -> RubricTopic:
@@ -57,34 +58,69 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--region", default=REGION)
     parser.add_argument("--tier", default="default")
     parser.add_argument("--fallback-tier", default=None)
+    parser.add_argument("--workers", type=int, default=8, help="parallel topic workers (default: 8)")
     args = parser.parse_args(argv)
 
     topics = load_topics(args.topics)[: args.limit]
     args.work_dir.mkdir(parents=True, exist_ok=True)
-    cache = RubricLlmCache(args.work_dir / "rubric_llm_cache.db")
     tracker = CostTracker(hard_cap_usd=args.budget_usd)
-    retriever = HybridResearchRetriever(
-        dense_client_from_env(), sparse_client_from_env(), HybridConfig(),
-    )
 
-    failed: list[str] = []
-    for topic in topics:
+    def process_topic(topic):
         path = args.work_dir / f"{topic.qid}.json"
         if path.exists():
-            continue
+            return topic.qid, None, [], None
+        local_tracker = CostTracker(hard_cap_usd=args.budget_usd)
+        cache = None
         try:
-            rubric = build_topic(topic, retriever, cache=cache, tracker=tracker, model_id=args.model_id,
-                                 region=args.region, tier=args.tier, fallback_tier=args.fallback_tier)
+            # PromptCache is multi-process safe, but use one wrapper/connection
+            # per worker so concurrent topic construction never shares state.
+            cache = RubricLlmCache(args.work_dir / "rubric_llm_cache.db")
+            retriever = HybridResearchRetriever(
+                dense_client_from_env(), sparse_client_from_env(), HybridConfig(),
+            )
+            rubric = build_topic(
+                topic, retriever, cache=cache, tracker=local_tracker,
+                model_id=args.model_id, region=args.region, tier=args.tier,
+                fallback_tier=args.fallback_tier,
+            )
             issues = validate_topic(rubric)
             if issues:
                 raise ValueError(f"validation: {issues[:3]}")
+            path.write_text(
+                json.dumps(rubric.model_dump(), ensure_ascii=False, sort_keys=True),
+                encoding="utf-8",
+            )
+            return topic.qid, rubric, local_tracker.records, None
         except Exception as error:  # one bad topic must not sink the batch
-            failed.append(topic.qid)
-            print(f"[rubric-build] qid={topic.qid} FAILED: {type(error).__name__}: {str(error)[:200]}", file=sys.stderr)
-            continue
-        path.write_text(json.dumps(rubric.model_dump(), ensure_ascii=False, sort_keys=True), encoding="utf-8")
-        print(f"[rubric-build] qid={topic.qid} ok criteria={len(rubric.rubrics)} spend=${tracker.total_usd():.3f}")
-        tracker.check_budget()
+            return topic.qid, None, local_tracker.records, error
+        finally:
+            if cache is not None:
+                cache.close()
+
+    failed: list[str] = []
+    pending = [t for t in topics if not (args.work_dir / f"{t.qid}.json").exists()]
+    if pending:
+        with ThreadPoolExecutor(max_workers=max(1, args.workers)) as pool:
+            futures = {pool.submit(process_topic, topic): topic.qid for topic in pending}
+            for future in as_completed(futures):
+                expected_qid = futures[future]
+                try:
+                    qid, rubric, records, error = future.result()
+                except Exception as error:  # defensive: worker bugs still cannot abort the batch
+                    qid, rubric, records = expected_qid, None, []
+                tracker.records.extend(records)
+                if error is not None:
+                    failed.append(qid)
+                    print(
+                        f"[rubric-build] qid={qid} FAILED: {type(error).__name__}: {str(error)[:200]}",
+                        file=sys.stderr,
+                    )
+                elif rubric is not None:
+                    print(
+                        f"[rubric-build] qid={qid} ok criteria={len(rubric.rubrics)} "
+                        f"spend-this-run=${tracker.total_usd():.3f}"
+                    )
+                tracker.check_budget()
 
     done = [RubricTopic(**json.loads(p.read_text(encoding="utf-8")))
             for t in topics if (p := args.work_dir / f"{t.qid}.json").exists()]

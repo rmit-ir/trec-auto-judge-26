@@ -1,0 +1,129 @@
+{
+  "rubrics": [
+    {
+      "criterion": "The response is presented as a self-contained blog post rather than only as an outline, glossary, or list of facts.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response is calibrated for readers who know standard high school geometry but have no competitive-math experience, explaining unfamiliar contest terms and assumptions as they arise.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response identifies its subject as Euclidean geometry in competitions and accurately names the AMC, AIME, and Olympiads as examples of the requested contest setting.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response describes relevant material typically encountered in standard American high school geometry, such as congruence, similarity, angle relationships, or familiar circle results.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response describes recognizable features of competition geometry, such as non-routine configurations, strategic theorem use, or the need to find a solution path rather than simply apply a recently taught procedure.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response directly contrasts the two settings along meaningful dimensions, rather than presenting unrelated descriptions of school and contest geometry.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains how contest methods build on, recombine, or extend familiar high school geometry, instead of implying the two settings use entirely unrelated mathematics.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response distinguishes relevant differences among AMC, AIME, and Olympiad problems or formats where it discusses them, such as answer-focused contests versus proof-oriented Olympiads.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains at least one way contest solutions can differ from routine classroom solutions, such as selecting a useful theorem, adding an auxiliary construction, or combining several geometric observations.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response makes a calibrated distinction between tools commonly emphasized in standard courses and tools less typically taught there, rather than treating every familiar theorem as contest-exclusive.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response gives at least two concrete illustrations collectively covering a theorem and a problem-solving technique, rather than relying on a list of names.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response states at least one named geometry theorem or result relevant to contests accurately, including enough of its conditions and conclusion for the reader to understand it.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response demonstrates how a stated theorem or result applies in a specific geometric configuration.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains at least one problem-solving technique used in contest geometry, such as angle chasing, an auxiliary construction, homothety, or inversion, rather than merely naming it.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response shows the reader how the described technique advances a concrete example toward a solution.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "At least one example features a genuinely less routinely taught contest tool or result, such as the radical-axis theorem, Miquel's theorem, homothety, or inversion, and places it appropriately in the contest context.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The example solutions show enough intermediate reasoning for a reader to follow how the geometric facts lead to the conclusion.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains when or why a reader might recognize an opportunity to use the illustrated theorem or technique.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response connects unfamiliar contest tools or examples to concepts a standard-geometry student is likely to know.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The examples use Euclidean geometry appropriate to the requested topic and do not depend on unexplained competitive-math prerequisites.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response briefly explains specialized terminology, notation, or diagram relationships needed to understand its examples.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response acknowledges that standard American course content can vary by school, course level, or teacher when characterizing what is typically taught.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response ends with a useful takeaway that clarifies the practical difference between learning standard-course geometry and approaching competition geometry.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response makes materially misleading categorical claims that a tool is absent from every standard American high school course or that AMC, AIME, and Olympiad geometry all have the same format or demands.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response materially misstates a theorem's conditions or conclusion, gives an invalid worked derivation, or makes a consequential factual error about the named competitions.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    }
+  ]
+}

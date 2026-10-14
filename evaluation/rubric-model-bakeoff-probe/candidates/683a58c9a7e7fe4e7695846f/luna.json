@@ -1,0 +1,119 @@
+{
+  "rubrics": [
+    {
+      "criterion": "The response is written as a blog post with a clear comparative focus, rather than as an unrelated geometry lesson or a bare list of facts.",
+      "axis": "Instruction Following",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response addresses Euclidean geometry in high school competitions, including the named examples AMC, AIME, and Olympiads, in comparison with standard American high school math curricula.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response describes standard high school geometry sufficiently to establish a baseline, using accurate examples such as congruence, similarity, angle relationships, or basic circle geometry.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response acknowledges that standard American high school courses and curricula vary, rather than presenting one course sequence as universal.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response identifies meaningful common ground between school geometry and competition geometry, such as shared use of familiar facts about angles, triangles, similarity, or circles.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains how contest problems often differ through nonroutine combinations of ideas, strategic choices, or less obvious constructions, rather than implying that the difference is simply a higher level of prerequisite mathematics.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response distinguishes relevant differences in format among AMC, AIME, and proof-oriented Olympiads, without treating the contests as interchangeable.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response provides multiple concrete examples, including at least one competition-relevant theorem and at least one problem-solving technique.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "At least one theorem example is named and stated accurately; suitable examples include power of a point or the radical axis theorem.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "At least one problem-solving technique is identified and explained, such as adding an auxiliary line, using homothety, or recognizing a cyclic quadrilateral.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The examples show mathematical reasoning step by step, rather than merely naming a theorem or strategy and asserting that it solves the problem.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "At least one example demonstrates how a named theorem is applied to reach a justified conclusion in a specific geometry problem.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "At least one example demonstrates a problem-solving strategy in action, rather than only defining the strategy.",
+      "axis": "Explicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response gives useful cues for when a reader might recognize or choose the theorem or technique being demonstrated.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response states or makes clear the relevant conditions for applying a theorem, and does not use it outside those conditions.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response explains how competition techniques build on, reorganize, or extend familiar school geometry, rather than presenting them as wholly disconnected from it.",
+      "axis": "Synthesis of Information",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The chosen theorems and techniques are genuinely relevant to high school competitions and are not presented as representative examples if they are unusually advanced or atypical.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "Mathematical statements, worked solutions, and descriptions of competition formats are accurate.",
+      "axis": "Implicit Criteria",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The response does not materially mislead by claiming that contest geometry is entirely absent from ordinary classes, that all American curricula are identical, or that AMC, AIME, and Olympiads share one format.",
+      "axis": "Implicit Criteria",
+      "polarity": "negative"
+    },
+    {
+      "criterion": "The response explains new terminology and uses notation in a way that readers familiar only with standard high school geometry can follow.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The worked examples are presented in a usable sequence, making clear what is known, what the key observation or construction is, and how it leads to the result.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "The comparison is organized so readers can readily tell which features belong to standard coursework, which are more characteristic of contests, and how the examples illustrate the distinction.",
+      "axis": "Communication Quality",
+      "polarity": "positive"
+    },
+    {
+      "criterion": "If the response uses external sources for specific claims about contest formats or curricula, it cites them appropriately and attributes them accurately.",
+      "axis": "References & Citation Quality",
+      "polarity": "positive"
+    }
+  ]
+}

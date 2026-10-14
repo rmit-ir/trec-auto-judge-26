@@ -1,0 +1,49 @@
+{
+  "scores": {
+    "A": {
+      "reference_coverage": 16,
+      "precision": 16,
+      "atomicity_judgeability": 8,
+      "implicit_synthesis": 8,
+      "axis_failure_modes": 5,
+      "total": 53,
+      "notes": "Covers the central analytical task, textual evidence, historical-source limitations, and fabricated details. However, repeated requirements to identify or restate the task reward announcements rather than analysis. Most character-specific, legal-institutional, and scholarly reference obligations are absent."
+    },
+    "B": {
+      "reference_coverage": 20,
+      "precision": 18,
+      "atomicity_judgeability": 11,
+      "implicit_synthesis": 11,
+      "axis_failure_modes": 6,
+      "total": 66,
+      "notes": "Adds meaningful legal vulnerability, audience expectations, comic conventions, and temporary inversion that preserves hierarchy. Historical evidence and source distinctions are useful. Coverage remains generic: manumission is optional, and Simia, Phoenicium, character foils, premiere context, and scholarly disagreements are not specifically assessed."
+    },
+    "C": {
+      "reference_coverage": 23,
+      "precision": 19,
+      "atomicity_judgeability": 13,
+      "implicit_synthesis": 13,
+      "axis_failure_modes": 8,
+      "total": 76,
+      "notes": "Strongest operationalization of ownership, constrained agency, deception, comic inversion, and historical-source criticism. Republican chronology, Greek theatrical mediation, and the false-manumission failure mode add precision. Still omits substantial reference coverage, including Simia's actions, Phoenicium's objectification, specific character foils, and scholarly frameworks and comparisons."
+    },
+    "D": {
+      "reference_coverage": 17,
+      "precision": 18,
+      "atomicity_judgeability": 11,
+      "implicit_synthesis": 9,
+      "axis_failure_modes": 5,
+      "total": 60,
+      "notes": "Provides a sound literary-historical framework and connects agency and deception to hierarchy and ideology. Its criteria are largely accurate but broad, with overlapping topic checks and a historical-literalism penalty that mirrors positive criteria. Most concrete legal, character-specific, and interpretive reference obligations are missing."
+    }
+  },
+  "ranking": [
+    "C",
+    "B",
+    "D",
+    "A"
+  ],
+  "winner": "C",
+  "confidence": 0.94,
+  "decision_notes": "C wins through substantive specificity, historical qualification, constrained-agency synthesis, and actionable failure modes—not wording overlap. B offers stronger institutional and ideological synthesis than D. A is weakest because repetitive task-identification checks substitute for observable analytical requirements. All four leave substantial portions of the human reference uncovered."
+}

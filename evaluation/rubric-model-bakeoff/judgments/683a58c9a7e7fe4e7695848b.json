@@ -1,0 +1,49 @@
+{
+  "scores": {
+    "A": {
+      "reference_coverage": 19,
+      "precision": 18,
+      "atomicity_judgeability": 9,
+      "implicit_synthesis": 9,
+      "axis_failure_modes": 7,
+      "total": 62,
+      "notes": "Covers the six main questions, structured versus unstructured data, category alignment, denominators, and privacy. However, many criteria are generic or duplicate the extraction-to-mapping workflow. It lacks beginner-oriented definitions, named libraries, substantive research references, prior Asian-subgroup disease studies, and several reference-required quantitative details. Its privacy and statistical-error failure modes are useful."
+    },
+    "B": {
+      "reference_coverage": 25,
+      "precision": 13,
+      "atomicity_judgeability": 10,
+      "implicit_synthesis": 12,
+      "axis_failure_modes": 6,
+      "total": 66,
+      "notes": "Broad coverage includes named Asian subgroups, NLP tools, HIPAA, case ascertainment, validation, ambiguity, and data bias. Precision suffers from treating CDC WONDER as a source of national prevalence data and suggesting names as subgroup evidence despite the de-identification constraint. Several criteria overlap, and negatively labelled criteria phrased as 'does not' make scoring polarity unclear. It omits prior subgroup-specific disease research and several reference-required counts and mechanisms."
+    },
+    "C": {
+      "reference_coverage": 24,
+      "precision": 14,
+      "atomicity_judgeability": 10,
+      "implicit_synthesis": 10,
+      "axis_failure_modes": 5,
+      "total": 63,
+      "notes": "Provides named subgroup examples, an explicit prevalence formula, open-source libraries, accessible explanations, authoritative-source expectations, and validation considerations. However, its ethnicity-mapping discussion misleadingly invokes ICD-10 as an ethnicity coding system. Mapping criteria are repetitive, disease examples are misclassified as reference quality, and negative criteria have ambiguous polarity. Detailed de-identification, multiple prevalence approaches, and prior Asian-subgroup studies remain absent."
+    },
+    "D": {
+      "reference_coverage": 26,
+      "precision": 19,
+      "atomicity_judgeability": 13,
+      "implicit_synthesis": 14,
+      "axis_failure_modes": 8,
+      "total": 80,
+      "notes": "Strongest on dataset-specific category accuracy, explicit subgroup evidence, disease case definitions, compatible numerators and denominators, validation, privacy governance, and practical clarification questions. Its criteria are mostly observable and distinguish prevalence from incidence and mortality. Coverage remains incomplete: it does not require prior Asian-subgroup disease studies, multiple prevalence methods, named open-source libraries, detailed HIPAA de-identification mechanisms, or the reference's requested breadth of sources and disease examples."
+    }
+  },
+  "ranking": [
+    "D",
+    "B",
+    "C",
+    "A"
+  ],
+  "winner": "D",
+  "confidence": 0.83,
+  "decision_notes": "D wins through substantially better factual precision and methodological synthesis, despite incomplete reference coverage. B offers broad coverage but introduces consequential assumptions about WONDER and identity proxies. C narrowly exceeds A through more concrete reference-aligned requirements, although its coding-system error limits its quality. All four omit important obligations concerning existing Asian-subgroup disease research, multiple prevalence approaches, and detailed de-identification."
+}

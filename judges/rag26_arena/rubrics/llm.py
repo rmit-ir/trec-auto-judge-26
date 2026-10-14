@@ -1,15 +1,13 @@
 """Offline LLM adapters for rubric construction (execution-plan Section 6).
 
-Two providers, deliberately kept separate from the runtime judge:
+Providers are deliberately kept separate from the runtime judge:
 
-- Bedrock (Qwen3 235B/32B): no existing minima-llm backend for Bedrock, so
-  this module owns a small boto3 Converse wrapper with bounded retry and an
-  explicit (never silent) Flex -> Standard tier fallback.
-- Luna (GPT-5.6, independent reviewer): routed through the SAME injected
-  OPENAI_BASE_URL/OPENAI_MODEL/OPENAI_API_KEY endpoint and minima-llm client
-  the runtime judge uses (already configured to Luna). minima-llm already
-  retries and caches (via CACHE_DIR) internally, so this is a thin wrapper,
-  not a second Azure adapter.
+- Bedrock Runtime Converse for Qwen-family baselines and fallbacks.
+- The Azure ASE OpenAI-compatible endpoint for GPT-6 Luna, selected by the
+  blind rubric-model bake-off as the production constructor. Production uses
+  ``OPEAI_ASE_URL`` + ``AZURE_ASE_KEY`` with high reasoning effort.
+- The injected OpenAI-compatible minima-llm endpoint remains available for
+  independent review calls where needed.
 
 Never imported by ``RAG26ArenaJudge`` at runtime (execution-plan Section 6:
 "offline construction and runtime judging remain separate concerns").
@@ -18,8 +16,12 @@ Never imported by ``RAG26ArenaJudge`` at runtime (execution-plan Section 6:
 from __future__ import annotations
 
 import asyncio
+import json
+import os
 import sys
 import time
+import urllib.error
+import urllib.request
 from dataclasses import dataclass, field
 from decimal import Decimal
 from pathlib import Path
@@ -39,6 +41,7 @@ _SCRIPTS_DIR = Path(__file__).resolve().parents[3] / "scripts"
 if str(_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_DIR))
 from bedrock_cost import estimate_cost as bedrock_estimate_cost  # noqa: E402
+from azure_cost import estimate_cost as azure_estimate_cost  # noqa: E402
 
 
 @dataclass(frozen=True)
@@ -53,6 +56,10 @@ class LlmResult:
 
 class BedrockUnavailableError(RuntimeError):
     """Every attempt, including any tier fallback, failed."""
+
+
+class AzureContentFilterError(RuntimeError):
+    """Azure rejected a construction request under its content policy."""
 
 
 def _to_converse_messages(messages: Sequence[dict[str, str]]) -> tuple[list[dict], list[dict]]:
@@ -128,6 +135,92 @@ def call_bedrock(
     )
 
 
+def call_azure_ase_luna(
+    model_id: str,
+    messages: Sequence[dict[str, str]],
+    *,
+    tier: str = "default",
+    max_tokens: int = 12000,
+    reasoning_effort: str = "high",
+) -> LlmResult:
+    """Call GPT-6 Luna through the dedicated Azure ASE endpoint.
+
+    ``OPEAI_ASE_URL`` is the OpenAI-compatible base URL and ``AZURE_ASE_KEY``
+    is its credential. The bake-off selected GPT-6 Luna with high reasoning;
+    keep that setting explicit here rather than relying on provider defaults.
+    """
+    if tier != "default":
+        raise ValueError(f"Azure GPT-6 Luna production path expects tier='default', got {tier!r}")
+    base_url = os.environ.get("OPEAI_ASE_URL", "").rstrip("/")
+    api_key = os.environ.get("AZURE_ASE_KEY", "")
+    if not base_url or not api_key:
+        raise RuntimeError("OPEAI_ASE_URL and AZURE_ASE_KEY must be set for GPT-6 Luna")
+    payload = {
+        "model": model_id,
+        "messages": list(messages),
+        "max_completion_tokens": max_tokens,
+        "reasoning_effort": reasoning_effort,
+    }
+    body = json.dumps(payload, separators=(",", ":")).encode("utf-8")
+    request = urllib.request.Request(
+        base_url + "/chat/completions",
+        data=body,
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+            "api-key": api_key,
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=240) as response:
+            data = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")[:1000]
+        normalized = detail.casefold().replace("_", "").replace(" ", "")
+        if any(marker in normalized for marker in (
+            "contentfilter", "responsibleaipolicyviolation", "contentmanagementpolicy",
+        )):
+            raise AzureContentFilterError(
+                f"Azure ASE content filter blocked {model_id} (HTTP {exc.code})"
+            ) from exc
+        raise RuntimeError(f"Azure ASE HTTP {exc.code} for {model_id}: {detail}") from exc
+
+    try:
+        text = data["choices"][0]["message"]["content"]
+        usage = data["usage"]
+    except (KeyError, IndexError, TypeError) as exc:
+        raise RuntimeError(f"unexpected Azure ASE response shape for {model_id}") from exc
+    if not text:
+        finish_reason = data.get("choices", [{}])[0].get("finish_reason")
+        raise RuntimeError(f"Azure ASE {model_id} returned no text (finish_reason={finish_reason!r})")
+    return LlmResult(
+        text=str(text),
+        input_tokens=int(usage.get("prompt_tokens", 0)),
+        output_tokens=int(usage.get("completion_tokens", 0)),
+        model_id=model_id,
+        tier=tier,
+        region="azure-ase",
+    )
+
+
+def call_construction_model(
+    model_id: str,
+    messages: Sequence[dict[str, str]],
+    *,
+    region: str,
+    tier: str,
+    fallback_tier: Optional[str],
+) -> LlmResult:
+    """Dispatch one construction request without changing model identity."""
+    if model_id == "gpt-6-luna":
+        return call_azure_ase_luna(model_id, messages, tier=tier)
+    return call_bedrock(
+        model_id, messages, region=region, tier=tier,
+        fallback_tier=fallback_tier,
+    )
+
+
 def call_luna(messages: Sequence[dict[str, str]], *, request_id: str = "rubric-luna-0") -> LlmResult:
     """One Luna review call through the injected OpenAI-compatible endpoint.
     minima-llm's OpenAIMinimaLlm already retries and caches internally
@@ -188,7 +281,15 @@ def cached_bedrock_call(
                 return result
 
         try:
-            call = call_bedrock(model_id, messages, region=region, tier=tier, fallback_tier=fallback_tier)
+            call = call_construction_model(
+                model_id, messages, region=region, tier=tier,
+                fallback_tier=fallback_tier,
+            )
+        except AzureContentFilterError:
+            # Identical retries cannot resolve a policy rejection. Surface the
+            # typed failure to the topic runner, which records it and continues
+            # every other topic in the batch.
+            raise
         except Exception as error:
             last_error = error
             continue
@@ -227,9 +328,14 @@ class CostTracker:
     records: list[UsageRecord] = field(default_factory=list)
 
     def record_bedrock(self, result: LlmResult, *, stage: str, cache_hit: bool, qid: Optional[str] = None) -> UsageRecord:
-        cost = Decimal("0") if cache_hit else bedrock_estimate_cost(
-            result.model_id, result.input_tokens, result.output_tokens, tier=result.tier,
-        )
+        if cache_hit:
+            cost = Decimal("0")
+        elif result.model_id == "gpt-6-luna":
+            cost = azure_estimate_cost(result.model_id, result.input_tokens, result.output_tokens)
+        else:
+            cost = bedrock_estimate_cost(
+                result.model_id, result.input_tokens, result.output_tokens, tier=result.tier,
+            )
         record = UsageRecord(
             stage=stage, model_id=result.model_id, tier=result.tier, region=result.region,
             input_tokens=result.input_tokens, output_tokens=result.output_tokens,

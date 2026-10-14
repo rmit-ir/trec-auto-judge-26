@@ -1,0 +1,29 @@
+{
+  "scores": {
+    "A": {
+      "reference_coverage": 25,
+      "precision": 18,
+      "atomicity_judgeability": 11,
+      "implicit_synthesis": 14,
+      "axis_failure_modes": 6,
+      "total": 74,
+      "notes": "Stronger coverage of extraction mechanics, clinical-context limitations, subgroup crosswalking, validation, and prevalence analysis. However, it does not clearly require HIPAA de-identification mechanisms, prior Asian-subgroup prevalence studies, named NLP libraries, or several reference-specific examples and minimums. Several criteria bundle multiple obligations, and the negative criteria are phrased as desirable behavior, creating polarity ambiguity."
+    },
+    "B": {
+      "reference_coverage": 22,
+      "precision": 19,
+      "atomicity_judgeability": 13,
+      "implicit_synthesis": 12,
+      "axis_failure_modes": 7,
+      "total": 73,
+      "notes": "More atomic and restrained, with useful uncertainty handling and distinctions among prevalence, incidence, and mortality. It shares A's major reference omissions and provides less detail on extraction mechanics, clinical-context errors, disease-phenotype validation, and methodological resources. Its negative criterion is observable but largely mirrors positive dataset-qualification criteria."
+    }
+  },
+  "ranking": [
+    "A",
+    "B"
+  ],
+  "winner": "A",
+  "confidence": 0.7,
+  "decision_notes": "A wins narrowly because its additional extraction, clinical-phenotyping, and validation requirements provide substantive coverage and synthesis, not merely extra length. B is more precise and easier to judge, but neither adequately captures several high-weight reference obligations, especially prior prevalence research, explicit privacy mechanisms, and concrete disease and source examples."
+}
