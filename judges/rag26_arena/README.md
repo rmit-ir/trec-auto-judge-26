@@ -149,7 +149,16 @@ Runtime (no ClimbMix/Bedrock dependency):
 ## Submission status (2026-10-13)
 
 - `arena-support` TIRA dry-run passed on a Docker host (`docs/rag26-tira-dryrun-handoff.md`).
-- Full local data run of `arena-support` on `rag26-generation` (83 runs x 119 topics) was
-  started with a hard spend guard (`scripts/cost_guard.py`, $150 cap). Upload with
-  `tira-cli upload` and the real `tira-cli code-submission` (no `--dataset`) remain to do,
-  after a completeness-only check of the output.
+- Model: `gpt-5.6-luna` is the primary and only model for the submission. `gpt-6-luna`
+  (ASE endpoint, vars `OPEAI_ASE_URL` / `AZURE_ASE_KEY`, deployment `gpt-6-luna`) is a backup
+  only; the cache key includes the model name, so the two are never mixed in one run.
+- First full run lost the entire citation-support lane: minima-llm `BatchConfig.max_failures`
+  (default 25, env `BATCH_MAX_FAILURES`) aborts a whole batch and discards its results, and
+  ~24 content-filter rejections tripped it. `judge.py` now builds its backend with
+  `batch.max_failures=None`, so a rejected request is left unjudged ("unavailable", not
+  negative) instead of sinking the batch (regression test in
+  `tests/test_rag26_rubric_finalize.py`). Cache keys and prompts are unchanged.
+- Rerun of `arena-support` on `rag26-generation` (83 runs x 119 topics, 16 measures, no
+  NaN) completed; support lane populated. Cost of the rerun about $23 (first run about $30).
+- Remaining: `tira-cli upload` of the data submission, and the real `tira-cli code-submission`
+  (no `--dataset`) from a Docker host.

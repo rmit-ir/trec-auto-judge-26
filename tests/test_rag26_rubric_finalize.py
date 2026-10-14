@@ -110,3 +110,12 @@ def test_arena_prompt_rubric_conditioning_and_fallback(tmp_path):
     cond = arena_messages(req, "a", "b", max_answer_chars=100, rubric_text=texts["t1"])[1]["content"]
     assert "Criteria written" not in plain and "- The response hallucinates" in cond
     assert arena_messages(req, "a", "b", max_answer_chars=100, rubric_text=None)[1]["content"] == plain
+
+
+def test_backend_disables_batch_early_abort(monkeypatch):
+    from judges.rag26_arena import judge as j
+    monkeypatch.setenv("OPENAI_BASE_URL", "http://example.invalid/v1")
+    monkeypatch.setenv("OPENAI_API_KEY", "x")
+    monkeypatch.setenv("OPENAI_MODEL", "m")
+    backend = j._backend(type("C", (), {"raw": None})())
+    assert backend.cfg.batch.max_failures is None

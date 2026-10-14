@@ -26,6 +26,7 @@ not refactor into judges/common/ immediately").
 from __future__ import annotations
 
 import asyncio
+import dataclasses
 import json
 import math
 import time
@@ -45,7 +46,7 @@ from autojudge_base import (
 )
 from minima_llm import MinimaLlmRequest, MinimaLlmResponse
 
-from judges.ragree_choice.ragree_choice_judge import _REVERSE_VOTE_MAP, _backend, _json_object
+from judges.ragree_choice.ragree_choice_judge import _REVERSE_VOTE_MAP, _json_object, _backend as _shared_backend
 from judges.ragree_choice.sparrow import (
     Ballot,
     RankingAudit,
@@ -61,6 +62,20 @@ from . import support
 from .models import BALLOT_VOTE, RAW_VOTES, SUPPORT_LEVELS
 from .prompts import arena_messages, rubric_block, support_messages
 from .rubrics.io import load_jsonl as load_rubrics
+
+
+
+def _backend(llm_config: LlmConfigProtocol):
+    """Shared backend with the batch early-abort disabled. minima-llm aborts a
+    whole batch (discarding every result, even cached successes) once more than
+    BATCH_MAX_FAILURES=25 requests fail; a few permanently failing requests
+    (e.g. provider content-filter rejections) then silently voided the entire
+    40k-request citation-support lane. Failures here are per-item: the retry
+    helper re-asks them and leaves the survivors "unavailable", never negative."""
+    backend = _shared_backend(llm_config)
+    backend.cfg = dataclasses.replace(backend.cfg, batch=dataclasses.replace(backend.cfg.batch, max_failures=None))
+    return backend
+
 
 DEFAULT_RUBRIC_PATH = "rubrics/frozen/rag26-rubrics.jsonl"
 
