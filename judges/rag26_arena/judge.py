@@ -59,7 +59,10 @@ from judges.ragree_choice.sparrow import (
 
 from . import support
 from .models import BALLOT_VOTE, RAW_VOTES, SUPPORT_LEVELS
-from .prompts import arena_messages, support_messages
+from .prompts import arena_messages, rubric_block, support_messages
+from .rubrics.io import load_jsonl as load_rubrics
+
+DEFAULT_RUBRIC_PATH = "rubrics/frozen/rag26-rubrics.jsonl"
 
 
 def _json_array(text: str) -> Optional[list]:
@@ -244,6 +247,8 @@ class RAG26ArenaJudge:
         citation_support_enabled: bool = False,
         support_batch_size: int = 10,
         support_max_doc_chars: int = 1500,
+        rubric_arena_enabled: bool = False,
+        rubric_path: str = DEFAULT_RUBRIC_PATH,
         filebase: str = "default",
         outdir: Path = Path("."),
         **kwargs: Any,
@@ -263,6 +268,7 @@ class RAG26ArenaJudge:
             support_max_doc_chars=support_max_doc_chars,
         )
         topics = {topic.request_id: topic for topic in rag_topics}
+        self._rubric_text = self._load_rubric_text(rubric_arena_enabled, rubric_path)
         expected_topic_ids = list(topics)
         reports = self._unique_reports(rag_responses)
         reports_by_topic: Dict[str, list[Report]] = {}
@@ -429,6 +435,18 @@ class RAG26ArenaJudge:
         if settings["llm_retry_backoff_seconds"] < 0:
             raise ValueError("llm_retry_backoff_seconds must be non-negative")
 
+    @staticmethod
+    def _load_rubric_text(enabled: bool, rubric_path: str) -> Dict[str, str]:
+        """qid -> compact frozen-rubric text. A qid with no frozen rubric (e.g.
+        kiddie) simply gets none, i.e. deterministic arena-only behaviour for that
+        topic; an enabled-but-missing artifact file is a misconfiguration and raises."""
+        if not enabled:
+            return {}
+        path = Path(rubric_path)
+        if not path.is_absolute():
+            path = Path(__file__).resolve().parent / path
+        return {t.qid: rubric_block(t) for t in load_rubrics(path)}
+
     def _unique_reports(self, rag_responses: Iterable[Report]) -> list[Report]:
         unique: Dict[tuple[str, str], Report] = {}
         for report in sorted(rag_responses, key=lambda item: (item.metadata.run_id, item.metadata.topic_id)):
@@ -456,7 +474,7 @@ class RAG26ArenaJudge:
                 request_id=f"arena-ballot-{index}",
                 messages=arena_messages(
                     topics[topic_id], report_a.get_report_text(), report_b.get_report_text(),
-                    max_answer_chars=max_answer_chars,
+                    max_answer_chars=max_answer_chars, rubric_text=self._rubric_text.get(topic_id),
                 ),
             ))
             metadata.append((topic_id, report_a.metadata.run_id, report_b.metadata.run_id))
@@ -500,7 +518,7 @@ class RAG26ArenaJudge:
                 request_id=f"arena-reversal-{index}",
                 messages=arena_messages(
                     topics[topic_id], report_a.get_report_text(), report_b.get_report_text(),
-                    max_answer_chars=max_answer_chars,
+                    max_answer_chars=max_answer_chars, rubric_text=self._rubric_text.get(topic_id),
                 ),
             ))
             metadata.append((topic_id, original_ballot))

@@ -23,6 +23,8 @@ judge_settings:
   citation_support_enabled: false
   support_batch_size: 10
   support_max_doc_chars: 1500
+  rubric_arena_enabled: false
+  rubric_path: "rubrics/frozen/rag26-rubrics.jsonl"
 
 variants:
   # Baseline: identical to the default settings above, named for
@@ -34,6 +36,15 @@ variants:
   # additionally needs the not-yet-built rubric lane.
   arena-support:
     judge_settings:
+      citation_support_enabled: true
+  # Arena conditioned on the frozen, response-independent rubric artifact
+  # (qids without a frozen rubric fall back to plain arena prompts).
+  rubric-arena:
+    judge_settings:
+      rubric_arena_enabled: true
+  rubric-support-arena:
+    judge_settings:
+      rubric_arena_enabled: true
       citation_support_enabled: true
   exhaustive-small:
     judge_settings:

@@ -1,6 +1,6 @@
 # RAG26 Arena / ResearchRubrics
 
-Status as of 2026-09-13: **runnable judge + rubric-construction workstream in progress**.
+Status as of 2026-10-13: **runnable judge; rubric pipeline built, frozen artifact pending**.
 `RAG26ArenaJudge` (Arena/SPARROW pairwise preference + independent citation-support lane)
 is implemented, tested, and TIRA-submission-shaped. Rubric generation (this file's other
 half) is under active construction per `docs/rag26-rubric-construction-execution-plan.md`
@@ -43,10 +43,12 @@ construction work below, which needs no container runtime at all.
 ## Rubric construction (in progress)
 
 Building the frozen, response-independent ResearchRubrics-style rubric artifact for all 119
-RAG26 topics, per `docs/rag26-rubric-construction-execution-plan.md`. Primary model: Qwen3
-235B A22B 2507 on Bedrock Flex (`ap-southeast-2`); Qwen3 32B Flex for low-risk
-atomicity/dedup/importance-classification stages only; GPT-5.6 Luna as the independent final
-reviewer. See that plan for the full model/cost rationale -- it is not reopened here.
+RAG26 topics. The production constructor is **GPT-6 Luna with high reasoning** through
+Bedrock Mantle (`us-east-1`), selected by the blind model bake-off in
+`evaluation/rubric-model-bakeoff/`: GPT-6.1 Sol (high) judged anonymized outputs from Luna,
+Qwen3 235B, Gemma 4 26B-A4B, and GLM-4.7 Flash, with Luna winning all tested topics.
+The older execution plan still documents the pre-bake-off Qwen design and should be read as
+historical rationale where its model choice conflicts with this README/current code.
 
 ### What's here already (pre-dates this workstream, reused as-is)
 
@@ -104,26 +106,50 @@ must never call either at TIRA scoring time):
 - Sparse, `http://127.0.0.1:8085` -- Lucene BM25 (`k1=0.9, b=0.4`) over the same corpus,
   chunked identically (`shard_XXXXX_YYYYY_pN`).
 
+## Rubric lane: V1 pipeline and runtime integration (2026-10-13)
+
+Offline construction now runs end to end for one topic and in batch:
+
+- `rubrics/finalize.py` -- Stage E (deterministic pre-normalization), F (atomicity/dedupe
+  critic), H (independent importance classifier -> `importance_to_weight()`), I (deterministic
+  final selection by complexity: Simple 22 / Moderate 26 / High 31 target, hard max 40).
+  The critic can never drop explicit, negative (failure-mode) or low-volume-axis criteria --
+  selection trims them instead; without this the critic deleted every negative as a "mirror".
+  An unusable `SPLIT_REQUIRED` instruction falls back to keeping the criterion.
+- `rubrics/build.py` -- resumable driver (`python -m judges.rag26_arena.rubrics.build ...`):
+  Stage A-C (existing) + D1-D5 + finalize, one `<work-dir>/<qid>.json` per finished topic,
+  assembles the organizer-compatible JSONL in topics-file order. Defaults to Bedrock **Standard**
+  tier: Flex timed out (316 s) on a trivial call during the submission window. Needs the
+  ClimbMix services (`RAG26_DENSE_SEARCH_URL`, `RAG26_SPARSE_SEARCH_URL`) and AWS credentials.
+  Model/region/tier are CLI flags; the model choice is being benchmarked separately.
+- Rehearsal (Qwen3 235B Standard, ap-southeast-2, topics 0-2): 3/3 valid, 26-31 criteria,
+  all six axes present, 6-7 negatives per topic, about $0.007/topic. Known weak spot: the
+  importance classifier is generous (9-14 mandatory criteria of 26-31).
+- Deliberately skipped for the time budget: targeted-examples pass (Stage G), independent
+  Luna audit (Stage J), ResearchRubrics dev calibration (plan Section 20).
+
+Runtime (no ClimbMix/Bedrock dependency):
+
+- `workflow.yml` variants `rubric-arena` and `rubric-support-arena` set
+  `rubric_arena_enabled: true`; `rubric_path` defaults to
+  `rubrics/frozen/rag26-rubrics.jsonl` (relative to `judges/rag26_arena/`, so it ships in the
+  Docker image via `ADD judges`). The Arena prompt then also shows a compact rubric block
+  (`+` desirable / `-` undesirable, strongest weights first, no weights shown). Still no
+  answers, scores or support labels in the prompt.
+- A qid with no frozen rubric gets the exact plain `arena-only` prompt (byte-identical, so
+  existing prompt caches stay valid). An enabled variant whose artifact file is missing raises.
+- The frozen artifact is not committed yet; until it is, the two rubric variants cannot run.
+
 ## Deliberately not built yet
 
-- Rubric generation itself (typed generation/provenance models, the LLM-calling axis
-  generators, atomicity/dedupe critic, weight classifier, Luna final review, deterministic
-  selection) -- `docs/rag26-rubric-construction-execution-plan.md` Sections 6-19. This is the
-  current workstream; see that plan's Section 27 for the exact build order and this file's
-  git history / commit messages for how far it has actually progressed.
-- Research-intent decomposition -- deciding what ~6-10 intents to search for per topic, and
-  whether each is semantic/lexical/hybrid, needs an LLM call (plan Section 9's Stage A).
-  `hybrid_retrieval.py` takes an already-produced `list[ResearchIntent]` via an injected
-  `IntentPlanner`; tests use a deterministic dummy one.
-- Persistent retrieval/research-pack and rubric-generation disk cache (plan's `cache.py`).
-  `HybridResearchPack.cache_key()` gives the deterministic key a cache would use, but nothing
-  disk/DB-backed exists yet.
-- The frozen 119-topic rubric artifact (`artifacts/rag26/rubrics.jsonl`) and its
-  `RAG26ArenaJudge` integration (`rubric-arena`, `rubric-support-arena` variants) --
-  execution-plan Sections 21-25. Not started until the ResearchRubrics dev-set B0/B1/B2
-  comparison (Section 20) passes its gate.
-- ResearchRubrics fidelity evaluation (structural + Luna-matched semantic comparison against
-  the organizer dev set) -- execution-plan Section 20.
+- Pointwise rubric scorer (plan Phase 9). Not needed for `rubric-arena`.
+- Stage G examples, Stage J Luna audit, dev-set B0/B1/B2 fidelity comparison.
+- The frozen 119-topic artifact `judges/rag26_arena/rubrics/frozen/rag26-rubrics.jsonl`.
 
-See `docs/rag26-rubric-construction-execution-plan.md` Section 27 ("Immediate execution
-order") for the full remaining sequence.
+## Submission status (2026-10-13)
+
+- `arena-support` TIRA dry-run passed on a Docker host (`docs/rag26-tira-dryrun-handoff.md`).
+- Full local data run of `arena-support` on `rag26-generation` (83 runs x 119 topics) was
+  started with a hard spend guard (`scripts/cost_guard.py`, $150 cap). Upload with
+  `tira-cli upload` and the real `tira-cli code-submission` (no `--dataset`) remain to do,
+  after a completeness-only check of the output.

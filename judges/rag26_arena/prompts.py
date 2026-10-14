@@ -10,9 +10,12 @@ only the request text and the two answers are shown.
 
 from __future__ import annotations
 
-from typing import Sequence
+from typing import TYPE_CHECKING, Optional, Sequence
 
 from autojudge_base import Request
+
+if TYPE_CHECKING:
+    from .rubrics.schema import RubricTopic
 
 _SYSTEM = "You are a careful RAG-answer preference judge. Return only the requested JSON."
 
@@ -28,14 +31,28 @@ def narrative(topic: Request) -> str:
     return topic.problem_statement or topic.title
 
 
-def arena_messages(topic: Request, answer_a: str, answer_b: str, *, max_answer_chars: int) -> list[dict[str, str]]:
+def rubric_block(rubric: "RubricTopic") -> str:
+    """Compact frozen-rubric guidance: response-independent criteria, strongest
+    weights first (ties by original order), no weights shown -- only whether the
+    criterion is desirable (+) or undesirable (-)."""
+    ordered = sorted(enumerate(rubric.rubrics), key=lambda iv: (-abs(iv[1].weight), iv[0]))
+    return "\n".join(f"{'+' if r.weight > 0 else '-'} {r.criterion}" for _i, r in ordered)
+
+
+def arena_messages(topic: Request, answer_a: str, answer_b: str, *, max_answer_chars: int,
+                   rubric_text: Optional[str] = None) -> list[dict[str, str]]:
+    guidance = (
+        "\n\nCriteria written for this request without seeing any answer (+ desirable, - undesirable); "
+        "use them as guidance, not as a checklist to score mechanically:\n" + rubric_text
+        if rubric_text else ""
+    )
     prompt = (
         "Which answer would the user rather receive for this request? Judge on "
         f"{_CRITERIA}. Do not reward verbosity, polished prose, or formatting by "
         "themselves. Vote TIE when both are comparably good, BOTH_BAD when both "
         "are unacceptable, and ABSTAIN when you cannot judge from the material "
         "given. Reply with ONLY JSON: {\"vote\": \"A|B|TIE|BOTH_BAD|ABSTAIN\"}.\n\n"
-        f"Request:\n{narrative(topic)}\n\n"
+        f"Request:\n{narrative(topic)}{guidance}\n\n"
         f"Answer A:\n{answer_a[:max_answer_chars]}\n\n"
         f"Answer B:\n{answer_b[:max_answer_chars]}"
     )
