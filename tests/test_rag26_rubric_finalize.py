@@ -4,7 +4,17 @@ import json
 import pytest
 
 from judges.rag26_arena.rubrics.finalize import (
-    FinalizeError, apply_critic, parse_critic, parse_importance, prenormalize, select_final, to_rubric_topic,
+    CRITIC_PROMPT_VERSION,
+    IMPORTANCE_PROMPT_VERSION,
+    FinalizeError,
+    apply_critic,
+    critic_messages,
+    importance_messages,
+    parse_critic,
+    parse_importance,
+    prenormalize,
+    select_final,
+    to_rubric_topic,
 )
 from judges.rag26_arena.rubrics.generation_models import RubricCandidate, TopicCharacterization
 from judges.rag26_arena.rubrics.validate import validate_topic
@@ -24,6 +34,19 @@ def test_prenormalize_dedupes_and_bounds():
     assert [c.candidate_id for c in prenormalize(cs)] == ["q-001"]
 
 
+def test_v2_critic_keeps_general_implicit_dimensions_while_rejecting_specific_evidence_outline():
+    cs = [cand(0, text="The response compares the methods' general decision trade-offs")]
+    critic_prompt = critic_messages("Compare and contrast Method A and Method B.", cs)[-1]["content"]
+    importance_prompt = importance_messages("Compare and contrast Method A and Method B.", cs)[-1]["content"]
+    assert CRITIC_PROMPT_VERSION == "v4"
+    assert IMPORTANCE_PROMPT_VERSION == "v3"
+    assert "hidden mandatory answer outline" in critic_prompt
+    assert "Do NOT mark a criterion OUT_OF_SCOPE merely because it is implicit" in critic_prompt
+    assert "useful general dimensions of the requested analysis" in critic_prompt
+    assert "declared polarity label" in importance_prompt
+    assert "retrieved-example specificity" in importance_prompt
+
+
 def test_critic_parse_and_apply():
     cs = [cand(i) for i in range(5)]
     reply = json.dumps([
@@ -39,6 +62,14 @@ def test_critic_never_drops_protected_candidates():
     for c in (cand(0, axis="Explicit Criteria"), cand(1, polarity="negative"), cand(2, axis="References & Citation Quality")):
         assert len(apply_critic([c], {c.candidate_id: ("REDUNDANT", ())})) == 1
     assert apply_critic([cand(3)], {"q-003": ("REDUNDANT", ())}) == []
+
+
+def test_critic_keeps_low_volume_and_negative_candidates_unsplit():
+    split = ("The response checks one part", "The response does not misstate another part")
+    low_volume = cand(0, axis="References & Citation Quality")
+    negative = cand(1, polarity="negative")
+    assert apply_critic([low_volume], {low_volume.candidate_id: ("SPLIT_REQUIRED", split)}) == [low_volume]
+    assert apply_critic([negative], {negative.candidate_id: ("SPLIT_REQUIRED", split)}) == [negative]
 
 
 @pytest.mark.parametrize("reply", [

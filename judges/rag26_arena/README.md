@@ -40,15 +40,15 @@ itself was delegated to a machine with a container runtime
 no root/sudo to install one; it is not a blocker for the response-independent rubric-
 construction work below, which needs no container runtime at all.
 
-## Rubric construction (in progress)
+## Rubric construction
 
-Building the frozen, response-independent ResearchRubrics-style rubric artifact for all 119
-RAG26 topics. The production constructor is **GPT-6 Luna with high reasoning** through
-Bedrock Mantle (`us-east-1`), selected by the blind model bake-off in
-`evaluation/rubric-model-bakeoff/`: GPT-6.1 Sol (high) judged anonymized outputs from Luna,
-Qwen3 235B, Gemma 4 26B-A4B, and GLM-4.7 Flash, with Luna winning all tested topics.
-The older execution plan still documents the pre-bake-off Qwen design and should be read as
-historical rationale where its model choice conflicts with this README/current code.
+The response-independent ResearchRubrics-style construction pipeline is complete for all 119
+RAG26 topics. The production constructor is **GPT-6 Luna with high reasoning** through the
+dedicated Azure ASE OpenAI-compatible endpoint (`OPEAI_ASE_URL` / `AZURE_ASE_KEY`), selected
+by the blind model bake-off in `evaluation/rubric-model-bakeoff/`: GPT-6.1 Sol (high) judged
+anonymized outputs from Luna, Qwen3 235B, Gemma 4 26B-A4B, and GLM-4.7 Flash, with Luna winning
+all tested topics. The older execution plan documents the pre-bake-off Qwen design and should
+be read as historical rationale where its model choice conflicts with this README/current code.
 
 ### What's here already (pre-dates this workstream, reused as-is)
 
@@ -117,11 +117,11 @@ Offline construction now runs end to end for one topic and in batch:
   selection trims them instead; without this the critic deleted every negative as a "mirror".
   An unusable `SPLIT_REQUIRED` instruction falls back to keeping the criterion.
 - `rubrics/build.py` -- resumable driver (`python -m judges.rag26_arena.rubrics.build ...`):
-  Stage A-C (existing) + D1-D5 + finalize, one `<work-dir>/<qid>.json` per finished topic,
-  assembles the organizer-compatible JSONL in topics-file order. Defaults to Bedrock **Standard**
-  tier: Flex timed out (316 s) on a trivial call during the submission window. Needs the
-  ClimbMix services (`RAG26_DENSE_SEARCH_URL`, `RAG26_SPARSE_SEARCH_URL`) and AWS credentials.
-  Model/region/tier are CLI flags; the model choice is being benchmarked separately.
+  Stage A-C + D1-D5 + finalize, one `<work-dir>/<qid>.json` per finished topic, and deterministic
+  assembly of organizer-compatible JSONL in topic-file order. It supports `--start-index`,
+  `--limit`, and `--rebuild-existing` for chunked re-finalization while reusing the LLM cache.
+  The production defaults are GPT-6 Luna / Azure ASE; ClimbMix still requires
+  `RAG26_DENSE_SEARCH_URL` and `RAG26_SPARSE_SEARCH_URL` during reconstruction.
 - Rehearsal (Qwen3 235B Standard, ap-southeast-2, topics 0-2): 3/3 valid, 26-31 criteria,
   all six axes present, 6-7 negatives per topic, about $0.007/topic. Known weak spot: the
   importance classifier is generous (9-14 mandatory criteria of 26-31).
@@ -140,17 +140,24 @@ Runtime (no ClimbMix/Bedrock dependency):
   existing prompt caches stay valid). An enabled variant whose artifact file is missing raises.
 - The frozen artifact `rubrics/frozen/rag26-rubrics.jsonl` is committed (see below).
 
-## Frozen rubric artifact (2026-10-14)
+## Frozen rubric artifacts (2026-10-14)
 
-- Built with GPT-6 Luna (high reasoning) on the Azure ASE endpoint (`OPEAI_ASE_URL`,
-  `AZURE_ASE_KEY`; `--model-id gpt-6-luna --region azure-ase`), 8 parallel topic workers,
-  work dir `rubric-work-luna-v2/` (git-ignored, resumable). Needs `RAG26_DENSE_SEARCH_URL` /
-  `RAG26_SPARSE_SEARCH_URL` set for the ClimbMix services or every topic fails fast.
-- Result: 119/119 topics, no `validate_topic` issues, 22-31 criteria/topic, about 6.8
-  mandatory and 5.6 negative criteria per topic. Construction cost is a few dollars at most.
-- Two fixes made the last topics pass: `narrative_spans` the model paraphrased are dropped
-  instead of rejecting the criterion, and the explicit-candidate parse floor is 3 (the prompt
-  still asks for the breadth-based range) because topics with few literal asks cannot reach 6.
+- **V1 runtime artifact:** `rubrics/frozen/rag26-rubrics.jsonl`, 119/119 topics. Runtime variants
+  still point here unless explicitly configured otherwise.
+- **V2 construction artifact:** `rubrics/frozen/rag26-rubrics-v2.jsonl`, 119/119 topics,
+  3,547 criteria total (mean 29.81). Every topic hits its breadth target exactly: Simple=22,
+  Moderate=26, High=31; `validate_topic` reports zero issues.
+- V2 addresses evidence-driven over-specification: retrieved studies, organizations, cases,
+  statistics, techniques, or examples must not become hidden mandatory answer outlines unless
+  the request names them or they are genuinely indispensable. The critic still preserves broad
+  implicit concepts, mechanisms, distinctions, and decision-relevant trade-offs needed to answer
+  the request well.
+- V2 uses implicit/synthesis prompt v2, critic v4, and importance prompt v3. All 119 topic files
+  were re-finalized under the same current prompt versions using `rubric-work-v2/`; cached
+  upstream research/generation results were reused.
+- Built with GPT-6 Luna (high reasoning) on Azure ASE (`--model-id gpt-6-luna --region azure-ase`).
+  Reconstruction needs both ClimbMix URLs; lower worker counts are advisable when rebuilding
+  large chunks because the local dense endpoint can time out under high concurrent retrieval.
 - The model bake-off and Luna 5.6-vs-6 comparisons are in `evaluation/` (response-independent).
 
 ## Deliberately not built yet

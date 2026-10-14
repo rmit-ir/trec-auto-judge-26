@@ -21,8 +21,8 @@ from .llm import CostTracker, cached_bedrock_call
 from .schema import CANONICAL_AXES, RubricCriterion, RubricTopic
 from .weights import ImportanceClass, importance_to_weight
 
-CRITIC_PROMPT_VERSION = "v2"
-IMPORTANCE_PROMPT_VERSION = "v1"
+CRITIC_PROMPT_VERSION = "v4"
+IMPORTANCE_PROMPT_VERSION = "v3"
 
 MIN_CRITERION_CHARS = 15
 MAX_CRITERION_CHARS = 400
@@ -85,6 +85,17 @@ def critic_messages(narrative: str, candidates: Sequence[RubricCandidate]) -> li
         "checkable requirements; give them in \"split\"), REDUNDANT (substantially duplicates "
         "another listed criterion; keep the better one), TOO_VAGUE, UNVERIFIABLE (cannot be "
         "judged from the answer text alone), OUT_OF_SCOPE (not required by the request).\n"
+        "For positive criteria, treat retrieved-evidence specificity as a scope problem: if a criterion "
+        "requires a named study, technique, organization, law, case, event, statistic, example, or "
+        "source-specific detail that the request does not name and does not genuinely need, mark it "
+        "OUT_OF_SCOPE. Evidence may support a broader requirement, but it must not become a hidden "
+        "mandatory answer outline. A source-specific detail is acceptable only when the request itself "
+        "requires it or the detail is indispensable to satisfying the stated information need. "
+        "Do NOT mark a criterion OUT_OF_SCOPE merely because it is implicit rather than named verbatim: "
+        "keep broad decision-relevant concepts, standard distinctions, mechanisms, and trade-offs that "
+        "are reasonably needed to explain, compare, evaluate, or otherwise satisfy the user's request. "
+        "OUT_OF_SCOPE is for arbitrary topic expansion or unnecessary specific examples, not for useful "
+        "general dimensions of the requested analysis.\n"
         "Negative criteria are deliberate failure-mode checks: never mark one REDUNDANT merely because "
         "it is the inverse of a positive criterion. "
         "Prefer ATOMIC; only flag clear problems. Each split item must start with \"The response\" "
@@ -140,8 +151,19 @@ def apply_critic(
         if verdict == "ATOMIC":
             result.append(cand)
         elif verdict == "SPLIT_REQUIRED":
-            for i, text in enumerate(split):
-                result.append(dataclasses.replace(cand, candidate_id=f"{cand.candidate_id}-s{i}", criterion=text))
+            # Keep deliberately low-volume axes and negative failure-mode checks
+            # compact. Splitting them adds little grading value and can create
+            # surface-negation polarity ambiguity (for example, a desirable
+            # reference-quality clause phrased as "does not misrepresent").
+            if cand.polarity == "negative" or (
+                cand.axis not in _DROPPABLE_AXES and cand.axis != "Explicit Criteria"
+            ):
+                result.append(cand)
+            else:
+                for i, text in enumerate(split):
+                    result.append(dataclasses.replace(
+                        cand, candidate_id=f"{cand.candidate_id}-s{i}", criterion=text,
+                    ))
         elif cand.polarity == "negative" or cand.axis not in _DROPPABLE_AXES:
             result.append(cand)
         # else: dropped (REDUNDANT/TOO_VAGUE/UNVERIFIABLE/OUT_OF_SCOPE)
@@ -161,7 +183,14 @@ def importance_messages(narrative: str, candidates: Sequence[RubricCandidate]) -
         "Set \"strong\": true if the criterion is required for basic correctness, false if merely "
         "strongly desirable/undesirable. Positive criteria must get a *_POSITIVE class and negative "
         "criteria a *_NEGATIVE/DETRIMENTAL class. Be discriminating: at most about a fifth of all "
-        "criteria should be CRITICAL.\n"
+        "criteria should be CRITICAL. Follow each criterion's declared polarity label, not surface "
+        "negation in its wording: a [positive] criterion phrased as 'avoids', 'does not overstate', or "
+        "similar still describes desirable good-answer behavior and must receive a *_POSITIVE class. "
+        "For positive criteria, do not reward retrieved-example "
+        "specificity merely because it is factual: a named study, technique, organization, case, event, "
+        "statistic, or source-specific detail absent from the request should be MINOR_POSITIVE with "
+        "strong=false unless that exact detail is genuinely necessary to satisfy the user's stated need. "
+        "Prefer importance for the underlying concept or decision requirement over a particular example.\n"
         "Reply with ONLY a JSON array covering every id: "
         "[{\"id\": \"...\", \"importance_class\": \"...\", \"strong\": true}].\n\n"
         f"Request:\n{narrative}\n\nCriteria:\n{listing}"

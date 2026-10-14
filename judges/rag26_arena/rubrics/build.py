@@ -52,22 +52,33 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--topics", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--work-dir", type=Path, default=Path("rubric-work"))
-    parser.add_argument("--limit", type=int, default=None, help="first N topics only (rehearsal)")
+    parser.add_argument("--limit", type=int, default=None, help="process at most N topics")
+    parser.add_argument(
+        "--start-index", type=int, default=0,
+        help="zero-based topic index to start from (use with --limit for resumable chunks)",
+    )
     parser.add_argument("--budget-usd", type=Decimal, default=Decimal("25"))
     parser.add_argument("--model-id", default=MODEL_ID)
     parser.add_argument("--region", default=REGION)
     parser.add_argument("--tier", default="default")
     parser.add_argument("--fallback-tier", default=None)
     parser.add_argument("--workers", type=int, default=8, help="parallel topic workers (default: 8)")
+    parser.add_argument(
+        "--rebuild-existing", action="store_true",
+        help="re-finalize existing topic outputs while reusing the work-dir LLM cache",
+    )
     args = parser.parse_args(argv)
 
-    topics = load_topics(args.topics)[: args.limit]
+    all_topics = load_topics(args.topics)
+    topics = all_topics[args.start_index:]
+    if args.limit is not None:
+        topics = topics[:args.limit]
     args.work_dir.mkdir(parents=True, exist_ok=True)
     tracker = CostTracker(hard_cap_usd=args.budget_usd)
 
     def process_topic(topic):
         path = args.work_dir / f"{topic.qid}.json"
-        if path.exists():
+        if path.exists() and not args.rebuild_existing:
             return topic.qid, None, [], None
         local_tracker = CostTracker(hard_cap_usd=args.budget_usd)
         cache = None
@@ -98,7 +109,10 @@ def main(argv: list[str] | None = None) -> int:
                 cache.close()
 
     failed: list[str] = []
-    pending = [t for t in topics if not (args.work_dir / f"{t.qid}.json").exists()]
+    pending = [
+        t for t in topics
+        if args.rebuild_existing or not (args.work_dir / f"{t.qid}.json").exists()
+    ]
     if pending:
         with ThreadPoolExecutor(max_workers=max(1, args.workers)) as pool:
             futures = {pool.submit(process_topic, topic): topic.qid for topic in pending}
@@ -122,8 +136,12 @@ def main(argv: list[str] | None = None) -> int:
                     )
                 tracker.check_budget()
 
-    done = [RubricTopic(**json.loads(p.read_text(encoding="utf-8")))
-            for t in topics if (p := args.work_dir / f"{t.qid}.json").exists()]
+    failed_set = set(failed)
+    done = [
+        RubricTopic(**json.loads(p.read_text(encoding="utf-8")))
+        for t in topics
+        if t.qid not in failed_set and (p := args.work_dir / f"{t.qid}.json").exists()
+    ]
     args.out.parent.mkdir(parents=True, exist_ok=True)
     dump_jsonl(done, args.out)
     print(f"[rubric-build] wrote {len(done)}/{len(topics)} topics to {args.out}; failed={failed}")

@@ -20,6 +20,12 @@ from judges.rag26_arena.rubrics.generate import (
 )
 from judges.rag26_arena.rubrics.generation_models import EvidenceNote, TopicCharacterization
 from judges.rag26_arena.rubrics.llm import CostTracker, LlmResult
+from judges.rag26_arena.rubrics.prompts import (
+    IMPLICIT_PROMPT_VERSION,
+    SYNTHESIS_PROMPT_VERSION,
+    implicit_candidates_messages,
+    synthesis_candidates_messages,
+)
 from judges.rag26_arena.rubrics.topics import Topic
 
 _MODEL_ID = "qwen.qwen3-235b-a22b-2507-v1:0"
@@ -122,6 +128,17 @@ def test_parse_explicit_rejects_invalid_common_fields(bad_field, bad_value):
 
 # --- D2 implicit -------------------------------------------------------------
 
+def test_v2_implicit_prompt_prevents_evidence_from_becoming_hidden_answer_outline():
+    prompt = implicit_candidates_messages(
+        _NARRATIVE, _CHARACTERIZATION, _EVIDENCE, [],
+        min_count=7, max_count=10,
+    )[-1]["content"]
+    assert IMPLICIT_PROMPT_VERSION == "v2"
+    assert "retrieved evidence is supporting material, not an answer outline" in prompt
+    assert "unconditional positive requirement" in prompt
+    assert "generalize the criterion to the underlying capability or concept" in prompt
+
+
 def test_parse_implicit_accepts_valid_payload_with_evidence():
     payload = [_valid_item(evidence_ids=["ev-000"]) for _ in range(7)]
     candidates = parse_implicit_candidates("leaf", json.dumps(payload), valid_evidence_ids={"ev-000", "ev-001"},
@@ -151,6 +168,16 @@ def test_parse_implicit_rejects_negative_polarity():
 
 
 # --- D3 synthesis ------------------------------------------------------------
+
+def test_v2_synthesis_prompt_prevents_source_examples_from_becoming_required_content():
+    prompt = synthesis_candidates_messages(
+        _NARRATIVE, _CHARACTERIZATION, _EVIDENCE, [], [],
+        min_count=3, max_count=5,
+    )[-1]["content"]
+    assert SYNTHESIS_PROMPT_VERSION == "v2"
+    assert "retrieved evidence is supporting material, not an answer outline" in prompt
+    assert "Evidence should help determine what a good answer gets right" in prompt
+
 
 def test_parse_synthesis_accepts_valid_payload():
     payload = [_valid_item() for _ in range(3)]

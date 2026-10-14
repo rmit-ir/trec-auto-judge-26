@@ -10,6 +10,8 @@ This document is the operational plan for rubric construction. It narrows and up
 
 It does **not** replace their methodological/data-handling rules. Where they conflict on implementation order, this execution plan takes precedence for the rubric-construction workstream.
 
+> **2026-10-14 status:** Sections describing Qwen3 235B as the production constructor are historical. A blind bake-off selected **GPT-6 Luna (high reasoning)**, and production construction now uses the Azure ASE endpoint. The completed V1 artifact is `judges/rag26_arena/rubrics/frozen/rag26-rubrics.jsonl`; the completed V2 artifact is `judges/rag26_arena/rubrics/frozen/rag26-rubrics-v2.jsonl`. V2 keeps the response-independent pipeline but tightens evidence-scope handling so retrieved examples do not become hidden mandatory answer outlines. Runtime still defaults to V1 unless explicitly reconfigured.
+
 ---
 
 # 1. Current verified state

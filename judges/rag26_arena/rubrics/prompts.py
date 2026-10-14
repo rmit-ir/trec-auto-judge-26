@@ -75,12 +75,24 @@ def characterize_and_plan_messages(narrative: str) -> list[dict[str, str]]:
 # rag26-rubric-next-stage-handoff.md) -------------------------------------
 
 EXPLICIT_PROMPT_VERSION = "v1"
-IMPLICIT_PROMPT_VERSION = "v1"
-SYNTHESIS_PROMPT_VERSION = "v1"
+IMPLICIT_PROMPT_VERSION = "v2"
+SYNTHESIS_PROMPT_VERSION = "v2"
 NEGATIVE_PROMPT_VERSION = "v1"
 LOW_VOLUME_PROMPT_VERSION = "v1"
 
 _CANDIDATE_SYSTEM = "You are a careful rubric-criterion writer. Return only the requested JSON."
+
+_EVIDENCE_SCOPE_RULE = (
+    "CRITICAL SCOPE RULE: retrieved evidence is supporting material, not an answer outline. "
+    "Never make a named study, technique, organization, law, case, event, statistic, example, "
+    "or source-specific detail an unconditional positive requirement merely because it appears "
+    "in the evidence. A positive criterion may require such a detail only when the user's "
+    "request explicitly names it or when that specific detail is genuinely necessary to satisfy "
+    "the user's stated information need. Otherwise generalize the criterion to the underlying "
+    "capability or concept; if correctness matters only when an answer chooses to discuss that "
+    "detail, make the expectation conditional; if neither applies, omit it. Evidence should help "
+    "determine what a good answer gets right, not dictate which examples a good answer must use."
+)
 
 _CANDIDATE_ITEM_SHAPE = (
     '{"criterion": "The response ...", "polarity": "positive|negative", '
@@ -157,6 +169,7 @@ def implicit_candidates_messages(
         "rationale explaining why it is a reasonable expectation rather than "
         "arbitrary scope expansion. Use positive polarity only, and do not duplicate "
         "an explicit criterion already listed below.\n\n"
+        f"{_EVIDENCE_SCOPE_RULE}\n\n"
         f"Request:\n{narrative}\n\n"
         f"Synthesis goal: {characterization.synthesis_goal}\n\n"
         f"Existing explicit criteria (do not duplicate):\n{_compact_candidates(explicit_candidates)}\n\n"
@@ -183,6 +196,7 @@ def synthesis_candidates_messages(
         "disagreement/evidence strength rather than forcing one conclusion. Retain "
         "the relevant evidence_ids/subtopics for each evidence-grounded candidate. "
         "Use positive polarity only.\n\n"
+        f"{_EVIDENCE_SCOPE_RULE}\n\n"
         f"Request:\n{narrative}\n\n"
         f"Synthesis goal: {characterization.synthesis_goal}\n\n"
         f"Existing criteria (do not duplicate):\n{existing}\n\n"
