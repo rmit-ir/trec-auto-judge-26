@@ -48,3 +48,35 @@ Preference judge. Responses with a critical evidence error are vetoed, then the 
 with sparse pairwise LLM ballots (a seed graph plus adaptively chosen top-k boundary pairs) and
 ranked with a Davidson-Bradley-Terry fit. Key ballots are re-asked with the answer order swapped
 to remove position bias, and Condorcet, cycle and Kemeny audits check the ranking.
+
+---
+
+# Data submissions (TIRA runs on `rag26-20260827_1-test`)
+
+Short texts for the "Your Uploaded Runs" entries. The arena runs reuse the SPARROW ranking core
+from `judges/ragree_choice/` and the rubric/citation lanes in `judges/rag26_arena/`.
+
+## rag26_arena-arena-support
+
+Pairwise preference judge (`RAG26ArenaJudge`, `gpt-5.6-luna`). Responses are compared side by side
+with sparse, adaptively chosen ballots (A, B, tie, both-bad, abstain), each key ballot re-asked with
+the order swapped, and fitted with the Davidson-Bradley-Terry model from RAGree Choice/SPARROW
+(`RAG26_ARENA_SCORE`). An independent citation-support lane (first/all weighted and hard precision
+and recall) is reported as separate measures. No rubric.
+
+## rag26_arena-rubric-support-arena
+
+As `rag26_arena-arena-support`, but each pairwise prompt also shows a compact frozen rubric for the
+topic, built offline from the request and ClimbMix evidence only (V1; GPT-6 Luna). No response
+information was used to create the rubrics.
+
+## rag26_arena-rubric-v2-support-arena
+
+As `rag26_arena-rubric-support-arena` with the V2 rubrics, which avoid turning retrieved
+examples into hidden mandatory answer outlines.
+
+## ragree-default
+
+RAGree Evidence Judge, default settings (`judges/ragree/`): pointwise claim grounding of each cited
+sentence against its cited document, citation precision/coverage, critical-error rate, and nugget
+coverage estimated from topic-only LLM-generated questions. No pairwise preference.
