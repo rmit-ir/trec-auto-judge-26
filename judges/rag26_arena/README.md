@@ -203,5 +203,8 @@ Runtime (no ClimbMix/Bedrock dependency):
   `rag26_arena-arena-support`, `rag26_arena-rubric-support-arena` (V1 rubrics),
   `rag26_arena-rubric-v2-support-arena` (V2 rubrics). Total LLM spend for the submission runs
   is roughly $90, under the $150 cap.
+- TIRA metadata: short method descriptions for the code submissions and for the four uploaded data
+  runs (including the earlier `ragree-default`) are in `docs/rag26-tira-method-descriptions.md`.
+  The Mac-side code-submission procedure is `docs/rag26-code-submission-handoff.md`.
 - Remaining: the real `tira-cli code-submission` (no `--dataset`) from a Docker host, and the
   `verify-installation` 500 with TIRA support.
