@@ -1,0 +1,80 @@
+{
+  "first": {
+    "agreement-boxplot.pdf": "ddaa20e3fd363e5d58eb88e346fe3fab9c73742a1217e8d1eb9e040c50983813",
+    "judge-agreement.pdf": "29844d45d539c65430f4a9323b8ef5fedf52e832aedc75881fb054fc7b20dddd"
+  },
+  "second": {
+    "agreement-boxplot.pdf": "ddaa20e3fd363e5d58eb88e346fe3fab9c73742a1217e8d1eb9e040c50983813",
+    "judge-agreement.pdf": "29844d45d539c65430f4a9323b8ef5fedf52e832aedc75881fb054fc7b20dddd"
+  },
+  "identical": true,
+  "date": "2026-11-13",
+  "command": "python report-support/render_agreement.py",
+  "generator_sha256": "4b04b6b943456aba70ca5a6edaa775b3d234c3d4e3939909abbda8a0bdafc9fb",
+  "inputs": {
+    "judge_agreement_tau_b.csv": "6f2f50a0bab4081f78891ef6b2c2ee08ff18ca1617c4632356f88a57d358d80f",
+    "judge_agreement_tauap_b.csv": "0f323110ac1d422289dfa5c25b163f1aab8f942a3f5da41a87f0b25ba0bc2c1a",
+    "topic_alpha.csv": "345089a31ba3fa3564cc49029e66dd153130ffa41c3ecb1e44e18f7d6e777f02"
+  },
+  "environment": {
+    "Python": "3.13.15",
+    "NumPy": "2.5.4",
+    "pandas": "3.0.6",
+    "Matplotlib": "3.11.1",
+    "font_family": "Linux Libertine"
+  },
+  "pdf_metadata": "CreationDate and ModDate omitted",
+  "scope": "Byte-for-byte identity verified for both figure PDFs with the same fonts and library versions; no judge reruns or score changes.",
+  "outlier_annotations": {
+    "rule": "Existing Matplotlib 1.5-IQR box-plot whiskers",
+    "labels": "Tn denotes topic rag2026-n",
+    "topics": {
+      "arena judges (3)": {
+        "rag2026-10": 0.536536056976241,
+        "rag2026-77": 0.4035956554038705
+      },
+      "all measures (12)": {
+        "rag2026-113": 0.0911111440813634,
+        "rag2026-36": 0.1311241008137144,
+        "rag2026-84": 0.11590475865843
+      }
+    },
+    "count": 5,
+    "selection_validation": "Topic sets match the original flier values; five labels have nonoverlapping bounds inside the canvas. Each label anchor and hollow ring uses the exact plotted scatter offset for its topic, indexed by topic ID.",
+    "anchor_coordinates": {
+      "rag2026-10": [
+        1.0198262245710032,
+        0.536536056976241
+      ],
+      "rag2026-77": [
+        1.063344568031995,
+        0.4035956554038705
+      ],
+      "rag2026-36": [
+        1.7534700172569397,
+        0.1311241008137144
+      ],
+      "rag2026-84": [
+        1.6924644749579403,
+        0.11590475865843
+      ],
+      "rag2026-113": [
+        1.6824525949420945,
+        0.0911111440813634
+      ]
+    }
+  },
+  "input_directory": "docs/figures",
+  "final_report_validation": {
+    "pages": 6,
+    "references": 25,
+    "build_exit": 0,
+    "undefined_references": 0,
+    "overfull_boxes": 0,
+    "report_sha256": "62a6d3cff97fcc475605125f757b21790ed03ceac459d284eaca8b73c104ebf9",
+    "source_manifest_sha256": "82c0e4cd84503dd1a05f4366452388ae9cf5ef96245ba3f9b7dfcc1fcb8506ca",
+    "all_pages_visual_check": "passed",
+    "source_matches_repo": true,
+    "analysis_asset_bytes_unchanged": true
+  }
+}

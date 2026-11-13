@@ -1,0 +1,107 @@
+{
+  "review_date": "2026-11-11",
+  "implementation_commit": "ed525ce3a0b37bd5da291b5c05905e235338a35c",
+  "ragree": {
+    "source": "docs/cost-estimation.md:93-99",
+    "calls": 209646,
+    "input_tokens": 128904481,
+    "output_tokens": 23772804,
+    "model": "gpt-5.6-luna",
+    "estimated_usd_from_record": "54.31",
+    "recorded_phases_usd": [
+      "18.95",
+      "35.36"
+    ],
+    "interpretation": "Documented isolated cost-guard totals across Mac failure and Sunfyre resume; historical token-rate estimate, not invoice."
+  },
+  "arena": {
+    "source": "judges/rag26_arena/README.md:Submission status",
+    "submission_runs_estimated_usd_approx": "90",
+    "v2_estimated_usd_approx": "11",
+    "interpretation": "V2 is included in the approximately 90 total; no additional summation. Shared-cache operational estimates."
+  },
+  "construction_caches": [
+    {
+      "directory": "rubric-work-rehearsal",
+      "rows": 29,
+      "input_tokens": 76440,
+      "output_tokens": 36961
+    },
+    {
+      "directory": "rubric-work-luna-smoke",
+      "rows": 0,
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "directory": "rubric-work-luna",
+      "rows": 19,
+      "input_tokens": 43940,
+      "output_tokens": 66212
+    },
+    {
+      "directory": "rubric-work-luna-v2",
+      "rows": 1071,
+      "input_tokens": 2747574,
+      "output_tokens": 4033880
+    },
+    {
+      "directory": "rubric-work-v2",
+      "rows": 1383,
+      "input_tokens": 3463203,
+      "output_tokens": 5683637
+    }
+  ],
+  "construction_cache_caveat": "Retained successful calls only; failed parses and overwritten entries can have incurred additional cost. Model/tier is not stored in these numeric records. Cache copies overlap and duplicate keys can have different token counts; neither sum nor deduplicated total reconstructs billing.",
+  "construction_deduplicated_scenario": {
+    "excluded_directory": "rubric-work-rehearsal",
+    "key_selection": "Later directory in lexicographic order replaces earlier duplicate key, solely for a retained-snapshot illustration.",
+    "unique_keys": 2351,
+    "duplicate_key_usage_disagreements": 122,
+    "input_tokens": 6190391,
+    "output_tokens": 9538726,
+    "conditional_model_rate": "gpt-6-luna historical table: input 0.10 USD/M, output 0.50 USD/M",
+    "price_equivalent_usd": "5.3884021",
+    "interpretation": "Conditional price-equivalent only; not actual construction spend or a total participation cost."
+  },
+  "bakeoff_ledgers": [
+    {
+      "path": "evaluation/rubric-model-bakeoff/usage.json",
+      "sha256": "f0ed2fb0a890808427840a7ca14047d1fc1d3026640c88bfdbf8d163d928113e",
+      "records": 15,
+      "recorded_cost_sum_usd": "0.1616000765",
+      "summary_total_actual_usd": "0.6216000765",
+      "prior_spend_reserve_implied_usd": "0.4600000000",
+      "interpretation": "Summary includes prior-spend reserve; do not add summary to itemized usage or to another experiment summary without proving disjoint scope."
+    },
+    {
+      "path": "evaluation/rubric-model-bakeoff-probe/usage.json",
+      "sha256": "26330884f25503e211cfecb778ccbf1229562b6622391e6e548218dfac8dc885",
+      "records": 9,
+      "recorded_cost_sum_usd": "0.0629127623",
+      "summary_total_actual_usd": "0.4542410013",
+      "prior_spend_reserve_implied_usd": "0.3913282390",
+      "interpretation": "Summary includes prior-spend reserve; do not add summary to itemized usage or to another experiment summary without proving disjoint scope."
+    }
+  ],
+  "construction_rough_estimate_review": {
+    "date": "2026-11-12",
+    "cache_directories": [
+      "rubric-work-luna",
+      "rubric-work-luna-v2",
+      "rubric-work-v2"
+    ],
+    "retained_rows": 2473,
+    "unique_request_keys": 2351,
+    "distinct_key_input_output_records": 2473,
+    "input_tokens_all_observed_records": 6254717,
+    "output_tokens_all_observed_records": 9783729,
+    "one_record_per_key_price_min_usd": "5.3761191",
+    "one_record_per_key_price_max_usd": "5.3983661",
+    "all_observed_records_price_equivalent_usd": "5.5173362",
+    "rough_estimate_usd": "5–6",
+    "rate_assumption": "All non-rehearsal records priced at GPT-6 Luna historical rates: $0.10/M input, $0.50/M output. Directory/pipeline provenance supports this assumption; individual usage metadata does not identify the model.",
+    "limits": "Retained successful construction requests only. No upper bound on absent failed attempts or overwritten calls. Excludes Qwen rehearsal, model-selection exercises, infrastructure, and runtime judging. Not an invoice or complete billed total.",
+    "manuscript_policy": "Included at the author’s explicit request as a rough US$5–6 estimate with production-rate assumption and exclusions; not presented as verified billing."
+  }
+}

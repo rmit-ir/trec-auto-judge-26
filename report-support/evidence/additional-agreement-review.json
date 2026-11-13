@@ -1,0 +1,85 @@
+{
+  "analysis_commit": "89f38b1ab94e9d43a0101095be0f35f64ca2e45f",
+  "analysis_file_sha256": {
+    "scripts/agreement_heatmap.py": "d6affcd578fa032446375678d83d8554c84ad3b9a4e0cd268adb88d19d344e20",
+    "scripts/topic_alpha.py": "a43723bce28470aa7f840cc0e7677f32dac124e3e980b2dbd71e7d5f219d3ca1",
+    "scripts/agreement_table.py": "4b0e8c6bd2f945b83a1f468c46370cc2d06135fb9c91a92cf1935b44c44a9129",
+    "docs/judge-agreement-analysis.md": "a78d25796815f57de101aa2b5e6d14b4ae3121c535c553c089178e42fed1bc65",
+    "docs/figures/judge_agreement_tau_b.csv": "6f2f50a0bab4081f78891ef6b2c2ee08ff18ca1617c4632356f88a57d358d80f",
+    "docs/figures/judge_agreement_tauap_b.csv": "0f323110ac1d422289dfa5c25b163f1aab8f942a3f5da41a87f0b25ba0bc2c1a",
+    "docs/figures/topic_alpha.csv": "345089a31ba3fa3564cc49029e66dd153130ffa41c3ecb1e44e18f7d6e777f02",
+    "docs/figures/agreement_values.tsv": "9f0f3720928080720ed4a5ea8022d99de5fa9a65b9147971e424e1244d65b977"
+  },
+  "aggregate_agreement": {
+    "arena vs rubric1": {
+      "tau_b": 0.8601234205113135,
+      "tauap_b": 0.7799662043173231
+    },
+    "arena vs rubric2": {
+      "tau_b": 0.8665883044372612,
+      "tauap_b": 0.7911733453634594
+    },
+    "rubric1 vs rubric2": {
+      "tau_b": 0.9500440787540405,
+      "tauap_b": 0.8805643659383515
+    }
+  },
+  "aggregate_kendall_associations_plain_v1_v2": {
+    "RAGree estimated coverage": [
+      0.6355617803099713,
+      0.6950261062120622,
+      0.6914935720000568
+    ],
+    "RAGree faithfulness": [
+      -0.022627093740816926,
+      -0.008521892447840141,
+      -0.014986776373787834
+    ],
+    "Plain weighted mean-citation precision": [
+      -0.11137231854246253,
+      -0.08316191595650896,
+      -0.09197766676461945
+    ]
+  },
+  "ordinal_alpha_validation": {
+    "verified_groups": {
+      "arena judges (3)": {
+        "count": 119,
+        "mean": 0.7633154350835766,
+        "median": 0.7800201229767371,
+        "std": 0.08720445788390058,
+        "min": 0.40359565540387055,
+        "q25": 0.7140866430607523,
+        "q75": 0.8269993060132166,
+        "max": 0.9002037002100731
+      },
+      "all measures (12)": {
+        "count": 119,
+        "mean": 0.24392403627720197,
+        "median": 0.24744149911273683,
+        "std": 0.04473656041137586,
+        "min": 0.09111114408136345,
+        "q25": 0.21706170415645365,
+        "q75": 0.27217338300387894,
+        "max": 0.3399312304103992
+      }
+    },
+    "independent_library_max_abs_difference": 5.551115123125783e-16,
+    "source_commit": "89f38b1ab94e9d43a0101095be0f35f64ca2e45f"
+  },
+  "scope": {
+    "topics": 119,
+    "systems": 83,
+    "aggregate_rankings": "Rank system means over all 119 topics, using scored outputs' all rows. These differ from mean correlations of within-topic rankings.",
+    "ordinal_alpha": "Per topic: candidate systems are units; score columns are raters; average ranks for ties; higher is better, reversing critical-error rate. Checked all 238 values against installed krippendorff ordinal implementation.",
+    "cross_metric": "Uses emitted aggregates, without availability adjustment; inherits zero sentinels, failures, truncation, and per-measure denominator conventions.",
+    "pooled_alpha": "Twelve overlapping outputs target different constructs; exploratory concordance only, not reliability of a single quality variable. No threshold classifications.",
+    "interpretation": [
+      "Describes judge agreement, not user preferences or quality validation",
+      "Cross-run differences do not isolate rubric effects without repeat runs",
+      "Lower AP-b than Kendall tau-b is a second top-weighted view, not proof that every discrepancy occurs at the top",
+      "Critical-error aggregate ties are slightly CSV-parser sensitive; critical-error pair coefficients are omitted from paper"
+    ],
+    "verification": "All 288 heatmap cells reproduced from saved scored outputs in previous turn; 144 Kendall cells also matched SciPy; source files and analysis commit recorded here."
+  }
+}

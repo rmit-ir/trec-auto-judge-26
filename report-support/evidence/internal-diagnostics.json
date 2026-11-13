@@ -1,0 +1,112 @@
+{
+  "source_sha256": {
+    "Plain": "bceaf2790e097c4f5ddac71a619e4dd13a78e06eab1f6b7efa20cfe070255107",
+    "V1": "0da9a815e2a10298e5b897d768386076f29ce6a70949ca16ee76adb2769baad1",
+    "V2": "e0493b7206479a5ea1e0419d93b07c91545f9a07ecfd55332c1a5b880b4444df",
+    "RAGree": "5d12af9930c0089938b0d8e4bf875b113e074f7e26eab85e1e0c778d3129d437"
+  },
+  "topics": 119,
+  "candidates_per_topic": 83,
+  "diagnostics": {
+    "Plain": {
+      "successful_reversals": 238,
+      "reversal_disagreements": 36,
+      "pooled_reversal_disagreement_rate": 0.15126050420168066,
+      "mean_topic_both_bad_rate": 0.16789076779822737,
+      "mean_topic_cycle_rate": 0.000007408193956395371,
+      "kemeny_winner_agreement_topics": 119,
+      "mean_ballot_coverage": 0.04986208412251177,
+      "observed_condorcet_winners": 0,
+      "topics_with_top_score_ties": 0
+    },
+    "V1": {
+      "successful_reversals": 238,
+      "reversal_disagreements": 50,
+      "pooled_reversal_disagreement_rate": 0.21008403361344538,
+      "mean_topic_both_bad_rate": 0.38293922220050813,
+      "mean_topic_cycle_rate": 0.0000017377245082902721,
+      "kemeny_winner_agreement_topics": 119,
+      "mean_ballot_coverage": 0.049832451346686193,
+      "observed_condorcet_winners": 0,
+      "topics_with_top_score_ties": 0
+    },
+    "V2": {
+      "successful_reversals": 238,
+      "reversal_disagreements": 47,
+      "pooled_reversal_disagreement_rate": 0.19747899159663865,
+      "mean_topic_both_bad_rate": 0.386359194840727,
+      "mean_topic_cycle_rate": 0.0000010975102157622771,
+      "kemeny_winner_agreement_topics": 119,
+      "mean_ballot_coverage": 0.049832451346686193,
+      "observed_condorcet_winners": 0,
+      "topics_with_top_score_ties": 0
+    }
+  },
+  "cross_run_agreement": {
+    "Plain vs V1": {
+      "mean_topic_kendall_tau_b": 0.5647534518542842,
+      "mean_topic_spearman_rho": 0.7547795810844312,
+      "same_top_score_set_topics": 17
+    },
+    "Plain vs V2": {
+      "mean_topic_kendall_tau_b": 0.5668071150024679,
+      "mean_topic_spearman_rho": 0.7565858742428375,
+      "same_top_score_set_topics": 19
+    },
+    "V1 vs V2": {
+      "mean_topic_kendall_tau_b": 0.5910770512356042,
+      "mean_topic_spearman_rho": 0.7757220478110495,
+      "same_top_score_set_topics": 29
+    }
+  },
+  "plain_preference_correlations": {
+    "Plain:RAG26_CIT_PREC_FIRST": {
+      "mean_topic_spearman_rho": -0.1376889179940298,
+      "topics": 119,
+      "candidate_count_range": [
+        54,
+        83
+      ]
+    },
+    "Plain:RAG26_CIT_REC_FIRST": {
+      "mean_topic_spearman_rho": -0.11808705422385476,
+      "topics": 119,
+      "candidate_count_range": [
+        54,
+        83
+      ]
+    },
+    "RAGree:ESTIMATED_COVERAGE": {
+      "mean_topic_spearman_rho": 0.5671839185287402,
+      "topics": 119,
+      "candidate_count_range": [
+        83,
+        83
+      ]
+    },
+    "RAGree:CONTEXT_FAITHFULNESS": {
+      "mean_topic_spearman_rho": -0.06154968450160665,
+      "topics": 119,
+      "candidate_count_range": [
+        83,
+        83
+      ]
+    }
+  },
+  "scope": {
+    "date": "2026-11-13",
+    "aggregation": "119 non-all topics; 83 anonymous candidates aligned within each topic; topic-level repeated diagnostics counted once",
+    "cross_run": "Arithmetic mean of per-topic Kendall tau-b and Spearman rho; top-score-set agreement (all unique maxima)",
+    "reversal": "Pooled disagreements / successful reversal checks; counts reconstructed from saved count and rate, validated integral",
+    "both_bad": "Unweighted mean of topic-level proportions, not pooled ballot fraction",
+    "cycles": "Unweighted mean; denominator for each topic is all candidate triples including unobserved triples",
+    "correlations": "Arithmetic mean of per-topic Spearman rho; Arena citation pairs require support_evaluated=1; RAGree measures as emitted, no successful-judgment mask exists",
+    "limits": [
+      "No raw ballots, response text, prompts, or caches inspected",
+      "No judge configuration or variant selected/tuned from test-topic results",
+      "Full A/B/TIE/ABSTAIN distribution not recoverable from scored outputs",
+      "Cross-run differences do not isolate rubric effects from LLM variability",
+      "No human validation"
+    ]
+  }
+}
