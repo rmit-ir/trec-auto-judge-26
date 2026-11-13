@@ -5,7 +5,7 @@ accuracy, claim precision, answer recall, retrieval quality, citation validity,
 and agent trajectory quality.
 
 For direct Amazon Bedrock smoke tests of the development models, see
-[Bedrock model smoke test](docs/bedrock.md).
+[Bedrock model smoke test](docs/bedrock.md). Judge/metric agreement analysis: [docs/judge-agreement-analysis.md](docs/judge-agreement-analysis.md).
 
 <p align="center">
    <img width=120px src="https://trec-auto-judge.cs.unh.edu/media/trec-auto-judge-logo-small.png">
