@@ -21,3 +21,4 @@ results/
 
 # Offline rubric-construction work directories (LLM cache + per-topic checkpoints)
 rubric-work*/
+.DS_Store
