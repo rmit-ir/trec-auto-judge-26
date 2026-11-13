@@ -264,6 +264,7 @@ class RAG26ArenaJudge:
         support_max_doc_chars: int = 1500,
         rubric_arena_enabled: bool = False,
         rubric_path: str = DEFAULT_RUBRIC_PATH,
+        pair_log: bool = False,
         filebase: str = "default",
         outdir: Path = Path("."),
         **kwargs: Any,
@@ -313,6 +314,11 @@ class RAG26ArenaJudge:
                 vote=BALLOT_VOTE[raw_vote], weight=judge_weight,
             ))
 
+        pair_rows: list[dict] = []  # ids only; see report-support/sparrow_pairs.py
+
+        def log_pairs(phase: str, pairs) -> None:
+            pair_rows.extend({"phase": phase, "topic": t, "a": a, "b": b} for t, a, b in pairs)
+
         initial_pairs: list[tuple[str, Report, Report]] = []
         for topic_id, topic_reports in reports_by_topic.items():
             by_run = {report.metadata.run_id: report for report in topic_reports}
@@ -320,6 +326,7 @@ class RAG26ArenaJudge:
                 list(by_run), initial_graph_degree, full_round_robin_max_candidates,
             ):
                 initial_pairs.append((topic_id, by_run[run_a], by_run[run_b]))
+        log_pairs("seed", ((t, a.metadata.run_id, b.metadata.run_id) for t, a, b in initial_pairs))
         for topic_id, candidate_a, candidate_b, raw_vote in self._cast_pairs(
             initial_pairs, topics, llm_config, max_answer_chars=arena_max_answer_chars,
             llm_max_attempts=llm_max_attempts, llm_retry_backoff_seconds=llm_retry_backoff_seconds,
@@ -340,6 +347,7 @@ class RAG26ArenaJudge:
                 budget=adaptive_comparisons_per_topic,
             ):
                 adaptive_pairs.append((topic_id, by_run[run_a], by_run[run_b]))
+        log_pairs("adaptive", ((t, a.metadata.run_id, b.metadata.run_id) for t, a, b in adaptive_pairs))
         for topic_id, candidate_a, candidate_b, raw_vote in self._cast_pairs(
             adaptive_pairs, topics, llm_config, max_answer_chars=arena_max_answer_chars,
             llm_max_attempts=llm_max_attempts, llm_retry_backoff_seconds=llm_retry_backoff_seconds,
@@ -361,6 +369,7 @@ class RAG26ArenaJudge:
                 ):
                     reversal_selections.append((topic_id, ballot))
 
+            log_pairs("reversal", ((t, b.candidate_a, b.candidate_b) for t, b in reversal_selections))
             reports_by_run_by_topic = {
                 topic_id: {report.metadata.run_id: report for report in topic_reports}
                 for topic_id, topic_reports in reports_by_topic.items()
@@ -391,6 +400,10 @@ class RAG26ArenaJudge:
                 if disagreed:
                     reversal_disagreed[topic_id] += 1
 
+        if pair_log:
+            # Adaptive/reversal rows derive from votes: restricted file, do not read or commit.
+            path = Path(outdir) / f"{filebase}.pairs.jsonl"
+            path.write_text("".join(json.dumps(row) + "\n" for row in pair_rows))
         builder = LeaderboardBuilder(RAG26_ARENA_SPEC)
         for topic_id, topic_reports in reports_by_topic.items():
             run_ids = [report.metadata.run_id for report in topic_reports]
