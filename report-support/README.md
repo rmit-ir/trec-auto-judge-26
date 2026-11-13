@@ -8,6 +8,7 @@ only what the paper compiles from (`main.tex`, `sections/`, `tables/`, `figures/
 |------|------|
 | `render_agreement.py` | Regenerates `figures/agreement-boxplot.pdf` and `figures/judge-agreement.pdf` in the report repo. Reads `docs/figures/*.csv` (hash-checked), which `scripts/agreement_heatmap.py` and `scripts/topic_alpha.py` produce from scored `*.eval.txt` files. Run `python report-support/render_agreement.py` (NumPy, pandas, Matplotlib, Linux Libertine font). |
 | `sparrow_pairs.py` | Seed-graph identity across SPARROW variants (ids only) and pair-set overlap from opt-in `pair_log` files; see `docs/sparrow-pair-selection-analysis.md`. |
+| `common_pair_agreement.py` | Writes `data/common_pairs.tsv` (seed pairs shared by all Arena variants) and repeats the agreement analysis on them; see `docs/common-pair-agreement.md`. `data/eval/` holds the scored `.eval.txt` copies it reads. |
 | `analyze_saved_outputs.py` | Aggregates saved runner `.eval.txt` scores into `evidence/internal-diagnostics.json` (needs SciPy; takes the implementation checkout as argument). Scores only, never answers or caches. |
 | `evidence/` | JSON records of hashes and checks (`internal-diagnostics`, `additional-agreement-review`, `figure-reproduction`, `cost-ledger-review`) and the TIRA upload screenshot. |
 | `notes/` | `sources.md` (provenance), `gap-analysis.md`, `documentation-review.md`. Author working notes, not paper content. |

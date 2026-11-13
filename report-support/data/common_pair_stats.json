@@ -1,0 +1,52 @@
+{
+ "topics": 119,
+ "runs": 83,
+ "pairs_per_topic": 166,
+ "common_pairs_total": 19754,
+ "possible_pairs_per_topic": 3403,
+ "fraction_of_all_pairs": 0.04878048780487805,
+ "runs_degree": {
+  "min": 3,
+  "median": 4.0,
+  "max": 5,
+  "histogram": {
+   "3": 1,
+   "4": 81,
+   "5": 1
+  }
+ },
+ "tie_rate_common": {
+  "arena: RAG26_ARENA_SCORE": 0.0033,
+  "rubric1: RAG26_ARENA_SCORE": 0.0063,
+  "rubric2: RAG26_ARENA_SCORE": 0.0062,
+  "arena: RAG26_CIT_PREC_ALL": 0.0068,
+  "arena: RAG26_CIT_REC_ALL": 0.0066,
+  "ragree: CITATION_COVERAGE": 0.6928,
+  "ragree: CITATION_PRECISION": 0.0098,
+  "ragree: CLAIM_F1": 0.0296,
+  "ragree: CONTEXT_FAITHFULNESS": 0.0092,
+  "ragree: CRITICAL_ERROR_RATE (inv.)": 0.9108,
+  "ragree: ESTIMATED_COVERAGE": 0.3105,
+  "ragree: EVIDENCE_COVERAGE_RATE": 0.9826
+ },
+ "tie_rate_all_pairs": {
+  "arena: RAG26_ARENA_SCORE": 0.0002,
+  "rubric1: RAG26_ARENA_SCORE": 0.0003,
+  "rubric2: RAG26_ARENA_SCORE": 0.0003,
+  "arena: RAG26_CIT_PREC_ALL": 0.0045,
+  "arena: RAG26_CIT_REC_ALL": 0.0043,
+  "ragree: CITATION_COVERAGE": 0.7017,
+  "ragree: CITATION_PRECISION": 0.0078,
+  "ragree: CLAIM_F1": 0.0298,
+  "ragree: CONTEXT_FAITHFULNESS": 0.0078,
+  "ragree: CRITICAL_ERROR_RATE (inv.)": 0.9111,
+  "ragree: ESTIMATED_COVERAGE": 0.317,
+  "ragree: EVIDENCE_COVERAGE_RATE": 0.9827
+ },
+ "arena_variants_same_direction_all_pairs": 0.7271944922547332,
+ "arena_variants_same_direction_given_no_ties": 0.7364615384615385,
+ "pooled_tau_b_common_vs_full": {
+  "mean_abs_diff_offdiag": 0.014746945505445749,
+  "max_abs_diff_offdiag": 0.07796088096146447
+ }
+}
